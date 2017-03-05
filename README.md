@@ -1,14 +1,30 @@
-# UniCAVE Plugin version 0.2
+# UniCAVE Plugin version 1.0
 Ross Tredinnick, Brady Boettcher, Sam Solovy, Kevin Ponto, Simon Smith
-11/2/2016
+3/4/2017
 
 A Unity3D Plugin for Non-Head Mounted Virtual Reality Display Systems
 
 
 Contents
-The Uni-CAVE Plugin is a solution for running Unity within immersive projection VR display systems.  The following document will guide on setup of the Plugin within Unity.  The plugin has been tested on Unity version 5.4.03f.  
-The plugin can be added to a Unity project by clicking the “Assets” menu within the Unity editor, followed by clicking the “Import Package” sub-menu and choosing Custom Package… Select the appropriate package that you downloaded from the LEL.  
-Upon importing the package, several assets will appear in your project, including a LELUnityPlugin, a Plugin directory, and a Prefab directory.  Drag the <Your Lab>_Holder.prefab file into the scene.
+The Uni-CAVE Plugin is a solution for running Unity within immersive projection VR display systems. 
+ 
+The following document will guide on setup of the plugin within Unity.  The plugin has been tested on Unity versions 5.4.0f3 and 5.5.0f3  
+
+We are currently taking requests for developing custom prefabs meant to work with your immersive projection setup, or feel free to try yourself by taking a look at the examples within the "ExampleScenes" folder and following the guide in this documentation or on the website.
+
+To install and setup the UniCAVE plugin, perform the following steps:
+
+Download and install one of the above versions of Unity.
+
+Pull the plugin or download a zip of the UniCAVE plugin and extract it to a location of your choice.
+
+Open Unity and start a new project.
+
+Click the “Assets” menu within the Unity editor, then click the “Import Package” sub-menu and choose Custom Package.
+
+Browse to and select CavePlugin.unitypackage.
+
+Upon importing the package, several assets will appear in your project within the Scripts, Plugins and Prefabs directories.  Drag the <Your Lab>_Holder.prefab file into the scene.
 
 Various global settings for the scene can be set on the MasterTrackingData.cs script.  These values include eye offsets, whether multiple displays need to be activated (set this to true if you need more than one viewport for rendering to your immersive system), tracking system offsets, default background clearing for all of the cameras, near and far clip values, etc. To sync any changes here with all of the left/right eye cameras, you can drag the script onto the “CameraHolder” object, then right click on the Inspector entry “Master Tracking Data (script)” and choose “Sync Camera Settings”.
 
