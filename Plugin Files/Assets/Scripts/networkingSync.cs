@@ -7,29 +7,30 @@ using System.Collections;
 
 public class networkingSync : MonoBehaviour {
 
-    private string machineName;
-    public string address;
+    public string headNodeIP;
     public int port;
-    public int numConnections;
+    public int numSlaveNodes;
+    public float networkUpdatesPerSecond = 60.0f;
+    private string machineName;
     private float myTimeScale = 1.0f;
     private float lastTime = 0.0f;
     private float headTime = 0.0f;
     private bool syncedRandomSeed = false;
     private int frameCount = 0;
-	// Use this for initialization
+	
 	void Start () {
         machineName = System.Environment.MachineName;
-        if (machineName == MasterTrackingData.Instance().HeadNode)
+        if (machineName == MasterTrackingData.Instance().HeadNodeMachineName)
         {
-            Debug.Log("Initializing server");
-            Network.InitializeServer(numConnections, port,false);
+            Debug.Log("Initializing server on " + machineName);
+            Network.InitializeServer(numSlaveNodes, port, false);
         } else{
-			Network.Connect(address, port);
-            Debug.Log("slave connecting");
+            Network.Connect(headNodeIP, port);
+            Debug.Log(machineName + " connecting");
 		}
 
         Time.fixedDeltaTime = 0.05f;
-        Network.sendRate = 60;  //60 times per second..
+        Network.sendRate = networkUpdatesPerSecond;
 
         Rigidbody[] gO = GameObject.FindObjectsOfType<Rigidbody>();
         foreach (Rigidbody rb in gO)
@@ -43,7 +44,7 @@ public class networkingSync : MonoBehaviour {
 
     void Update()
     {
-        if (System.Environment.MachineName == MasterTrackingData.Instance().HeadNode)
+        if (System.Environment.MachineName == MasterTrackingData.Instance().HeadNodeMachineName)
         {
             if(Input.inputString.Length > 0)
             {
@@ -128,19 +129,6 @@ public class networkingSync : MonoBehaviour {
             ps.Simulate(0.0f, true, true, false);
             ps.Play();
         }
-    }
-
-    void LateUpdate()
-    {
-        /*if (System.Environment.MachineName == MasterTrackingData.Instance.HeadNode)
-        {
-            float t = Time.time;
-            if (t - lastTime > 0.1)
-            {
-                GetComponent<NetworkView>().RPC("getTimeFromHeadnode", RPCMode.Others, Time.time);
-                lastTime = t;
-            }
-        }*/
     }
 
     [RPC]

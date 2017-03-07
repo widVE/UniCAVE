@@ -22,6 +22,7 @@ public static class VRPN
         return vrpnButtonExtern(address, channel, Time.frameCount);
     }
 
+    //todo - need to allow different transforms here...
     //need to adjust two below functions to match up with your own tracking system's transform
     public static Vector3 vrpnTrackerPos(string address, int channel)
     {
