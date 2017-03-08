@@ -113,7 +113,7 @@ public class caveTrackerSettings : MonoBehaviour
     {
         //this gets rid of this object from non-head nodes...
         //this is causing problems for some setups because in some cases the VRPN machine isn't the head node.
-        if (System.Environment.MachineName != MasterTrackingData.Instance().HeadNodeMachineName)
+        if (System.Environment.MachineName != MasterTrackingData.HeadNodeMachineName)
         {
                 Debug.Log(System.Environment.MachineName);
                 Destroy(this);

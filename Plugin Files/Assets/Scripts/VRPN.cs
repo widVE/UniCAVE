@@ -29,7 +29,7 @@ public static class VRPN
         return new Vector3(
             (float)vrpnTrackerExtern(address, channel, 1, Time.frameCount) ,
             -(float)vrpnTrackerExtern(address, channel, 2, Time.frameCount) ,
-            (float)vrpnTrackerExtern(address, channel, 0, Time.frameCount)) + MasterTrackingData.Instance().TrackingSystemOffset;
+            (float)vrpnTrackerExtern(address, channel, 0, Time.frameCount)) + MasterTrackingData.TrackingSystemOffset;
     }
 
     public static Quaternion vrpnTrackerQuat(string address, int channel)
