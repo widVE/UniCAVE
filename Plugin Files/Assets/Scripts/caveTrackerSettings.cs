@@ -10,7 +10,7 @@ public class caveTrackerSettings : MonoBehaviour
     [SerializeField]
     private TrackerHostSettings hostSettings;
     [SerializeField]
-    private string objectName = "";
+    private string trackerPrefix = "Isense900";
     [SerializeField]
     private int channel = 0;
     [SerializeField]
@@ -21,7 +21,6 @@ public class caveTrackerSettings : MonoBehaviour
     private bool trackButton = true;
     [SerializeField]
     private bool trackAnalog = true;
-    public bool pressed;
     
     public GameObject holder;
 
@@ -38,10 +37,10 @@ public class caveTrackerSettings : MonoBehaviour
 
     public string ObjectName
     {
-        get { return objectName; }
+        get { return trackerPrefix; }
         set
         {
-            objectName = value;
+            trackerPrefix = value;
         }
     }
 
@@ -148,7 +147,7 @@ public class caveTrackerSettings : MonoBehaviour
     {
         while (true)
         {
-            transform.localPosition = hostSettings.GetPosition(objectName, channel);
+            transform.localPosition = hostSettings.GetPosition(trackerPrefix, channel);
             yield return null;
         }
     }
@@ -158,7 +157,7 @@ public class caveTrackerSettings : MonoBehaviour
     {
         while (true)
         {
-            transform.rotation = hostSettings.GetRotation(objectName, channel);
+            transform.rotation = hostSettings.GetRotation(trackerPrefix, channel);
             yield return null;
         }
     }
@@ -168,41 +167,41 @@ public class caveTrackerSettings : MonoBehaviour
         while (true)
         {
             indicator.transform.localPosition = Vector3.zero;
-            if (hostSettings.GetButton(objectName, 0))
+            if (hostSettings.GetButton(trackerPrefix, 0))
             {
                 Debug.Log("Button 0 pressed");
                 indicator.transform.localPosition = new Vector3(1, 1, 0);
                 yield return new WaitForSeconds(.2f);
             }
-            else if (hostSettings.GetButton(objectName, 1))
+            else if (hostSettings.GetButton(trackerPrefix, 1))
             {
                 Debug.Log("Button 1 pressed");
                 indicator.transform.localPosition = new Vector3(1, 1, 1);
                 yield return new WaitForSeconds(.2f);
             }
-            else if (hostSettings.GetButton(objectName, 2))
+            else if (hostSettings.GetButton(trackerPrefix, 2))
             {
                 Debug.Log("Button 2 pressed");
                 indicator.transform.localPosition = new Vector3(1, 1, 2);
                 yield return new WaitForSeconds(.2f);
             }
-            else if (hostSettings.GetButton(objectName, 3))
+            else if (hostSettings.GetButton(trackerPrefix, 3))
             {
                 Debug.Log("Button 3 pressed");
                 indicator.transform.localPosition = new Vector3(1, 1, 3);
                 yield return new WaitForSeconds(.2f);
             }
-            else if (hostSettings.GetButton(objectName, 4))
+            else if (hostSettings.GetButton(trackerPrefix, 4))
             {
                 Debug.Log("Button 4 pressed");
                 indicator.transform.localPosition = new Vector3(1, 1, 4);
                 yield return new WaitForSeconds(.2f);
             }
-            else if (hostSettings.GetButton(objectName, 5))
+            else if (hostSettings.GetButton(trackerPrefix, 5))
             {
                 Debug.Log("Trigger pressed");
                 indicator.transform.localPosition = new Vector3(1, 1, 5);
-                pressed = true;
+                //pressed = true;
                 yield return new WaitForSeconds(.2f);
             }
             yield return null;
@@ -216,7 +215,7 @@ public class caveTrackerSettings : MonoBehaviour
         Vector3 modTrans;
         while (true)
         {
-            if (hostSettings.GetAnalog(objectName, channel) >= 0.5)
+            if (hostSettings.GetAnalog(trackerPrefix, channel) >= 0.5)
             {
                 //moving forward
                 modTrans = wand.transform.localRotation * Vector3.forward * 0.01f;
@@ -226,7 +225,7 @@ public class caveTrackerSettings : MonoBehaviour
                     holder.transform.Translate(modTrans);
                 }
             }
-            else if (hostSettings.GetAnalog(objectName, channel) <= -0.5)
+            else if (hostSettings.GetAnalog(trackerPrefix, channel) <= -0.5)
             {
                 //moving backwards
                 modTrans = wand.transform.localRotation * Vector3.forward * 0.01f;
