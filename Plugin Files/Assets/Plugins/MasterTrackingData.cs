@@ -20,6 +20,20 @@ public class MasterTrackingData : MonoBehaviour
     public static float fieldOfView = 60f;
     public static float nearClipPlane = .02f;
     public static float farClipPlane = 100f;
+
+    //public variables you'll see in the UI
+    public string _HeadNodeMachineName = "C6_V1_HEAD";
+    public bool _MultipleDisplays = true;
+    public Vector3 _TrackingSystemOffset = new Vector3(0.002f, -1.4478f, -0.025f);
+
+    public Vector3 _LeftEyeOffset = new Vector3(-0.031f, -0.0266f, 0.041f);
+    public Vector3 _RightEyeOffset = new Vector3(0.031f, -0.0266f, 0.041f);
+    public CameraClearFlags _clearFlags = CameraClearFlags.SolidColor;
+    public bool _leftStereoFirst = true;
+    public Color _background = Color.black;
+    public float _fieldOfView = 60f;
+    public float _nearClipPlane = .02f;
+    public float _farClipPlane = 100f;
     
     //private static MasterTrackingData _instance;
 
@@ -30,8 +44,19 @@ public class MasterTrackingData : MonoBehaviour
 
     void Awake()
     {
-        //_instance = this;
-       
+        HeadNodeMachineName = _HeadNodeMachineName;
+        MultipleDisplays = _MultipleDisplays;
+        TrackingSystemOffset = _TrackingSystemOffset;
+
+        LeftEyeOffset = _LeftEyeOffset;
+        RightEyeOffset = _RightEyeOffset;
+        clearFlags = _clearFlags;
+        leftStereoFirst = _leftStereoFirst;
+        background = _background;
+        fieldOfView = _fieldOfView;
+        nearClipPlane = _nearClipPlane;
+        farClipPlane = _farClipPlane;
+
         if (MultipleDisplays)
         {
             for (int i = 0; i < Display.displays.Length; i++)
