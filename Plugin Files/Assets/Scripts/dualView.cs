@@ -23,7 +23,7 @@ public class dualView : MonoBehaviour {
 
     void Update()
     {
-        if (System.Environment.MachineName == MasterTrackingData.Instance().HeadNodeMachineName)
+        if (System.Environment.MachineName == MasterTrackingData.HeadNodeMachineName)
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
@@ -36,7 +36,7 @@ public class dualView : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        if (System.Environment.MachineName != MasterTrackingData.Instance().HeadNodeMachineName)
+        if (System.Environment.MachineName != MasterTrackingData.HeadNodeMachineName)
         {
             if (isLeft)
             {

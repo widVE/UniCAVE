@@ -20,7 +20,7 @@ public class networkingSync : MonoBehaviour {
 	
 	void Start () {
         machineName = System.Environment.MachineName;
-        if (machineName == MasterTrackingData.Instance().HeadNodeMachineName)
+        if (machineName == MasterTrackingData.HeadNodeMachineName)
         {
             Debug.Log("Initializing server on " + machineName);
             Network.InitializeServer(numSlaveNodes, port, false);
@@ -44,7 +44,7 @@ public class networkingSync : MonoBehaviour {
 
     void Update()
     {
-        if (System.Environment.MachineName == MasterTrackingData.Instance().HeadNodeMachineName)
+        if (System.Environment.MachineName == MasterTrackingData.HeadNodeMachineName)
         {
             if(Input.inputString.Length > 0)
             {

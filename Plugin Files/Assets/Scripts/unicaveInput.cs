@@ -219,7 +219,7 @@ public class unicaveInput : MonoBehaviour  {
 
     public bool GetButtonDown(string s)
     {
-        if (machineName == MasterTrackingData.Instance().HeadNodeMachineName)
+        if (machineName == MasterTrackingData.HeadNodeMachineName)
         {
             if (Input.GetButtonDown(s))
             {
@@ -263,7 +263,7 @@ public class unicaveInput : MonoBehaviour  {
 
     public bool GetButton(string s)
     {
-        if (machineName == MasterTrackingData.Instance().HeadNodeMachineName)
+        if (machineName == MasterTrackingData.HeadNodeMachineName)
         {
             if (Input.GetButton(s))
             {

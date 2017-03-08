@@ -90,7 +90,7 @@ public class ProjectionPlane : MonoBehaviour {
             if (leftEye != null)
             {
                 //set camera projection matrix            
-                Vector3 eyePos = trackedHead + (trackerRotation * MasterTrackingData.Instance().LeftEyeOffset);
+                Vector3 eyePos = trackedHead + (trackerRotation * MasterTrackingData.LeftEyeOffset);
                 /*pa.z = eyePos.z + pa.z;
                 pb.z = eyePos.z + pb.z;
                 pc.z = eyePos.z + pc.z;*/
@@ -103,7 +103,7 @@ public class ProjectionPlane : MonoBehaviour {
             if (rightEye != null)
             {
                 //set camera projection matrix        
-                Vector3 eyePos = trackedHead + (trackerRotation * MasterTrackingData.Instance().RightEyeOffset);
+                Vector3 eyePos = trackedHead + (trackerRotation * MasterTrackingData.RightEyeOffset);
                 rightEye.transform.position = eyePos;
                 /*pa.z = eyePos.z + pa.z;
                 pb.z = eyePos.z + pb.z;

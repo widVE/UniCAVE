@@ -25,11 +25,11 @@ public class UpdateProjectionPosition : MonoBehaviour {
             {
                 if (LeftEye)
                 {
-                    transform.position = (trackedHead + trackerRotation.transform.rotation * MasterTrackingData.Instance().LeftEyeOffset);
+                    transform.position = (trackedHead + trackerRotation.transform.rotation * MasterTrackingData.LeftEyeOffset);
                 }
                 else
                 {
-                    transform.position = (trackedHead + trackerRotation.transform.rotation * MasterTrackingData.Instance().RightEyeOffset);
+                    transform.position = (trackedHead + trackerRotation.transform.rotation * MasterTrackingData.RightEyeOffset);
                 }
             }
         }
