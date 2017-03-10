@@ -12,7 +12,7 @@ public class wandRaycast : MonoBehaviour {
     RaycastHit hitObject;
     int layerMask;
     LineRenderer lRend;
-    TrackerSettings tSettings;
+    //caveTrackerSettingsTrackerSettings tSettings;
     GameObject indicator;
 
 	// Use this for initialization
@@ -25,22 +25,22 @@ public class wandRaycast : MonoBehaviour {
         {
             Destroy(this);
         }
-        tSettings = gameObject.GetComponent<TrackerSettings>();
+        //tSettings = gameObject.GetComponent<caveTrackerSettings>();
         
 	}
 	
 	// Update is called once per frame
 	void Update () {
         updateRay();
-        if (tSettings != null)
-        {
-            isPressed = tSettings.pressed;
-        }
+        //if (tSettings != null)
+        //{
+        //    isPressed = tSettings.pressed;
+        //}
 
-        if (checkRay() && isPressed)
-        {
-            hitObject.transform.position = gameObject.transform.position;
-        }
+        //if (checkRay() && isPressed)
+        //{
+        //    hitObject.transform.position = gameObject.transform.position;
+        //}
 	}
 
     bool checkRay()
