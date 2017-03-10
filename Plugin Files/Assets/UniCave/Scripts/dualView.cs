@@ -25,6 +25,23 @@ public class dualView : MonoBehaviour {
     }
 #endif
 
+    [ContextMenu("Setup Left Build")]
+    private void leftBuild()
+    {
+#if UNITY_EDITOR
+        isLeft = true;
+        UnityEditor.PlayerSettings.productName = "LeftBuild";
+#endif
+    }
+    [ContextMenu("Setup Right Build")]
+    private void rightBuild()
+    {
+#if UNITY_EDITOR
+        isLeft = false;
+        UnityEditor.PlayerSettings.productName = "RightBuild";
+#endif
+    }
+
     void Update()
     {
         if (System.Environment.MachineName == MasterTrackingData.HeadNodeMachineName)
