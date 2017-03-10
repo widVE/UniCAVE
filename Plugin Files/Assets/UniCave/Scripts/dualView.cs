@@ -7,6 +7,10 @@ using UnityEngine;
 public class dualView : MonoBehaviour {
 
     public bool isLeft;
+    public int xTranslate = 1920;
+    public int yTranslate = 0;
+    public int xRes = 1920;
+    public int yRes = 1920;
 
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR
     [DllImport("user32.dll", EntryPoint = "SetWindowPos")]
@@ -17,7 +21,7 @@ public class dualView : MonoBehaviour {
 
     public static void SetPosition(int x, int y, int resX = 1920, int resY = 1920)
     {
-        SetWindowPos(FindWindow(null, "Nightmares"), 0, x, y, resX, resY, resX * resY == 0 ? 1 : 0);
+        SetWindowPos(FindWindow(null, UnityEngine.Application.productName), 0, x, y, resX, resY, resX * resY == 0 ? 1 : 0);
     }
 #endif
 
@@ -59,8 +63,14 @@ public class dualView : MonoBehaviour {
                         Destroy(camera.gameObject);
                     }
                 }
-				
-				 SetPosition(1920, 0);
+
+                ProjectionPlane[] planeScripts = gameObject.GetComponentsInChildren<ProjectionPlane>();
+                foreach (ProjectionPlane p in planeScripts)
+                {
+                    p.forceRight = true;
+                }
+
+                SetPosition(xTranslate, yTranslate, xRes, yRes);
             }
         }
     }
