@@ -91,9 +91,6 @@ public class ProjectionPlane : MonoBehaviour {
             {
                 //set camera projection matrix            
                 Vector3 eyePos = trackedHead + (trackerRotation * MasterTrackingData.LeftEyeOffset);
-                /*pa.z = eyePos.z + pa.z;
-                pb.z = eyePos.z + pb.z;
-                pc.z = eyePos.z + pc.z;*/
                 //Debug.LogError("Left Eye Proj: " + eyePos.ToString("F4"));
                 leftEye.transform.position = eyePos;
                 leftEye.projectionMatrix = getAsymProjMatrix(pa, pb, pc, eyePos, leftEye);
@@ -104,10 +101,6 @@ public class ProjectionPlane : MonoBehaviour {
             {
                 //set camera projection matrix        
                 Vector3 eyePos = trackedHead + (trackerRotation * MasterTrackingData.RightEyeOffset);
-                rightEye.transform.position = eyePos;
-                /*pa.z = eyePos.z + pa.z;
-                pb.z = eyePos.z + pb.z;
-                pc.z = eyePos.z + pc.z;*/
                 //Debug.LogError("Right Eye Proj: " + eyePos.ToString("F4"));
                 rightEye.transform.position = eyePos;
                 rightEye.projectionMatrix = getAsymProjMatrix(pa, pb, pc, eyePos, rightEye);
