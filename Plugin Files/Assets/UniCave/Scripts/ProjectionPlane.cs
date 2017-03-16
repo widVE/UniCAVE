@@ -1,12 +1,12 @@
-﻿using UnityEngine;
+﻿//Copyright Living Environments Laboratory - University of Wisconsin - Madison
+//Ross Tredinnick
+//Brady Boettcher
+
+using UnityEngine;
 using System.Collections;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-
-//Copyright Living Environments Laboratory - University of Wisconsin - Madison
-//Ross Tredinnick
-//Brady Boettcher
 
 public class ProjectionPlane : MonoBehaviour {
 

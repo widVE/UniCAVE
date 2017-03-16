@@ -5,11 +5,11 @@ using System.Collections;
 //Ross Tredinnick
 //Brady Boettcher
 
-public class networkingSync : MonoBehaviour {
+public class NetworkingSync : MonoBehaviour {
 
-    public string headNodeIP;
-    public int port;
-    public int numSlaveNodes;
+    public string headNodeIP = "192.168.4.140";
+    public int port = 7568;
+    public int numSlaveNodes = 12;
     public float networkUpdatesPerSecond = 60.0f;
     private string machineName;
     private float myTimeScale = 1.0f;
