@@ -66,41 +66,6 @@ public class NetworkingSync : MonoBehaviour {
 
             frameCount++;
         }
-        /*else 
-        {
-            if (lastTime == 0.0f)
-            {
-                lastTime = headTime;
-            }
-            else
-            {
-                float ourTime = Time.time;
-                //time diff is the time between syncs
-                float timeDiff = headTime - lastTime;
-                if (timeDiff > 0.0f)
-                {
-                    //global time is the head node's time...
-                    float scale = ((headTime - ourTime) + timeDiff) / timeDiff;
-
-                    //float scale = (1.0f + ((globalTime - ourTime) + Time.deltaTime)) / (Time.deltaTime + 1.0f);
-                    //float scale = ((globalTime - ourTime) + Time.unscaledDeltaTime) / Time.unscaledDeltaTime;
-
-                    lastTime = headTime;
-
-                    if (scale < 0.0f)
-                    {
-                        scale = 0.001f;
-                    }
-                    else if (scale > 100.0f)
-                    {
-                        scale = 100.0f;
-                    }
-
-                    myTimeScale = Mathf.Lerp(myTimeScale, scale, Time.deltaTime);
-                    Time.timeScale = myTimeScale;// scale;// myTimeScale;
-                }
-            }
-        }*/
     }
 
     [RPC]
