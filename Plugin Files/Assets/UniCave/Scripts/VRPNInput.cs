@@ -15,11 +15,16 @@ public class VRPNInput : MonoBehaviour
     private bool trackButton = true;
     [SerializeField]
     private bool trackAnalog = true;
-    
-    public GameObject holder;
 
-    private GameObject indicator;
-        
+    public GameObject wandObject = null;
+    public bool debugOutput = false;
+    public int numButtons = 6;
+    public float movementSpeed = 0.01f;
+    public double deadZone = 0.5;
+    public bool restrictVerticalMovement = true;
+
+    public GameObject holder;
+  
     public int Channel
     {
         get { return channel; }
@@ -71,8 +76,6 @@ public class VRPNInput : MonoBehaviour
                 return;
         }
 
-        indicator = GameObject.Find("WandButtonIndicator");
-
         if (trackButton)
         {
             StartCoroutine("Button");
@@ -88,44 +91,18 @@ public class VRPNInput : MonoBehaviour
     {
         while (true)
         {
-            indicator.transform.localPosition = Vector3.zero;
-            if (VRPN.vrpnButton(trackerAddress, 0))
+            for(int i = 0; i < numButtons; ++i)
             {
-                Debug.Log("Button 0 pressed");
-                indicator.transform.localPosition = new Vector3(1, 1, 0);
-                yield return new WaitForSeconds(.2f);
+                if (VRPN.vrpnButton(trackerAddress, i))
+                {
+                    if (debugOutput)
+                    {
+                        Debug.Log("Button " + i + " pressed on channel " + channel);
+                    }
+                    yield return new WaitForSeconds(.2f);
+                }
             }
-            else if (VRPN.vrpnButton(trackerAddress, 1))
-            {
-                Debug.Log("Button 1 pressed");
-                indicator.transform.localPosition = new Vector3(1, 1, 1);
-                yield return new WaitForSeconds(.2f);
-            }
-            else if (VRPN.vrpnButton(trackerAddress, 2))
-            {
-                Debug.Log("Button 2 pressed");
-                indicator.transform.localPosition = new Vector3(1, 1, 2);
-                yield return new WaitForSeconds(.2f);
-            }
-            else if (VRPN.vrpnButton(trackerAddress, 3))
-            {
-                Debug.Log("Button 3 pressed");
-                indicator.transform.localPosition = new Vector3(1, 1, 3);
-                yield return new WaitForSeconds(.2f);
-            }
-            else if (VRPN.vrpnButton(trackerAddress, 4))
-            {
-                Debug.Log("Button 4 pressed");
-                indicator.transform.localPosition = new Vector3(1, 1, 4);
-                yield return new WaitForSeconds(.2f);
-            }
-            else if (VRPN.vrpnButton(trackerAddress, 5))
-            {
-                Debug.Log("Trigger pressed");
-                indicator.transform.localPosition = new Vector3(1, 1, 5);
-                //pressed = true;
-                yield return new WaitForSeconds(.2f);
-            }
+           
             yield return null;
         }
     }
@@ -133,30 +110,50 @@ public class VRPNInput : MonoBehaviour
     private IEnumerator Analog()
     {
         //some basic default analog wand movement.
-        GameObject wand = GameObject.Find("Wand");
+        if (wandObject == null)
+        {
+            wandObject = GameObject.Find("Wand");
+        }
+
         Vector3 modTrans;
         while (true)
         {
-            if (VRPN.vrpnAnalog(trackerAddress, channel) >= 0.5)
+            double analog = VRPN.vrpnAnalog(trackerAddress, channel);
+            if (analog >= deadZone || analog <= -deadZone)
             {
-                //moving forward
-                modTrans = wand.transform.localRotation * Vector3.forward * 0.01f;
-                modTrans.y = 0;
+                if (debugOutput)
+                {
+                    Debug.Log("Analog input value " + analog + " on channel " + channel);
+                }
+
                 if (holder != null)
                 {
-                    holder.transform.Translate(modTrans);
+                   
+                    if (wandObject != null)
+                    {
+                        modTrans = wandObject.transform.localRotation * Vector3.forward * movementSpeed;
+                    }
+                    else 
+                    {
+                        modTrans = Vector3.forward * movementSpeed;
+                    }
+
+                    if (restrictVerticalMovement)
+                    {
+                        modTrans.y = 0;
+                    }
+
+                    if (analog >= deadZone)
+                    {   //moving forward
+                        holder.transform.Translate(modTrans);
+                    }
+                    else
+                    {   //moving back
+                        holder.transform.Translate(-modTrans);
+                    }
                 }
             }
-            else if (VRPN.vrpnAnalog(trackerAddress, channel) <= -0.5)
-            {
-                //moving backwards
-                modTrans = wand.transform.localRotation * Vector3.forward * 0.01f;
-                modTrans.y = 0;
-                if (holder != null)
-                {
-                    holder.transform.Translate(-modTrans);
-                }
-            }
+
             yield return null;
         }
     }

@@ -16,6 +16,8 @@ public class VRPNTrack : MonoBehaviour
     [SerializeField]
     private bool trackRotation = true;
 
+    public bool debugOutput = false;
+
     public int Channel
     {
         get { return channel; }
