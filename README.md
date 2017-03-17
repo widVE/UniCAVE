@@ -1,6 +1,6 @@
-# UniCAVE Plugin version 1.0
+# UniCAVE Plugin version 1.1
 Ross Tredinnick, Brady Boettcher, Sam Solovy, Kevin Ponto, Simon Smith
-3/4/2017
+3/16/2017
 
 A Unity3D Plugin for Non-Head Mounted Virtual Reality Display Systems
 
