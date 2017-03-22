@@ -64,7 +64,7 @@ public class VRPNTrack : MonoBehaviour
         //in that case, we wouldn't want to destroy this object..
         if (System.Environment.MachineName != MasterTrackingData.HeadNodeMachineName)
         {
-                Debug.Log("Removing tracker settings from " + System.Environment.MachineName);
+                Debug.Log("Removing tracker settings from " + gameObject.name + " on " + System.Environment.MachineName);
                 Destroy(this);
                 return;
         }
