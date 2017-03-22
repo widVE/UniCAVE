@@ -22,11 +22,26 @@ public class NetworkingSync : MonoBehaviour {
         machineName = System.Environment.MachineName;
         if (machineName == MasterTrackingData.HeadNodeMachineName)
         {
-            Debug.Log("Initializing server on " + machineName);
-            Network.InitializeServer(numSlaveNodes, port, false);
-        } else{
-            Network.Connect(headNodeIP, port);
-            Debug.Log(machineName + " connecting");
+            NetworkConnectionError e = Network.InitializeServer(numSlaveNodes, port, false);
+            if(e != NetworkConnectionError.NoError)
+            {
+                Debug.Log("Initializing server on " + machineName);
+            }
+            else 
+            {
+                Debug.Log("Couldn't initialize server on " + machineName);
+            }
+        } else
+        {
+            NetworkConnectionError e = Network.Connect(headNodeIP, port);
+            if (e != NetworkConnectionError.NoError)
+            {
+                Debug.Log(machineName + " connected to server successfully");
+            }
+            else 
+            {
+                Debug.Log(machineName + " couldn't connect : " + e.ToString());
+            }
 		}
 
         Time.fixedDeltaTime = 0.05f;
@@ -51,6 +66,12 @@ public class NetworkingSync : MonoBehaviour {
                 GetComponent<NetworkView>().RPC("sendKeys", RPCMode.Others, Input.inputString);
             }
 
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                GetComponent<NetworkView>().RPC("quitApplication", RPCMode.Others);
+                Application.Quit();
+            }
+
             if (!syncedRandomSeed && frameCount > 500)
             {
                 GetComponent<NetworkView>().RPC("syncRandomSeed", RPCMode.Others, UnityEngine.Random.seed);
@@ -66,6 +87,12 @@ public class NetworkingSync : MonoBehaviour {
 
             frameCount++;
         }
+    }
+
+    [RPC]
+    void quitApplication()
+    {
+        Application.Quit();
     }
 
     [RPC]

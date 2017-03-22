@@ -35,8 +35,6 @@ public class MasterTrackingData : MonoBehaviour
     public float _nearClipPlane = .02f;
     public float _farClipPlane = 100f;
     
-    //private static MasterTrackingData _instance;
-
     void Start() 
     {
         
@@ -65,11 +63,6 @@ public class MasterTrackingData : MonoBehaviour
             }
         }
     }
-
-   // public static MasterTrackingData Instance() 
-	//{ 
-	//	return _instance;
-	//}
 
     [ContextMenu("Sync Camera Settings")]
     void syncCameraSettings()

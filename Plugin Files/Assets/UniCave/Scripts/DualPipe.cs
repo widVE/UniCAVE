@@ -47,18 +47,6 @@ public class DualPipe : MonoBehaviour {
 #endif
     }
 
-    void Update()
-    {
-        if (System.Environment.MachineName == MasterTrackingData.HeadNodeMachineName)
-        {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                GetComponent<NetworkView>().RPC("quitApplication", RPCMode.Others);
-                Application.Quit();
-            }
-        }
-    }
-
     // Use this for initialization
     void Start()
     {
@@ -96,11 +84,5 @@ public class DualPipe : MonoBehaviour {
 #endif
             }
         }
-    }
-
-    [RPC]
-    void quitApplication()
-    {
-        Application.Quit();
     }
 }
