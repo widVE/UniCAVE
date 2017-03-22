@@ -89,7 +89,6 @@ public class VRPNTrack : MonoBehaviour
         }
     }
 
-    Quaternion relativeQuat = new Quaternion();
     private IEnumerator Rotation()
     {
         while (true)

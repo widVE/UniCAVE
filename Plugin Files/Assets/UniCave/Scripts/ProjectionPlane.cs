@@ -23,7 +23,7 @@ public class ProjectionPlane : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         string mn = System.Environment.MachineName;
-        Debug.Log(mn);
+        
 #if UNITY_EDITOR
         if (!UnityEditor.EditorApplication.isPlaying)
 #endif
