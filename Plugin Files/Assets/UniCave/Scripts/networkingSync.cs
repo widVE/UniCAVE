@@ -23,7 +23,7 @@ public class NetworkingSync : MonoBehaviour {
         if (machineName == MasterTrackingData.HeadNodeMachineName)
         {
             NetworkConnectionError e = Network.InitializeServer(numSlaveNodes, port, false);
-            if(e != NetworkConnectionError.NoError)
+            if(e == NetworkConnectionError.NoError)
             {
                 Debug.Log("Initializing server on " + machineName);
             }
@@ -34,7 +34,7 @@ public class NetworkingSync : MonoBehaviour {
         } else
         {
             NetworkConnectionError e = Network.Connect(headNodeIP, port);
-            if (e != NetworkConnectionError.NoError)
+            if (e == NetworkConnectionError.NoError)
             {
                 Debug.Log(machineName + " connected to server successfully");
             }
