@@ -103,7 +103,7 @@ public class VRPNTrack : MonoBehaviour
     {
         while (true)
         {
-            transform.rotation = VRPN.vrpnTrackerQuat(trackerAddress, channel);
+            transform.localRotation = VRPN.vrpnTrackerQuat(trackerAddress, channel);
             yield return null;
         }
     }
