@@ -19,8 +19,10 @@ public class VRPNInput : MonoBehaviour
 {
     [SerializeField]
     private string trackerAddress = "Wand0@C6_V1_HEAD";
+    private int channelVertical = 1;
+    private int channelHorizontal = 0;
     [SerializeField]
-    private int channel = 1;
+    private int channel = 1; //channel for buttons, not analog
     [SerializeField]
     private bool trackButton = true;
     [SerializeField]
@@ -30,6 +32,7 @@ public class VRPNInput : MonoBehaviour
     public bool debugOutput = false;
     public int numButtons = 6;
     public float movementSpeed = 0.01f;
+    public float rotationSpeed = 5.0f;
     public double deadZone = 0.5;
     public bool restrictVerticalMovement = true;
 
@@ -128,12 +131,13 @@ public class VRPNInput : MonoBehaviour
         Vector3 modTrans;
         while (true)
         {
-            double analog = VRPN.vrpnAnalog(trackerAddress, channel);
-            if (analog >= deadZone || analog <= -deadZone)
+            double analogVertical = VRPN.vrpnAnalog(trackerAddress, channelVertical);
+            double analogHorizontal = VRPN.vrpnAnalog(trackerAddress, channelHorizontal);
+            if (analogVertical >= deadZone || analogVertical <= -deadZone)
             {
                 if (debugOutput)
                 {
-                    Debug.Log("Analog input value " + analog + " on channel " + channel);
+                    Debug.Log("Analog input value " + analogVertical + " on channel " + channelVertical);
                 }
 
                 if (holder != null)
@@ -153,13 +157,33 @@ public class VRPNInput : MonoBehaviour
                         modTrans.y = 0;
                     }
 
-                    if (analog >= deadZone)
+                    if (analogVertical >= deadZone)
                     {   //moving forward
                         holder.transform.Translate(modTrans);
                     }
                     else
                     {   //moving back
                         holder.transform.Translate(-modTrans);
+                    }
+                }
+            }
+            if (analogHorizontal >= deadZone || analogHorizontal <= -deadZone)
+            {
+                if (debugOutput)
+                {
+                    Debug.Log("Analog input value " + analogHorizontal + " on channel " + channelHorizontal);
+                }
+
+                if (holder != null)
+                {
+
+                    if (analogHorizontal >= deadZone)
+                    {   //rotating right
+                        holder.transform.Rotate(new Vector3(0, rotationSpeed, 0));
+                    }
+                    else
+                    {   //rotating left
+                        holder.transform.Rotate(new Vector3(0, -rotationSpeed, 0));
                     }
                 }
             }

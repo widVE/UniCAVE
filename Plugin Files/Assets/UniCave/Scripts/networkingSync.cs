@@ -12,6 +12,7 @@
 //IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 //TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+
 using UnityEngine;
 using System.Collections;
 
@@ -27,33 +28,18 @@ public class NetworkingSync : MonoBehaviour {
     private float headTime = 0.0f;
     private bool syncedRandomSeed = false;
     private int frameCount = 0;
-	
+
 	void Start () {
         machineName = System.Environment.MachineName;
         if (machineName == MasterTrackingData.HeadNodeMachineName)
         {
-            NetworkConnectionError e = Network.InitializeServer(numSlaveNodes, port, false);
-            if(e == NetworkConnectionError.NoError)
-            {
-                Debug.Log("Initializing server on " + machineName);
-            }
-            else 
-            {
-                Debug.Log("Couldn't initialize server on " + machineName);
-            }
-        } else
+            Network.InitializeServer(numSlaveNodes, port, false);
+        }
+        else
         {
-            NetworkConnectionError e = Network.Connect(headNodeIP, port);
-            if (e == NetworkConnectionError.NoError)
-            {
-                Debug.Log(machineName + " connected to server successfully");
-            }
-            else 
-            {
-                Debug.Log(machineName + " couldn't connect : " + e.ToString());
-            }
+            Network.Connect(headNodeIP, port);
 		}
-
+        
         Time.fixedDeltaTime = 0.05f;
         Network.sendRate = networkUpdatesPerSecond;
 
@@ -67,11 +53,37 @@ public class NetworkingSync : MonoBehaviour {
         }
 	}
 
+    void OnServerInitialized()
+    {
+        Debug.Log("Server initialized and ready on " + System.Environment.MachineName);
+    }
+    
+    void OnConnectedToServer()
+    {
+        Debug.Log(System.Environment.MachineName + " successfully connected to " + MasterTrackingData.HeadNodeMachineName);
+    }
+
+    void OnFailedToConnect(NetworkConnectionError error)
+    {
+        Debug.Log("Could not connect to server on " + MasterTrackingData.HeadNodeMachineName + ": " + error);
+    }
+
+    void OnDisconnectedFromServer(NetworkDisconnection info)
+    {
+        if (Network.isServer)
+            Debug.Log("Local server connection disconnected");
+        else
+            if (info == NetworkDisconnection.LostConnection)
+                Debug.Log("Lost connection to the server");
+        else
+            Debug.Log("Successfully diconnected from the server");
+    }
+
     void Update()
     {
         if (System.Environment.MachineName == MasterTrackingData.HeadNodeMachineName)
         {
-            if(Input.inputString.Length > 0)
+            if (Input.inputString.Length > 0)
             {
                 GetComponent<NetworkView>().RPC("sendKeys", RPCMode.Others, Input.inputString);
             }
@@ -84,10 +96,14 @@ public class NetworkingSync : MonoBehaviour {
 
             if (!syncedRandomSeed && frameCount > 500)
             {
-                GetComponent<NetworkView>().RPC("syncRandomSeed", RPCMode.Others, UnityEngine.Random.seed);
-                syncedRandomSeed = true;
+                //don't sync this until all connections have occurred.
+                if (Network.connections.Length == numSlaveNodes)
+                {
+                    GetComponent<NetworkView>().RPC("syncRandomSeed", RPCMode.Others, UnityEngine.Random.seed);
+                    syncedRandomSeed = true;
+                }
             }
-            
+
             float t = Time.time;
             if (t - lastTime > 0.1)
             {
