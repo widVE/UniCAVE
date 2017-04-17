@@ -32,9 +32,10 @@ public class VRPNInput : MonoBehaviour
     public bool debugOutput = false;
     public int numButtons = 6;
     public float movementSpeed = 0.01f;
-    public float rotationSpeed = 5.0f;
+    public float rotationSpeed = 0.1f;
     public double deadZone = 0.5;
     public bool restrictVerticalMovement = true;
+    public bool rotationMovement = false;
 
     public GameObject holder;
   
@@ -167,23 +168,27 @@ public class VRPNInput : MonoBehaviour
                     }
                 }
             }
-            if (analogHorizontal >= deadZone || analogHorizontal <= -deadZone)
+
+            if (rotationMovement)
             {
-                if (debugOutput)
+                if (analogHorizontal >= deadZone || analogHorizontal <= -deadZone)
                 {
-                    Debug.Log("Analog input value " + analogHorizontal + " on channel " + channelHorizontal);
-                }
-
-                if (holder != null)
-                {
-
-                    if (analogHorizontal >= deadZone)
-                    {   //rotating right
-                        holder.transform.Rotate(new Vector3(0, rotationSpeed, 0));
+                    if (debugOutput)
+                    {
+                        Debug.Log("Analog input value " + analogHorizontal + " on channel " + channelHorizontal);
                     }
-                    else
-                    {   //rotating left
-                        holder.transform.Rotate(new Vector3(0, -rotationSpeed, 0));
+
+                    if (holder != null)
+                    {
+
+                        if (analogHorizontal >= deadZone)
+                        {   //rotating right
+                            holder.transform.Rotate(new Vector3(0, rotationSpeed, 0));
+                        }
+                        else
+                        {   //rotating left
+                            holder.transform.Rotate(new Vector3(0, -rotationSpeed, 0));
+                        }
                     }
                 }
             }

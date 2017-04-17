@@ -27,6 +27,9 @@ public class NetworkingSync : MonoBehaviour {
     private float lastTime = 0.0f;
     private float headTime = 0.0f;
     private bool syncedRandomSeed = false;
+    private bool actuallyConnected = false;
+    private int connectionTries = 0;
+    private const int MAX_CONNECTION_TRIES = 50;
     private int frameCount = 0;
 
 	void Start () {
@@ -38,6 +41,7 @@ public class NetworkingSync : MonoBehaviour {
         else
         {
             Network.Connect(headNodeIP, port);
+            connectionTries++;
 		}
         
         Time.fixedDeltaTime = 0.05f;
@@ -61,11 +65,19 @@ public class NetworkingSync : MonoBehaviour {
     void OnConnectedToServer()
     {
         Debug.Log(System.Environment.MachineName + " successfully connected to " + MasterTrackingData.HeadNodeMachineName);
+        actuallyConnected = true;
     }
 
     void OnFailedToConnect(NetworkConnectionError error)
     {
         Debug.Log("Could not connect to server on " + MasterTrackingData.HeadNodeMachineName + ": " + error);
+        machineName = System.Environment.MachineName;
+        if (machineName != MasterTrackingData.HeadNodeMachineName && connectionTries < MAX_CONNECTION_TRIES && !actuallyConnected)
+        {
+            connectionTries++;
+            Debug.Log("Retrying connection... attempt # " + connectionTries);
+            Network.Connect(headNodeIP, port);
+        }
     }
 
     void OnDisconnectedFromServer(NetworkDisconnection info)
