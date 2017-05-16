@@ -94,7 +94,12 @@ public class VRPNTrack : MonoBehaviour
     {
         while (true)
         {
-            transform.localPosition = VRPN.vrpnTrackerPos(trackerAddress, channel);
+            Vector3 pos = VRPN.vrpnTrackerPos(trackerAddress, channel);
+            float temp = pos.z;
+            pos.z = pos.x;
+            pos.x = temp;
+            pos.y = -pos.y;
+            transform.localPosition = pos; 
             yield return null;
         }
     }

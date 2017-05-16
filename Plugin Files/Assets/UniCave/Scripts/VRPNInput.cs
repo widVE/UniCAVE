@@ -35,7 +35,6 @@ public class VRPNInput : MonoBehaviour
     public float rotationSpeed = 0.1f;
     public double deadZone = 0.5;
     public bool restrictVerticalMovement = true;
-    public bool rotationMovement = false;
 
     public GameObject holder;
   
@@ -168,27 +167,23 @@ public class VRPNInput : MonoBehaviour
                     }
                 }
             }
-
-            if (rotationMovement)
+            if (analogHorizontal >= deadZone || analogHorizontal <= -deadZone)
             {
-                if (analogHorizontal >= deadZone || analogHorizontal <= -deadZone)
+                if (debugOutput)
                 {
-                    if (debugOutput)
-                    {
-                        Debug.Log("Analog input value " + analogHorizontal + " on channel " + channelHorizontal);
+                    Debug.Log("Analog input value " + analogHorizontal + " on channel " + channelHorizontal);
+                }
+
+                if (holder != null)
+                {
+
+                    if (analogHorizontal >= deadZone)
+                    {   //rotating right
+                        holder.transform.Rotate(new Vector3(0, rotationSpeed, 0));
                     }
-
-                    if (holder != null)
-                    {
-
-                        if (analogHorizontal >= deadZone)
-                        {   //rotating right
-                            holder.transform.Rotate(new Vector3(0, rotationSpeed, 0));
-                        }
-                        else
-                        {   //rotating left
-                            holder.transform.Rotate(new Vector3(0, -rotationSpeed, 0));
-                        }
+                    else
+                    {   //rotating left
+                        holder.transform.Rotate(new Vector3(0, -rotationSpeed, 0));
                     }
                 }
             }
