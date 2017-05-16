@@ -138,10 +138,11 @@ public class ProjectionPlane : MonoBehaviour {
         float n = theCam.nearClipPlane;
         float f = theCam.farClipPlane;
         float d = Vector3.Dot(va, vn); // distance from eye to screen
-        l = Vector3.Dot(vr, va) * n / d;
-        r = Vector3.Dot(vr, vb) * n / d;
-        b = Vector3.Dot(vu, va) * n / d;
-        t = Vector3.Dot(vu, vc) * n / d;
+		float nod = n / d;
+        l = Vector3.Dot(vr, va) * nod;
+        r = Vector3.Dot(vr, vb) * nod;
+        b = Vector3.Dot(vu, va) * nod;
+        t = Vector3.Dot(vu, vc) * nod;
 
         //put together the matrix - bout time amirite?
         Matrix4x4 m = new Matrix4x4();
