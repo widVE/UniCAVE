@@ -34,7 +34,11 @@ public class GrabberTool : MonoBehaviour, ITool
     /// Handles the button input for the grabberTool 
     /// Takes in every button and whether it is currently being pressed or not 
     /// </summary>
+<<<<<<< HEAD
     public void ButtonClick(int button, Vector3 origin_, Vector3 direction_)
+=======
+    public void ButtonClick(int button, Vector3 origin_, Vector3 direction_, bool cave)
+>>>>>>> 18b14ea308eb5bdebe912452d748a21ee7cbc337
     {
       if((Physics.Raycast(origin_, direction_ * rayLength, out hit)))
         {
