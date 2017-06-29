@@ -228,19 +228,6 @@ public class DriveTool : ITool {
     /// <param name="origin"></param>
     /// <param name="direction"></param>
     /// <param name="isPressed"></param>
-<<<<<<< HEAD
-    public void ButtonClick(int button, Vector3 origin, Vector3 direction)
-    {
-       if(button == 1)
-        {
-            setHorizontal();
-        }
-
-        if(button ==  2)
-        {
-            setVertical();
-        }
-=======
     public void ButtonClick(int button, Vector3 origin, Vector3 direction, bool cave)
     {
         if(!cave)
@@ -255,7 +242,6 @@ public class DriveTool : ITool {
                 setVertical();
             }
         }     
->>>>>>> 18b14ea308eb5bdebe912452d748a21ee7cbc337
     }
 
     public void ButtonDrag(RaycastHit hit, Vector3 offset, Vector3 origin, Vector3 direction)

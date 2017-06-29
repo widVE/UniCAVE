@@ -64,13 +64,12 @@ public class VRPNInput : MonoBehaviour
     public Event eventsystem;
     public Dropdown dropdown;
     public Toggle toggle;
-<<<<<<< HEAD
-=======
+
     int click;
     int drag;
     int next;
     int previous;
->>>>>>> 18b14ea308eb5bdebe912452d748a21ee7cbc337
+
 
     public int Channel
     {
@@ -106,7 +105,7 @@ public class VRPNInput : MonoBehaviour
                 //cylinder.GetComponent<Renderer>().material.color = 
             }
 
-            else if(toolManager.toolNumber == 2)
+            else if (toolManager.toolNumber == 2)
             {
                 tool.text = "Tool: Clicker";
             }
@@ -124,55 +123,40 @@ public class VRPNInput : MonoBehaviour
         bool hide = true;
         while (true)
         {
-            if(toolManager.toolNumber == 2)
+            if (toolManager.toolNumber == 2)
             {
                 Physics.Raycast(origin, direction, out tester);
                 if (tester.collider != null)
                 {
-<<<<<<< HEAD
-                
-                if(tester.collider.tag == "button")
                     {
                         Button button = tester.transform.gameObject.GetComponent<Button>();
                         EventSystem.current.SetSelectedGameObject(button.gameObject);
                     }
-                else if (tester.collider.tag == "dropdown")
-=======
-                             
+
                     if (hit.transform.GameObject.GetComponent<Dropdown>() != null)
->>>>>>> 18b14ea308eb5bdebe912452d748a21ee7cbc337
                     {
                         dropdown = tester.transform.gameObject.GetComponent<Dropdown>();
                         EventSystem.current.SetSelectedGameObject(dropdown.gameObject);
                         //yield return new WaitForSeconds(2f);
                     }
 
-<<<<<<< HEAD
-                    else if (tester.collider.tag == "selectable")
-=======
                     else if (hit.transform.GameObject.GetComponent<Toggle>() != null)
->>>>>>> 18b14ea308eb5bdebe912452d748a21ee7cbc337
                     {
                         toggle = tester.transform.gameObject.GetComponent<Toggle>();
                         EventSystem.current.SetSelectedGameObject(toggle.gameObject);
                         //yield return new WaitForSeconds(2f);
                     }
-<<<<<<< HEAD
-=======
-
                     else if (hit.transform.GameObject.GetComponent<Button>() != null)
                     {
                         Button button = tester.transform.gameObject.GetComponent<Button>();
                         EventSystem.current.SetSelectedGameObject(button.gameObject);
                     }
-
->>>>>>> 18b14ea308eb5bdebe912452d748a21ee7cbc337
                 }
                 else
                 {
-                    if(hide == false)
+                    if (hide == false)
                     {
-                       
+
                     }
                     EventSystem.current.SetSelectedGameObject(null);
                 }
@@ -212,9 +196,6 @@ public class VRPNInput : MonoBehaviour
     private IEnumerator colorChange()
     {
         while (true)
-<<<<<<< HEAD
-        {           
-=======
         {
             //Get the origin of the object
             origin = wandObject.transform.position;
@@ -222,7 +203,6 @@ public class VRPNInput : MonoBehaviour
             //Get the direction of the object
             direction = wandObject.transform.forward;
 
->>>>>>> 18b14ea308eb5bdebe912452d748a21ee7cbc337
             if (Physics.Raycast(origin, direction))
             {
                 cylinder.GetComponent<Renderer>().material = green;
@@ -258,15 +238,13 @@ public class VRPNInput : MonoBehaviour
         {
             //Change the address to the remote in the cave
             //Switch the channels to match those of the Cave remote
-<<<<<<< HEAD
-        }
-
-=======
             trackerAddress = "DTrack@localhost";
             click = 2;
             drag = 0;
             next = 5;
             //Channel horizontal and vertical
+            channelHorizontal = 0;
+            channelVertical = 1;
         }
         else
         {
@@ -275,7 +253,6 @@ public class VRPNInput : MonoBehaviour
             previous = 5;
             next = 6;
         }
->>>>>>> 18b14ea308eb5bdebe912452d748a21ee7cbc337
         //this gets rid of this object from non-head nodes...we only want this running on the machine that connects to VRPN...
         //this assumes a distributed type setup, where one machine connects to the tracking system and distributes information
         //to other machines...
@@ -298,11 +275,10 @@ public class VRPNInput : MonoBehaviour
             StartCoroutine("Analog");
             StartCoroutine("colorChange");
             StartCoroutine("toolName");
-<<<<<<< HEAD
             StartCoroutine("Raycaster");
-=======
+
             //StartCoroutine("Raycaster");
->>>>>>> 18b14ea308eb5bdebe912452d748a21ee7cbc337
+
             StartCoroutine("buttonInput");
         }
     }
@@ -329,11 +305,7 @@ public class VRPNInput : MonoBehaviour
                     hit = temp;
 
                 }
-<<<<<<< HEAD
-                else if (buttonState[i] && curValue && i == 4)
-=======
                 else if (buttonState[i] && curValue && i == drag)
->>>>>>> 18b14ea308eb5bdebe912452d748a21ee7cbc337
                 {
                     if (hit.distance > 0)
                     {
@@ -343,59 +315,37 @@ public class VRPNInput : MonoBehaviour
                             hasStarted = true;
                         }
 
-<<<<<<< HEAD
-                        //if (toolManager.toolNumber == 2)
-                       // {
-//toolManager.list[toolManager.toolNumber].ButtonClick(i, origin, direction);
-                       /// }
-                        //else
-                        //{
-                            toolManager.list[toolManager.toolNumber].ButtonDrag(hit, offset, origin, direction);
-                        //}
-                    }
-                }
-
-                else if (!buttonState[i] && curValue && i == 4)
-=======
                         toolManager.list[toolManager.toolNumber].ButtonDrag(hit, offset, origin, direction);
+
                     }
                 }
 
                 else if (!buttonState[i] && curValue && i == drag)
->>>>>>> 18b14ea308eb5bdebe912452d748a21ee7cbc337
+
                 {
                     Physics.Raycast(origin, direction * rayLength, out hit);
                 }
 
                 buttonState[i] = curValue;
 
-<<<<<<< HEAD
+
                 //Sends the button currently being iterated over and whether or not it is being pressed
 
 
                 //Handles all movement of the wandObject
 
-=======
->>>>>>> 18b14ea308eb5bdebe912452d748a21ee7cbc337
+
 
                 //Change between tools
                 if (VRPN.vrpnButton(trackerAddress, i))
                 {
                     switch (i)
                     {
-<<<<<<< HEAD
-                        case 5:
-                            toolManager.PreviousTool();
-                            yield return new WaitForSeconds(.2f);
-                            break;
-                        case 6:
-=======
                         case previous:
                             toolManager.PreviousTool();
                             yield return new WaitForSeconds(.2f);
                             break;
                         case next:
->>>>>>> 18b14ea308eb5bdebe912452d748a21ee7cbc337
                             toolManager.NextTool();
                             yield return new WaitForSeconds(.2f);
                             break;
@@ -431,7 +381,6 @@ public class VRPNInput : MonoBehaviour
     /// Asyncronous method that continually casts a Raycast from the wands direction
     /// </summary>
     /// <returns></returns>
-<<<<<<< HEAD
     private IEnumerator Raycaster()
     {
         //Debug.Log("!");
@@ -451,22 +400,4 @@ public class VRPNInput : MonoBehaviour
             yield return null;
         }
     }
-=======
-    //private IEnumerator Raycaster()
-    //{
-    //    //Debug.Log("!");
-    //    //Continually update the wandObjects direction and position
-    //    while (true)
-    //    {
-
-
-    //        //Create the RayCast and Draw it for debugging purposes
-    //        //Physics.Raycast(origin, direction * rayLength);
-    //        Debug.DrawRay(origin, direction, Color.black);
-
-    //        yield return null;
-    //    }
-    //}
->>>>>>> 18b14ea308eb5bdebe912452d748a21ee7cbc337
-
 }

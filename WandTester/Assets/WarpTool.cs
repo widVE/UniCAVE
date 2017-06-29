@@ -14,11 +14,9 @@ public class WarpTool : MonoBehaviour, ITool
     bool currentState = false;    
     bool hitObject;
     public Stack<Vector3> previousWarps;
-<<<<<<< HEAD
-=======
     int warp;
     int undo;
->>>>>>> 18b14ea308eb5bdebe912452d748a21ee7cbc337
+
 
     /// <summary>
     /// Basically a constructor
@@ -79,10 +77,6 @@ public class WarpTool : MonoBehaviour, ITool
     /// <summary>
     /// Handles the button input for the warp tool
     /// </summary>
-<<<<<<< HEAD
-    public void ButtonClick(int button, Vector3 origin_, Vector3 direction_)
-    {
-=======
     public void ButtonClick(int button, Vector3 origin_, Vector3 direction_, bool cave)
     {
         if(cave)
@@ -96,24 +90,15 @@ public class WarpTool : MonoBehaviour, ITool
             undo = 3;
         }
 
->>>>>>> 18b14ea308eb5bdebe912452d748a21ee7cbc337
         origin = origin_;
         direction = direction_;
         //currentState = isPressed_;
 
-<<<<<<< HEAD
-        if (button == 4)
-        {
-            Warp();
-        }
-        if (button == 3)
-=======
         if (button == warp)
         {
             Warp();
         }
         if (button == undo)
->>>>>>> 18b14ea308eb5bdebe912452d748a21ee7cbc337
         {
             undoWarp();
         }
