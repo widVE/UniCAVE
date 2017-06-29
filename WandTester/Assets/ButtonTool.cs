@@ -6,7 +6,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ButtonTool : MonoBehaviour
+
+public class ButtonTool : MonoBehaviour, ITool
 {
     public GameObject canvas;
     public Canvas c;
@@ -15,9 +16,11 @@ public class ButtonTool : MonoBehaviour
     public GameObject holder;
     bool hide = true;
     public Text txt;
+
     public float point;
     int click;
     int buttonDrag;
+
 
     public void Analog(double x, double y)
     {
@@ -25,13 +28,15 @@ public class ButtonTool : MonoBehaviour
     }
     /// <summary>
     /// Handles the UI button click interactions 
+
     /// </summary>
     /// <param name="buttonNum"></param>
     /// <param name="origin"></param>
     /// <param name="direction"></param>
+
     public void ButtonClick(int buttonNum, Vector3 origin, Vector3 direction, bool cave)
     {
-        if(cave)
+        if (cave)
         {
             click = 2;
         }
@@ -60,39 +65,43 @@ public class ButtonTool : MonoBehaviour
                     dropdown.Hide();
                     hide = true;
                 }
-
-
             }
 
-            //If the object is a dropdown menu selectable set that as the new dropdown value and call the method attatched 
-            else if (hit.collider != null && hit.transform.GameObject.GetComponent<Toggle>() != null)
+        }
+
+        else if (hit.collider != null && hit.transform.gameObject.GetComponent<Toggle>() != null)
+        {
+            Toggle t = hit.transform.gameObject.GetComponent<Toggle>();
+            Dropdown d = t.GetComponentInParent<Dropdown>();
+
+            int number = t.name[5] - 48;
+
+            d.value = number;
+            d.RefreshShownValue();
+            d.Hide();
+            hide = true;
+
+            if (buttonNum == 3)
             {
-                Toggle t = hit.transform.gameObject.GetComponent<Toggle>();
-                Dropdown d = t.GetComponentInParent<Dropdown>();
-                int number = t.name[5] - 48;
-                d.value = number;
-                d.RefreshShownValue();
-                d.Hide();
-                hide = true;
+                Debug.Log(t);
             }
 
+        }
 
-
-            //If the object is a button call the onClick method
-            else if (hit.collider != null && hit.transform.GameObject.GetComponent<Button>() != null)
+        else if (hit.collider != null && hit.transform.gameObject.GetComponent<Button>() != null)
+        {
+            Button button = hit.transform.gameObject.GetComponent<Button>();
+            //EventSystem.current.SetSelectedGameObject(button.gameObject);
+            if (buttonNum == 3)
             {
-                Button button = hit.transform.gameObject.GetComponent<Button>();
-                if (buttonNum == 3)
-                {
-                    button.onClick.Invoke();
-                }
-
+                button.onClick.Invoke();
             }
 
-            else
-            {
+        }
 
-            }
+        else
+        {
+            //EventSystem.current.SetSelectedGameObject(null);
         }
     }
 
@@ -132,7 +141,7 @@ public class ButtonTool : MonoBehaviour
 
         if (holder == null)
         {
-            holder = GameObject.Find("IQWall_Seq_1PC");
+            holder = GameObject.Find("WALL");
         }
     }
 
@@ -150,78 +159,99 @@ public class ButtonTool : MonoBehaviour
         c = canvas.GetComponent<Canvas>();
 
         //Get the dimensions in the canvas space
+
         Vector3 position = s.transform.localPosition;
         float width = s.GetComponent<RectTransform>().rect.width;
         float height = s.GetComponent<RectTransform>().rect.height;
 
-        //Get the dimensions of the slider or scrollbar in worldspace 
+
         Vector3 sliderMiddle = s.transform.TransformPoint(s.transform.TransformPoint(position));
         Vector3 sliderRight = c.transform.TransformPoint(new Vector3(position.x + width / 2, position.y, position.z));
         Vector3 sliderLeft = c.transform.TransformPoint(new Vector3(position.x - width / 2, position.y, position.z));
+
         Vector3 sliderTop = c.transform.TransformPoint(new Vector3(position.x, position.y + height / 2, position.z));
         Vector3 sliderBottom = c.transform.TransformPoint(new Vector3(position.x, position.y - height / 2, position.z));
-        //Get the dimensions in the worldspace
+
         float sliderWidth = Math.Abs(sliderRight.x - sliderLeft.x);
         float sliderHeight = Math.Abs(sliderTop.y - sliderBottom.y);
 
-        //Check the direction of the scroll bar
+
+        float point;
         if (s.direction == Scrollbar.Direction.LeftToRight)
         {
-            if (hit.point.x > sliderMiddle.x)
-            {
-                //Calculate the value depending on the direction
-                point = (hit.point.x - sliderMiddle.x) / (sliderWidth / 2);
-                s.value = .5f + Math.Abs(point) / 2;
-            }
-            else
-            {
-                point = (sliderMiddle.x - hit.point.x) / (sliderWidth / 2);
-                s.value = .5f - Math.Abs(point) / 2;
-            }
-        }
-
-        else if (s.direction == Scrollbar.Direction.RightToLeft)
-        {
 
             if (hit.point.x > sliderMiddle.x)
             {
-                point = (sliderMiddle.x - hit.point.x) / (sliderWidth / 2);
-                s.value = .5f - Math.Abs(point) / 2;
-            }
-            else
-            {
-                point = (hit.point.x - sliderMiddle.x) / (sliderWidth / 2);
-                s.value = .5f + Math.Abs(point) / 2;
-            }
-        }
+                //Get the dimensions of the slider or scrollbar in worldspace 
+                Vector3 sliderMiddle = s.transform.TransformPoint(s.transform.TransformPoint(position));
+                Vector3 sliderRight = c.transform.TransformPoint(new Vector3(position.x + width / 2, position.y, position.z));
+                Vector3 sliderLeft = c.transform.TransformPoint(new Vector3(position.x - width / 2, position.y, position.z));
+                Vector3 sliderTop = c.transform.TransformPoint(new Vector3(position.x, position.y + height / 2, position.z));
+                Vector3 sliderBottom = c.transform.TransformPoint(new Vector3(position.x, position.y - height / 2, position.z));
+                //Get the dimensions in the worldspace
+                float sliderWidth = Math.Abs(sliderRight.x - sliderLeft.x);
+                float sliderHeight = Math.Abs(sliderTop.y - sliderBottom.y);
 
-        else if (s.direction == Scrollbar.Direction.BottomToTop)
-        {
+                //Check the direction of the scroll bar
+                if (s.direction == Scrollbar.Direction.LeftToRight)
+                {
+                    if (hit.point.x > sliderMiddle.x)
+                    {
+                        //Calculate the value depending on the direction
+                        point = (hit.point.x - sliderMiddle.x) / (sliderWidth / 2);
+                        s.value = .5f + Math.Abs(point) / 2;
+                    }
+                    else
+                    {
+                        point = (sliderMiddle.x - hit.point.x) / (sliderWidth / 2);
+                        s.value = .5f - Math.Abs(point) / 2;
+                    }
+                }
 
-            if (hit.point.y > sliderMiddle.y)
-            {
-                point = (hit.point.y - sliderMiddle.y) / (sliderHeight / 2);
-                s.value = .5f + Math.Abs(point) / 2;
-            }
-            else
-            {
-                point = (sliderMiddle.y - hit.point.y) / (sliderHeight / 2);
-                s.value = .5f - Math.Abs(point) / 2;
-            }
-        }
+                else if (s.direction == Scrollbar.Direction.RightToLeft)
+                {
 
-        else
-        {
+                    if (hit.point.x > sliderMiddle.x)
+                    {
+                        point = (sliderMiddle.x - hit.point.x) / (sliderWidth / 2);
+                        s.value = .5f - Math.Abs(point) / 2;
+                    }
+                    else
+                    {
+                        point = (hit.point.x - sliderMiddle.x) / (sliderWidth / 2);
+                        s.value = .5f + Math.Abs(point) / 2;
+                    }
+                }
 
-            if (hit.point.y > sliderMiddle.y)
-            {
-                point = (sliderMiddle.y - hit.point.y) / (sliderHeight / 2);
-                s.value = .5f - Math.Abs(point) / 2;
-            }
-            else
-            {
-                point = (hit.point.y - sliderMiddle.y) / (sliderHeight / 2);
-                s.value = .5f + Math.Abs(point) / 2;
+                else if (s.direction == Scrollbar.Direction.BottomToTop)
+                {
+
+                    if (hit.point.y > sliderMiddle.y)
+                    {
+                        point = (hit.point.y - sliderMiddle.y) / (sliderHeight / 2);
+                        s.value = .5f + Math.Abs(point) / 2;
+                    }
+                    else
+                    {
+                        point = (sliderMiddle.y - hit.point.y) / (sliderHeight / 2);
+                        s.value = .5f - Math.Abs(point) / 2;
+                    }
+                }
+
+                else
+                {
+
+                    if (hit.point.y > sliderMiddle.y)
+                    {
+                        point = (sliderMiddle.y - hit.point.y) / (sliderHeight / 2);
+                        s.value = .5f - Math.Abs(point) / 2;
+                    }
+                    else
+                    {
+                        point = (hit.point.y - sliderMiddle.y) / (sliderHeight / 2);
+                        s.value = .5f + Math.Abs(point) / 2;
+                    }
+                }
             }
         }
     }
@@ -308,6 +338,6 @@ public class ButtonTool : MonoBehaviour
             }
         }
     }
-
 }
+
 

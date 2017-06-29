@@ -64,10 +64,12 @@ public class VRPNInput : MonoBehaviour
     public Event eventsystem;
     public Dropdown dropdown;
     public Toggle toggle;
+
     int click;
     int drag;
     int next;
     int previous;
+
 
     public int Channel
     {
@@ -103,7 +105,7 @@ public class VRPNInput : MonoBehaviour
                 //cylinder.GetComponent<Renderer>().material.color = 
             }
 
-            else if(toolManager.toolNumber == 2)
+            else if (toolManager.toolNumber == 2)
             {
                 tool.text = "Tool: Clicker";
             }
@@ -121,12 +123,16 @@ public class VRPNInput : MonoBehaviour
         bool hide = true;
         while (true)
         {
-            if(toolManager.toolNumber == 2)
+            if (toolManager.toolNumber == 2)
             {
                 Physics.Raycast(origin, direction, out tester);
                 if (tester.collider != null)
                 {
-                             
+                    {
+                        Button button = tester.transform.gameObject.GetComponent<Button>();
+                        EventSystem.current.SetSelectedGameObject(button.gameObject);
+                    }
+
                     if (hit.transform.GameObject.GetComponent<Dropdown>() != null)
                     {
                         dropdown = tester.transform.gameObject.GetComponent<Dropdown>();
@@ -140,19 +146,17 @@ public class VRPNInput : MonoBehaviour
                         EventSystem.current.SetSelectedGameObject(toggle.gameObject);
                         //yield return new WaitForSeconds(2f);
                     }
-
                     else if (hit.transform.GameObject.GetComponent<Button>() != null)
                     {
                         Button button = tester.transform.gameObject.GetComponent<Button>();
                         EventSystem.current.SetSelectedGameObject(button.gameObject);
                     }
-
                 }
                 else
                 {
-                    if(hide == false)
+                    if (hide == false)
                     {
-                       
+
                     }
                     EventSystem.current.SetSelectedGameObject(null);
                 }
@@ -239,6 +243,8 @@ public class VRPNInput : MonoBehaviour
             drag = 0;
             next = 5;
             //Channel horizontal and vertical
+            channelHorizontal = 0;
+            channelVertical = 1;
         }
         else
         {
@@ -269,7 +275,10 @@ public class VRPNInput : MonoBehaviour
             StartCoroutine("Analog");
             StartCoroutine("colorChange");
             StartCoroutine("toolName");
+            StartCoroutine("Raycaster");
+
             //StartCoroutine("Raycaster");
+
             StartCoroutine("buttonInput");
         }
     }
@@ -307,15 +316,24 @@ public class VRPNInput : MonoBehaviour
                         }
 
                         toolManager.list[toolManager.toolNumber].ButtonDrag(hit, offset, origin, direction);
+
                     }
                 }
 
                 else if (!buttonState[i] && curValue && i == drag)
+
                 {
                     Physics.Raycast(origin, direction * rayLength, out hit);
                 }
 
                 buttonState[i] = curValue;
+
+
+                //Sends the button currently being iterated over and whether or not it is being pressed
+
+
+                //Handles all movement of the wandObject
+
 
 
                 //Change between tools
@@ -363,20 +381,23 @@ public class VRPNInput : MonoBehaviour
     /// Asyncronous method that continually casts a Raycast from the wands direction
     /// </summary>
     /// <returns></returns>
-    //private IEnumerator Raycaster()
-    //{
-    //    //Debug.Log("!");
-    //    //Continually update the wandObjects direction and position
-    //    while (true)
-    //    {
+    private IEnumerator Raycaster()
+    {
+        //Debug.Log("!");
+        //Continually update the wandObjects direction and position
+        while (true)
+        {
+            //Get the origin of the object
+            origin = wandObject.transform.position;
 
+            //Get the direction of the object
+            direction = wandObject.transform.forward;
 
-    //        //Create the RayCast and Draw it for debugging purposes
-    //        //Physics.Raycast(origin, direction * rayLength);
-    //        Debug.DrawRay(origin, direction, Color.black);
+            //Create the RayCast and Draw it for debugging purposes
+            //Physics.Raycast(origin, direction * rayLength);
+            Debug.DrawRay(origin, direction, Color.black);
 
-    //        yield return null;
-    //    }
-    //}
-
+            yield return null;
+        }
+    }
 }
