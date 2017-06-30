@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f7d5beab9c9727b408acd1b7e18d38a8
+guid: 4870d3994b611c94bbb87e406e96b4b9
 timeCreated: 1476817525
 licenseType: Free
 PluginImporter:
@@ -7,6 +7,7 @@ PluginImporter:
   iconMap: {}
   executionOrder: {}
   isPreloaded: 0
+  isOverridable: 0
   platformData:
     Any:
       enabled: 1

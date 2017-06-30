@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ButtonTool : MonoBehaviour
+public class ButtonTool : MonoBehaviour, ITool
 {
     public GameObject canvas;
     public Canvas c;
@@ -45,7 +45,7 @@ public class ButtonTool : MonoBehaviour
         if (buttonNum == click)
         {
             //If the object is a dropdown show or hide the menu
-            if (hit.collider != null && hit.transform.GameObject.GetComponent<Dropdown>() != null)
+            if (hit.collider != null && hit.transform.gameObject.GetComponent<Dropdown>() != null)
             {
                 Dropdown dropdown = hit.transform.gameObject.GetComponent<Dropdown>();
                 Debug.Log(dropdown.value);
@@ -65,7 +65,7 @@ public class ButtonTool : MonoBehaviour
             }
 
             //If the object is a dropdown menu selectable set that as the new dropdown value and call the method attatched 
-            else if (hit.collider != null && hit.transform.GameObject.GetComponent<Toggle>() != null)
+            else if (hit.collider != null && hit.transform.gameObject.GetComponent<Toggle>() != null)
             {
                 Toggle t = hit.transform.gameObject.GetComponent<Toggle>();
                 Dropdown d = t.GetComponentInParent<Dropdown>();
@@ -79,7 +79,7 @@ public class ButtonTool : MonoBehaviour
 
 
             //If the object is a button call the onClick method
-            else if (hit.collider != null && hit.transform.GameObject.GetComponent<Button>() != null)
+            else if (hit.collider != null && hit.transform.gameObject.GetComponent<Button>() != null)
             {
                 Button button = hit.transform.gameObject.GetComponent<Button>();
                 if (buttonNum == 3)
@@ -101,11 +101,11 @@ public class ButtonTool : MonoBehaviour
     {
         Debug.Log(hit_.transform.gameObject.GetType());
         //Check the type of the object to know what to slide
-        if (hit_.transform.GameObject.GetComponent<Slider>() != null)
+        if (hit_.transform.gameObject.GetComponent<Slider>() != null)
         {
             slide(hit_.transform.gameObject.GetComponent<Slider>(), origin, direction);
         }
-        else if (hit_.transform.GameObject.GetComponent<Scrollbar>() != null)
+        else if (hit_.transform.gameObject.GetComponent<Scrollbar>() != null)
         {
             slide(hit_.transform.gameObject.GetComponent<Scrollbar>(), origin, direction);
         }
@@ -132,7 +132,7 @@ public class ButtonTool : MonoBehaviour
 
         if (holder == null)
         {
-            holder = GameObject.Find("IQWall_Seq_1PC");
+            holder = GameObject.Find("WALL");
         }
     }
 

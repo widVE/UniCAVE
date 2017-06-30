@@ -127,21 +127,21 @@ public class VRPNInput : MonoBehaviour
                 if (tester.collider != null)
                 {
                              
-                    if (hit.transform.GameObject.GetComponent<Dropdown>() != null)
+                    if (hit.transform.gameObject.GetComponent<Dropdown>() != null)
                     {
                         dropdown = tester.transform.gameObject.GetComponent<Dropdown>();
                         EventSystem.current.SetSelectedGameObject(dropdown.gameObject);
                         //yield return new WaitForSeconds(2f);
                     }
 
-                    else if (hit.transform.GameObject.GetComponent<Toggle>() != null)
+                    else if (hit.transform.gameObject.GetComponent<Toggle>() != null)
                     {
                         toggle = tester.transform.gameObject.GetComponent<Toggle>();
                         EventSystem.current.SetSelectedGameObject(toggle.gameObject);
                         //yield return new WaitForSeconds(2f);
                     }
 
-                    else if (hit.transform.GameObject.GetComponent<Button>() != null)
+                    else if (hit.transform.gameObject.GetComponent<Button>() != null)
                     {
                         Button button = tester.transform.gameObject.GetComponent<Button>();
                         EventSystem.current.SetSelectedGameObject(button.gameObject);
@@ -289,8 +289,8 @@ public class VRPNInput : MonoBehaviour
 
                 if (buttonState[i] && !curValue)
                 {
-                    toolManager.list[toolManager.toolNumber].ButtonClick(i, origin, direction);
-                    driver.ButtonClick(i, origin, direction);
+                    toolManager.list[toolManager.toolNumber].ButtonClick(i, origin, direction, Cave);
+                    driver.ButtonClick(i, origin, direction, Cave);
 
                     hasStarted = false;
                     hit = temp;
@@ -321,19 +321,22 @@ public class VRPNInput : MonoBehaviour
                 //Change between tools
                 if (VRPN.vrpnButton(trackerAddress, i))
                 {
-                    switch (i)
+
+                       if(i == previous)
                     {
-                        case previous:
-                            toolManager.PreviousTool();
-                            yield return new WaitForSeconds(.2f);
-                            break;
-                        case next:
-                            toolManager.NextTool();
-                            yield return new WaitForSeconds(.2f);
-                            break;
-                        default:
-                            break;
+                        toolManager.PreviousTool();
+                        yield return new WaitForSeconds(.2f);
                     }
+                            
+
+                       else if(i == next)
+                    {
+                        toolManager.NextTool();
+                        yield return new WaitForSeconds(.2f);
+                    }
+                            
+
+                    
                     // yield return new WaitForSeconds(.02f);
                 }
             }
