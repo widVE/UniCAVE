@@ -1,9 +1,0 @@
-#define GLI_INCLUDE_GL_SGIX_VERTEX_PRECLIP
-
-enum Main {
-
-  GL_VERTEX_PRECLIP_SGIX            = 0x83EE,
-  GL_VERTEX_PRECLIP_HINT_SGIX       = 0x83EF,
-
-};
-

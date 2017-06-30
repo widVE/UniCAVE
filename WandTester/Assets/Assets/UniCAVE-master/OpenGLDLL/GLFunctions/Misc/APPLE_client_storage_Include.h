@@ -1,8 +1,0 @@
-#define GLI_INCLUDE_GL_APPLE_CLIENT_STORAGE
-
-enum Main {
-
-  GL_UNPACK_CLIENT_STORAGE_APPLE       = 0x85B2,
-
-};
-

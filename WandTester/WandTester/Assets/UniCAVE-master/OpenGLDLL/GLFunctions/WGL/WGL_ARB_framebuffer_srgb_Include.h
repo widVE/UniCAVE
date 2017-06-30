@@ -1,8 +1,0 @@
-#define GLI_INCLUDE_WGL_ARB_FRAMEBUFFER_SRGB
-
-enum Main {
-
-  WGL_FRAMEBUFFER_SRGB_CAPABLE_ARB       = 0x20A9,
-
-};
-
