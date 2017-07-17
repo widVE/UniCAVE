@@ -1,0 +1,27 @@
+Default Tools:
+Analog Stick - Translates the user across the scene.
+Plus - Changes to the next tool.
+Minus - Switches to the previous tool.
+One - Lets the viewer rotate their view on the X-axis using analog input. 
+Two- Lets the viewer rotate their view on the Y-axis using analog input. 
+
+
+Warp Tool: 
+B - Teleport the user either to an object or to the end of the raycast
+A - Undo the previous teleport, if there is no teleport to undo then nothing will happen.
+
+Grabber Tool:
+B - Selects the object and moves them around the scene according to the direction of the wii mote.
+
+Button Click Tool:
+B - Used for selecting and dragging sliders, scroll bars etc.
+A - Used for button clicks, check boxes etc.
+
+Scaler Tool:
+D-Pad up - Scales the data set currently selected up an increment specified by the user.
+D-Pad down - Scales the data set currently selected down an increment specified by the user.
+
+Rotator Tool:
+B - Selects the object and rotates the object to look at the point in which the wii mote is pointing in the scene 
+D pad - Will rotate the object in the direction of the button pressed. Does not work for roll.
+
