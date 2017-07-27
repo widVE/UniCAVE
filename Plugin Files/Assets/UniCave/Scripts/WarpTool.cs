@@ -11,9 +11,11 @@ public class WarpTool : MonoBehaviour, ITool
     public int rayLength;
     public Vector3 origin, direction;
     bool previousState = false;
-    bool currentState = false;    
+    bool currentState = false;
     bool hitObject;
     public Stack<Vector3> previousWarps;
+    int warp;
+    int undo;
 
     /// <summary>
     /// Basically a constructor
@@ -65,30 +67,38 @@ public class WarpTool : MonoBehaviour, ITool
     public void undoWarp()
     {
         //If the stack isnt empty pop off the top object
-        if(previousWarps.Count != 0)
+        if (previousWarps.Count != 0)
         {
             holder.transform.position = previousWarps.Pop();
         }
     }
 
-
-
-
-
     /// <summary>
     /// Handles the button input for the warp tool
     /// </summary>
-    public void ButtonClick(int button, Vector3 origin_, Vector3 direction_)
+    public void ButtonClick(int button, Vector3 origin_, Vector3 direction_, bool cave)
     {
+        //Cave Remote has different buttonmap
+        if (cave)
+        {
+            warp = 0;
+            undo = 2;
+        }
+        else
+        {
+            warp = 4;
+            undo = 3;
+        }
+
         origin = origin_;
         direction = direction_;
         //currentState = isPressed_;
 
-        if (button == 4)
+        if (button == warp)
         {
             Warp();
         }
-        if (button == 3)
+        if (button == undo)
         {
             undoWarp();
         }

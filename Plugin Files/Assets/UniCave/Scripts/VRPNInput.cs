@@ -62,6 +62,12 @@ public class VRPNInput : MonoBehaviour
     public Material green;
     public GameObject panel;
     public Event eventsystem;
+    public Dropdown dropdown;
+    public Toggle toggle;
+    int click;
+    int drag;
+    int next;
+    int previous;
 
     public int Channel
     {
@@ -71,12 +77,6 @@ public class VRPNInput : MonoBehaviour
             channel = value;
         }
     }
-
-
-    //private void Update()
-    //{
-    //    toolName();
-    //}
 
     /// <summary>
     /// Show the user what tool is currently selected.
@@ -97,40 +97,63 @@ public class VRPNInput : MonoBehaviour
                 //cylinder.GetComponent<Renderer>().material.color = 
             }
 
-            else if(toolManager.toolNumber == 2)
+            else if (toolManager.toolNumber == 2)
             {
                 tool.text = "Tool: Clicker";
             }
-            else
-            {
 
+            else if (toolManager.toolNumber == 3)
+            {
+                //tool.text = "Tool: Scaler";
+            }
+
+            else if (toolManager.toolNumber == 4)
+            {
+                tool.text = "Tool: Rotator";
             }
 
             yield return null;
         }
     }
 
+    /// <summary>
+    /// Selects or highlights UI elements 
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator buttonInput()
     {
-
+        bool hide = true;
         while (true)
         {
-            if(toolManager.toolNumber == 2)
+            //check to see that we are on the buttonclick tool
+            if (toolManager.toolNumber == 2)
             {
+                //Raycast into the scene
                 Physics.Raycast(origin, direction, out tester);
                 if (tester.collider != null)
                 {
-                
-                if(tester.collider.tag == "button")
+                    //Check what object is returned
+                    if (tester.transform.gameObject.GetComponent<Dropdown>() != null)
+                    {
+                        //Get the correct compnent and select it
+                        dropdown = tester.transform.gameObject.GetComponent<Dropdown>();
+                        EventSystem.current.SetSelectedGameObject(dropdown.gameObject);
+
+                    }
+
+                    else if (tester.transform.gameObject.GetComponent<Toggle>() != null)
+                    {
+                        toggle = tester.transform.gameObject.GetComponent<Toggle>();
+                        EventSystem.current.SetSelectedGameObject(toggle.gameObject);
+
+                    }
+
+                    else if (tester.transform.gameObject.GetComponent<Button>() != null)
                     {
                         Button button = tester.transform.gameObject.GetComponent<Button>();
                         EventSystem.current.SetSelectedGameObject(button.gameObject);
                     }
-                else if (tester.collider.tag == "handle")
-                    {
-                        Button button = tester.transform.gameObject.GetComponent<Button>();
-                        EventSystem.current.SetSelectedGameObject(button.gameObject);
-                    }
+
                 }
                 else
                 {
@@ -172,7 +195,13 @@ public class VRPNInput : MonoBehaviour
     private IEnumerator colorChange()
     {
         while (true)
-        {           
+        {
+            //Get the origin of the object
+            origin = wandObject.transform.position;
+
+            //Get the direction of the object
+            direction = wandObject.transform.forward;
+
             if (Physics.Raycast(origin, direction))
             {
                 cylinder.GetComponent<Renderer>().material = green;
@@ -187,18 +216,18 @@ public class VRPNInput : MonoBehaviour
 
     private void Start()
     {
-        EventSystem.current.SetSelectedGameObject(null);
+
         //Create a driver object to handle movement
         driver = new DriveTool(deadZone, rotationSpeed, movementSpeed);
         //Add a toolManager to the wandObject to shuffle between tools
         wandObject.AddComponent<ToolManager2>();
-        //toolManager = wandObject.GetComponent<ToolManager2>();
         toolManager = new ToolManager2(wandObject, holder);
-
+        //Create an array of bools to track the button states
         buttonState = new bool[numButtons];
-
+        //Set the cylinders original color
         cylinder.GetComponent<Renderer>().material = red;
 
+        //Fill the array with false values
         for (int i = 0; i < numButtons; i++)
         {
             buttonState[i] = false;
@@ -208,8 +237,23 @@ public class VRPNInput : MonoBehaviour
         {
             //Change the address to the remote in the cave
             //Switch the channels to match those of the Cave remote
+            trackerAddress = "DTrack@localhost";
+            click = 2;
+            drag = 0;
+            next = 5;
+            //Channel horizontal and vertical
+            channelHorizontal = 0;
+            channelVertical = 1;
+            numButtons = 6;
         }
-
+        else
+        {
+            click = 3;
+            drag = 4;
+            previous = 5;
+            next = 6;
+            numButtons = 11;
+        }
         //this gets rid of this object from non-head nodes...we only want this running on the machine that connects to VRPN...
         //this assumes a distributed type setup, where one machine connects to the tracking system and distributes information
         //to other machines...
@@ -222,6 +266,7 @@ public class VRPNInput : MonoBehaviour
             return;
         }
 
+        //Start the coroutines
         if (trackButton)
         {
             StartCoroutine("Button");
@@ -232,7 +277,6 @@ public class VRPNInput : MonoBehaviour
             StartCoroutine("Analog");
             StartCoroutine("colorChange");
             StartCoroutine("toolName");
-            StartCoroutine("Raycaster");
             StartCoroutine("buttonInput");
         }
     }
@@ -248,69 +292,59 @@ public class VRPNInput : MonoBehaviour
             //i tracks the number of the current button
             for (int i = 0; i < numButtons; ++i)
             {
+                //Current value of the button
                 curValue = VRPN.vrpnButton(trackerAddress, i);
 
+                //If the previous state is true and the current value is false it is a button click
                 if (buttonState[i] && !curValue)
                 {
-                    toolManager.list[toolManager.toolNumber].ButtonClick(i, origin, direction);
-                    driver.ButtonClick(i, origin, direction);
+                    //Fire the event
+                    toolManager.list[toolManager.toolNumber].ButtonClick(i, origin, direction, Cave);
+                    driver.ButtonClick(i, origin, direction, Cave);
 
                     hasStarted = false;
                     hit = temp;
 
                 }
-                else if (buttonState[i] && curValue && i == 4)
+                //If the current and previous are true then it is a buttondrag event
+                else if (buttonState[i] && curValue && i == drag)
                 {
                     if (hit.distance > 0)
                     {
+                        //If this is the start of the drag event get the offset
                         if (!hasStarted)
                         {
                             offset = hit.transform.position - hit.point;
                             hasStarted = true;
                         }
-
-                        if (toolManager.toolNumber == 2)
-                        {
-                            toolManager.list[toolManager.toolNumber].ButtonClick(i, origin, direction);
-                        }
-                        else
-                        {
-                            toolManager.list[toolManager.toolNumber].ButtonDrag(hit, offset, origin, direction);
-                        }
+                        //Fire the event
+                        toolManager.list[toolManager.toolNumber].ButtonDrag(hit, offset, origin, direction);
                     }
                 }
-
-                else if (!buttonState[i] && curValue && i == 4)
+                //If the previous is false and the current is true 
+                else if (!buttonState[i] && curValue && i == drag)
                 {
                     Physics.Raycast(origin, direction * rayLength, out hit);
                 }
 
-                buttonState[i] = curValue;
-
-                //Sends the button currently being iterated over and whether or not it is being pressed
-
-
-                //Handles all movement of the wandObject
-
-
                 //Change between tools
                 if (VRPN.vrpnButton(trackerAddress, i))
                 {
-                    switch (i)
+                    if (i == previous)
                     {
-                        case 5:
-                            toolManager.PreviousTool();
-                            yield return new WaitForSeconds(.2f);
-                            break;
-                        case 6:
-                            toolManager.NextTool();
-                            yield return new WaitForSeconds(.2f);
-                            break;
-                        default:
-                            break;
+                        toolManager.PreviousTool();
+                        yield return new WaitForSeconds(.2f);
                     }
-                    // yield return new WaitForSeconds(.02f);
+
+                    else if (i == next)
+                    {
+                        toolManager.NextTool();
+                        yield return new WaitForSeconds(.2f);
+                    }
                 }
+
+                //update the previous value
+                buttonState[i] = curValue;
             }
             yield return null;
         }
@@ -328,32 +362,8 @@ public class VRPNInput : MonoBehaviour
             double analogVertical = VRPN.vrpnAnalog(trackerAddress, channelVertical);
             double analogHorizontal = VRPN.vrpnAnalog(trackerAddress, channelHorizontal);
 
+            //Translate the holder
             driver.Analog(analogHorizontal, analogVertical);
-
-            yield return null;
-        }
-    }
-
-    /// <summary>
-    /// Asyncronous method that continually casts a Raycast from the wands direction
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator Raycaster()
-    {
-        //Debug.Log("!");
-        //Continually update the wandObjects direction and position
-        while (true)
-        {
-            //Get the origin of the object
-            origin = wandObject.transform.position;
-
-            //Get the direction of the object
-            direction = wandObject.transform.forward;
-
-            //Create the RayCast and Draw it for debugging purposes
-            //Physics.Raycast(origin, direction * rayLength);
-            Debug.DrawRay(origin, direction, Color.black);
-
             yield return null;
         }
     }
