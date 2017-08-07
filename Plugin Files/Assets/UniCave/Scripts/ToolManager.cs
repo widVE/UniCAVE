@@ -1,5 +1,6 @@
 ﻿/*
  * This class represents the toolManager object and keeps track of the different tool interfaces and shuffles between them as desired.
+ * Author: J.K Rowling
  */
 
 using System.Collections;
@@ -7,7 +8,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ToolManager2 : MonoBehaviour
+public class ToolManager : MonoBehaviour
 {
     //Initialize member variables
     public List<ITool> list;
@@ -22,22 +23,23 @@ public class ToolManager2 : MonoBehaviour
     /// </summary>
     /// <param name="wandObject_"></param>
     /// <param name="holder_"></param>
-    public ToolManager2(GameObject wandObject_, GameObject holder_)
+    public ToolManager(GameObject wandObject_, GameObject holder_)
     {
         holder = holder_;
         wandObject = wandObject_;
-        list = new List<ITool>();
 
-        //WarpTool warpObject = new WarpTool(wandObject_, holder_);
-        //GrabberTool grabberObject = new GrabberTool(wandObject_, holder_);
+        list = new List<ITool>();
+        //Add the scripts to the wandObject 
         wandObject.AddComponent<GrabberTool>();
         wandObject.AddComponent<WarpTool>();
         wandObject.AddComponent<ButtonTool>();
+        wandObject.AddComponent<RotatorTool>();
 
         //fill the list with all the tool interfaces 
         list.Add(wandObject.GetComponent<WarpTool>());
         list.Add(wandObject.GetComponent<GrabberTool>());
         list.Add(wandObject.GetComponent<ButtonTool>());
+        list.Add(wandObject.GetComponent<RotatorTool>());
     }
 
     /// <summary>

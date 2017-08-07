@@ -14,6 +14,7 @@
 
 using UnityEngine;
 using System.Collections;
+using System.Threading;
 
 public class VRPNTrack : MonoBehaviour
 {
@@ -27,6 +28,8 @@ public class VRPNTrack : MonoBehaviour
     private bool trackRotation = true;
 
     public bool debugOutput = false;
+
+    public bool convertToLeft = false;
 
     public int Channel
     {
@@ -72,11 +75,12 @@ public class VRPNTrack : MonoBehaviour
         //to other machines...
         //some setups may try to connect each machine to vrpn...
         //in that case, we wouldn't want to destroy this object..
+        Debug.Log(System.Environment.MachineName + " " + MasterTrackingData.HeadNodeMachineName);
         if (System.Environment.MachineName != MasterTrackingData.HeadNodeMachineName)
         {
-                Debug.Log("Removing tracker settings from " + gameObject.name + " on " + System.Environment.MachineName);
-                Destroy(this);
-                return;
+            Debug.Log("Removing tracker settings from " + gameObject.name + " on " + System.Environment.MachineName);
+            Destroy(this);
+            return;
         }
 
         if (trackPosition)
@@ -90,25 +94,48 @@ public class VRPNTrack : MonoBehaviour
         }
     }
 
+    //Added convertToLeft which is used for switching the coordinates on a left handed machine.
     private IEnumerator Position()
     {
         while (true)
         {
             Vector3 pos = VRPN.vrpnTrackerPos(trackerAddress, channel);
-            float temp = pos.z;
-            pos.z = pos.x;
-            pos.x = temp;
-            pos.y = -pos.y;
-            transform.localPosition = pos; 
+
+            if (convertToLeft)
+            {
+                pos.x = Interlocked.Exchange(ref pos.z, pos.x);
+                pos.y *= -1;
+                transform.localPosition = pos;
+            }
+
+            else
+            {
+                transform.localPosition = pos;
+            }
+
             yield return null;
         }
     }
 
+    //Added convertToLeft which is used for switching the coordinates on a left handed machine.
     private IEnumerator Rotation()
     {
         while (true)
         {
-            transform.localRotation = VRPN.vrpnTrackerQuat(trackerAddress, channel);
+            Quaternion rotation = VRPN.vrpnTrackerQuat(trackerAddress, channel);
+
+            if (convertToLeft)
+            {
+                rotation.x = Interlocked.Exchange(ref rotation.z, rotation.x);
+                rotation.y *= -1;
+                transform.localRotation = rotation;
+            }
+
+            else
+            {
+                transform.localRotation = rotation;
+            }
+
             yield return null;
         }
     }
