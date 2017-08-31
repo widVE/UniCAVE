@@ -54,6 +54,7 @@ public class VRPNInput : MonoBehaviour
     bool curValue;
     RaycastHit hit;
     RaycastHit tester;
+    RaycastHit hjh;
     Vector3 offset;
     bool hasStarted = false;
     RaycastHit temp;
@@ -61,9 +62,6 @@ public class VRPNInput : MonoBehaviour
     public Material red;
     public Material green;
     public GameObject panel;
-    public Event eventsystem;
-    public Dropdown dropdown;
-    public Toggle toggle;
     int click;
     int drag;
     int next;
@@ -102,12 +100,8 @@ public class VRPNInput : MonoBehaviour
                 tool.text = "Tool: Clicker";
             }
 
-            else if (toolManager.toolNumber == 3)
-            {
-                //tool.text = "Tool: Scaler";
-            }
 
-            else if (toolManager.toolNumber == 4)
+            else if (toolManager.toolNumber == 3)
             {
                 tool.text = "Tool: Rotator";
             }
@@ -116,54 +110,7 @@ public class VRPNInput : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Selects or highlights UI elements 
-    /// </summary>
-    /// <returns></returns>
-    public IEnumerator buttonInput()
-    {
-        bool hide = true;
-        while (true)
-        {
-            //check to see that we are on the buttonclick tool
-            if (toolManager.toolNumber == 2)
-            {
-                //Raycast into the scene
-                Physics.Raycast(origin, direction, out tester);
-                if (tester.collider != null)
-                {
-                    //Check what object is returned
-                    if (tester.transform.gameObject.GetComponent<Dropdown>() != null)
-                    {
-                        //Get the correct compnent and select it
-                        dropdown = tester.transform.gameObject.GetComponent<Dropdown>();
-                        EventSystem.current.SetSelectedGameObject(dropdown.gameObject);
-
-                    }
-
-                    else if (tester.transform.gameObject.GetComponent<Toggle>() != null)
-                    {
-                        toggle = tester.transform.gameObject.GetComponent<Toggle>();
-                        EventSystem.current.SetSelectedGameObject(toggle.gameObject);
-
-                    }
-
-                    else if (tester.transform.gameObject.GetComponent<Button>() != null)
-                    {
-                        Button button = tester.transform.gameObject.GetComponent<Button>();
-                        EventSystem.current.SetSelectedGameObject(button.gameObject);
-                    }
-
-                }
-                else
-                {
-                    EventSystem.current.SetSelectedGameObject(null);
-                }
-            }
-            yield return null;
-        }
-    }
-
+  
     public bool TrackButton
     {
         get { return trackButton; }
@@ -192,6 +139,10 @@ public class VRPNInput : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Changes the color of raycast depending on whether an object is detected
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator colorChange()
     {
         while (true)
@@ -205,18 +156,34 @@ public class VRPNInput : MonoBehaviour
             if (Physics.Raycast(origin, direction))
             {
                 cylinder.GetComponent<Renderer>().material = green;
+                //cylinder.transform.position = origin;
+                //cylinder.transform.localScale = new Vector3(.025f, Vector3.Distance(origin, hit.point), .025f);
             }
             else
             {
                 cylinder.GetComponent<Renderer>().material = red;
+                //cylinder.transform.localScale = new Vector3(.025f, 20, .025f);
             }
             yield return new WaitForSeconds(.15f);
         }
     }
 
+    private IEnumerator cylinderLength()
+    {
+        //if (Physics.Raycast(origin, wandObject.transform.forward, out hjh))
+        //{
+        //    cylinder.transform.position = origin;
+        //    cylinder.transform.localScale = new Vector3(.025f, Vector3.Distance(origin, hit.point), .025f);
+        //}
+        //else
+        //{
+        //    cylinder.transform.localScale = new Vector3(.025f, 20, .025f);
+        //}
+        yield return null;
+    }
+
     private void Start()
     {
-
         //Create a driver object to handle movement
         driver = new DriveTool(deadZone, rotationSpeed, movementSpeed);
         //Add a toolManager to the wandObject to shuffle between tools
@@ -225,7 +192,7 @@ public class VRPNInput : MonoBehaviour
         //Create an array of bools to track the button states
         buttonState = new bool[numButtons];
         //Set the cylinders original color
-        cylinder.GetComponent<Renderer>().material = red;
+        //cylinder.GetComponent<Renderer>().material = red;
 
         //Fill the array with false values
         for (int i = 0; i < numButtons; i++)
@@ -235,24 +202,11 @@ public class VRPNInput : MonoBehaviour
 
         if (Cave)
         {
-            //Change the address to the remote in the cave
-            //Switch the channels to match those of the Cave remote
-            trackerAddress = "DTrack@localhost";
-            click = 2;
-            drag = 0;
-            next = 5;
-            //Channel horizontal and vertical
-            channelHorizontal = 0;
-            channelVertical = 1;
-            numButtons = 6;
+            isCave();
         }
         else
         {
-            click = 3;
-            drag = 4;
-            previous = 5;
-            next = 6;
-            numButtons = 11;
+            IQwall();
         }
         //this gets rid of this object from non-head nodes...we only want this running on the machine that connects to VRPN...
         //this assumes a distributed type setup, where one machine connects to the tracking system and distributes information
@@ -277,7 +231,7 @@ public class VRPNInput : MonoBehaviour
             StartCoroutine("Analog");
             StartCoroutine("colorChange");
             StartCoroutine("toolName");
-            StartCoroutine("buttonInput");
+            StartCoroutine("cylinderLength");
         }
     }
 
@@ -348,6 +302,36 @@ public class VRPNInput : MonoBehaviour
             }
             yield return null;
         }
+    }
+
+    /// <summary>
+    /// Sets all the necessary variables for cave interaction
+    /// </summary>
+    public void isCave()
+    {
+        //Change the address to the remote in the cave
+        //Switch the channels to match those of the Cave remote
+        trackerAddress = "DTrack@localhost";
+        click = 2;
+        drag = 0;
+        next = 5;
+        //Channel horizontal and vertical
+        channelHorizontal = 0;
+        channelVertical = 1;
+        numButtons = 6;
+    }
+
+
+    /// <summary>
+    /// Sets all the necessary variables for IQ_wall interaction
+    /// </summary>
+    public void IQwall()
+    {
+        click = 3;
+        drag = 4;
+        previous = 5;
+        next = 6;
+        numButtons = 11;
     }
 
     /// <summary>

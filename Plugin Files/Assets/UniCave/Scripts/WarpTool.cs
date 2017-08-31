@@ -11,11 +11,13 @@ public class WarpTool : MonoBehaviour, ITool
     public int rayLength;
     public Vector3 origin, direction;
     bool previousState = false;
-    bool currentState = false;
+    bool currentState = false;    
     bool hitObject;
     public Stack<Vector3> previousWarps;
     int warp;
     int undo;
+    private const string IQ_WALL = "IQWall_Seq_1PC";
+    private const string WAND = "Wand";
 
     /// <summary>
     /// Basically a constructor
@@ -25,12 +27,12 @@ public class WarpTool : MonoBehaviour, ITool
         //Get all necessary game objects
         if (wandObject == null)
         {
-            wandObject = GameObject.Find("Wand");
+            wandObject = GameObject.Find(WAND);
         }
 
         if (holder == null)
         {
-            holder = GameObject.Find("IQWall_Seq_1PC");
+            holder = GameObject.Find(IQ_WALL);
         }
 
         //StartCoroutine("Raycaster");
@@ -67,7 +69,7 @@ public class WarpTool : MonoBehaviour, ITool
     public void undoWarp()
     {
         //If the stack isnt empty pop off the top object
-        if (previousWarps.Count != 0)
+        if(previousWarps.Count != 0)
         {
             holder.transform.position = previousWarps.Pop();
         }
@@ -79,7 +81,7 @@ public class WarpTool : MonoBehaviour, ITool
     public void ButtonClick(int button, Vector3 origin_, Vector3 direction_, bool cave)
     {
         //Cave Remote has different buttonmap
-        if (cave)
+        if(cave)
         {
             warp = 0;
             undo = 2;
@@ -90,10 +92,6 @@ public class WarpTool : MonoBehaviour, ITool
             undo = 3;
         }
 
-        origin = origin_;
-        direction = direction_;
-        //currentState = isPressed_;
-
         if (button == warp)
         {
             Warp();
@@ -103,7 +101,8 @@ public class WarpTool : MonoBehaviour, ITool
             undoWarp();
         }
 
-        //previousState = currentState;
+        origin = origin_;
+        direction = direction_;
     }
 
 

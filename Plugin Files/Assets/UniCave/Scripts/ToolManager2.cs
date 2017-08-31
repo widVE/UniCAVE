@@ -26,18 +26,19 @@ public class ToolManager2 : MonoBehaviour
     {
         holder = holder_;
         wandObject = wandObject_;
-        list = new List<ITool>();
 
-        //WarpTool warpObject = new WarpTool(wandObject_, holder_);
-        //GrabberTool grabberObject = new GrabberTool(wandObject_, holder_);
+        list = new List<ITool>();
+        //Add the scripts to the wandObject 
         wandObject.AddComponent<GrabberTool>();
         wandObject.AddComponent<WarpTool>();
         wandObject.AddComponent<ButtonTool>();
+        wandObject.AddComponent<RotatorTool>();
 
         //fill the list with all the tool interfaces 
         list.Add(wandObject.GetComponent<WarpTool>());
         list.Add(wandObject.GetComponent<GrabberTool>());
         list.Add(wandObject.GetComponent<ButtonTool>());
+        list.Add(wandObject.GetComponent<RotatorTool>());
     }
 
     /// <summary>

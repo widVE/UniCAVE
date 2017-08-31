@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RotatorTool : MonoBehaviour, ITool
-{
+public class RotatorTool : MonoBehaviour, ITool {
     GameObject wandObject;
     GameObject holder;
     RaycastHit refHit;
+    private const string IQ_WALL = "IQWall_Seq_1PC";
+    private const string WAND = "Wand";
+
 
     /// <summary>
     /// Rotates the object when the user has selected it
@@ -18,9 +20,9 @@ public class RotatorTool : MonoBehaviour, ITool
     /// <param name="direction"></param>
     public void ButtonDrag(RaycastHit hit, Vector3 offset, Vector3 origin, Vector3 direction)
     {
-        if (refHit.collider == null)
+        if(refHit.collider == null)
         {
-            refHit = hit;
+            refHit = hit;            
         }
 
         hit.transform.rotation = wandObject.transform.rotation;
@@ -28,25 +30,24 @@ public class RotatorTool : MonoBehaviour, ITool
     }
 
     // Use this for initialization
-    void Start()
-    {
+    void Start () {
         //Get all necessary game objects
         if (wandObject == null)
         {
-            wandObject = GameObject.Find("Wand");
+            wandObject = GameObject.Find(WAND);
         }
 
         if (holder == null)
         {
-            holder = GameObject.Find("IQWall_Seq_1PC");
+            holder = GameObject.Find(IQ_WALL);
         }
     }
-
-    // Update is called once per frame
-    void Update()
+	
+	// Update is called once per frame
+	void Update ()
     {
-
-    }
+		
+	}
 
     public void init()
     {

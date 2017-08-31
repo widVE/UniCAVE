@@ -5,6 +5,9 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
+/// <summary>
+/// Grabber tool enables the user to select objects and drag them around the scene using the WiiMote's orientation.
+/// </summary>
 public class GrabberTool : MonoBehaviour, ITool
 {
     //Initialize 
@@ -13,6 +16,8 @@ public class GrabberTool : MonoBehaviour, ITool
     private RaycastHit hit;
     public int rayLength = 200;
     public Vector3 origin, direction, previousOrigin, previousDirection;
+    private const string IQ_WALL = "IQWall_Seq_1PC";
+    private const string WAND = "Wand";
 
     //Initializes all the necessary fields while rendering the scene
     private void Start()
@@ -20,12 +25,12 @@ public class GrabberTool : MonoBehaviour, ITool
         //Get all necessary game objects
         if (wandObject == null)
         {
-            wandObject = GameObject.Find("Wand");
+            wandObject = GameObject.Find(WAND);
         }
 
         if (holder == null)
         {
-            holder = GameObject.Find("IQWall_Seq_1PC");
+            holder = GameObject.Find(IQ_WALL);
         }
     }
 
@@ -55,24 +60,24 @@ public class GrabberTool : MonoBehaviour, ITool
     }
 
     /// <summary>
-    /// Asyncrounous methof that moves whatever object the raycast from the wand has hit.
+    /// Asyncrounous method that moves whatever object the raycast from the wand has hit.
     /// </summary>
     /// <returns></returns>
     public void ButtonDrag(RaycastHit hit_, Vector3 offset_, Vector3 origin_, Vector3 direction_)
     {
-        //Set the objects rotation equal to the wands 
-        hit_.transform.eulerAngles = wandObject.transform.eulerAngles;
+            //Set the objects rotation equal to the wands 
+            hit_.transform.eulerAngles = wandObject.transform.eulerAngles;
+            
+            //Set the direction of the wand.
+            direction = wandObject.transform.forward;   //NOTE: hit.point does not update...
 
-        //Set the direction of the wand.
-        direction = wandObject.transform.forward;   //NOTE: hit.point does not update...
-
-        //offset = hit.transform.position - hit.point;
-        //Set the transform of the object hit
-        Vector3 number = origin_ + (direction * hit_.distance) + offset_;
-        hit_.transform.position = origin_ + (direction * hit_.distance) + offset_;
+            //offset = hit.transform.position - hit.point;
+            //Set the transform of the object hit
+            Vector3 number = origin_ + (direction * hit_.distance) + offset_;
+            hit_.transform.position = origin_ + (direction * hit_.distance) + offset_;
     }
 
-
+   
     ///////////Unimplemented Functions /////////////////// 
 
     public void init()

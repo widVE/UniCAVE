@@ -6,6 +6,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+/// <summary>
+/// Class handles all UI interactions for the controller including: buttons, sliders, scroll bars etc.
+/// </summary>
 public class ButtonTool : MonoBehaviour, ITool
 {
     public GameObject canvas;
@@ -18,6 +21,59 @@ public class ButtonTool : MonoBehaviour, ITool
     public float point;
     int click;
     int buttonDrag;
+    private const string IQ_WALL = "IQWall_Seq_1PC";
+    private const string WAND = "Wand";
+    public Event eventsystem;
+    public Dropdown dropdown;
+    public Toggle toggle;
+    RaycastHit tester;
+    Vector3 origin, direction;
+
+    /// <summary>
+    /// Selects or highlights UI elements 
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator buttonInput()
+    {
+        bool hide = true;
+        while (true)
+        {
+            //check to see that we are on the buttonclick tool
+
+                //Raycast into the scene
+                Physics.Raycast(origin, direction, out tester);
+                if (tester.collider != null)
+                {
+                    //Check what object is returned
+                    if (tester.transform.gameObject.GetComponent<Dropdown>() != null)
+                    {
+                        //Get the correct compnent and select it
+                        dropdown = tester.transform.gameObject.GetComponent<Dropdown>();
+                        EventSystem.current.SetSelectedGameObject(dropdown.gameObject);
+
+                    }
+
+                    else if (tester.transform.gameObject.GetComponent<Toggle>() != null)
+                    {
+                        toggle = tester.transform.gameObject.GetComponent<Toggle>();
+                        EventSystem.current.SetSelectedGameObject(toggle.gameObject);
+
+                    }
+
+                    else if (tester.transform.gameObject.GetComponent<Button>() != null)
+                    {
+                        Button button = tester.transform.gameObject.GetComponent<Button>();
+                        EventSystem.current.SetSelectedGameObject(button.gameObject);
+                    }
+
+                }
+                else
+                {
+                    EventSystem.current.SetSelectedGameObject(null);
+                }
+            }
+            yield return null;
+    }
 
 
     /// <summary>
@@ -28,7 +84,7 @@ public class ButtonTool : MonoBehaviour, ITool
     /// <param name="direction"></param>
     public void ButtonClick(int buttonNum, Vector3 origin, Vector3 direction, bool cave)
     {
-        if (cave)
+        if(cave)
         {
             click = 2;
         }
@@ -38,6 +94,7 @@ public class ButtonTool : MonoBehaviour, ITool
         }
 
         Physics.Raycast(origin, direction, out hit);
+        Debug.Log(hit.point);
 
         if (buttonNum == click)
         {
@@ -57,8 +114,6 @@ public class ButtonTool : MonoBehaviour, ITool
                     dropdown.Hide();
                     hide = true;
                 }
-
-
             }
 
             //If the object is a dropdown menu selectable set that as the new dropdown value and call the method attatched 
@@ -89,14 +144,17 @@ public class ButtonTool : MonoBehaviour, ITool
     }
 
     /// <summary>
-    /// Takes in the drag info and decides whether it is a slider or scrollbar
+    /// Allows the user to interact with sliders and scrollbars 
     /// </summary>
     /// <param name="hit_"></param>
     /// <param name="offset"></param>
-    /// <param name="origin"></param>
-    /// <param name="direction"></param>
-    public void ButtonDrag(RaycastHit hit_, Vector3 offset, Vector3 origin, Vector3 direction)
+    /// <param name="origin_"></param>
+    /// <param name="direction_"></param>
+    public void ButtonDrag(RaycastHit hit_, Vector3 offset, Vector3 origin_, Vector3 direction_)
     {
+        origin = origin_;
+        direction = direction_;
+
         Debug.Log(hit_.transform.gameObject.GetType());
         //Check the type of the object to know what to slide
         if (hit_.transform.gameObject.GetComponent<Slider>() != null)
@@ -117,12 +175,12 @@ public class ButtonTool : MonoBehaviour, ITool
         //Get all necessary game objects
         if (wandObject == null)
         {
-            wandObject = GameObject.Find("Wand");
+            wandObject = GameObject.Find(WAND);
         }
 
         if (holder == null)
         {
-            holder = GameObject.Find("IQWall_Seq_1PC");
+            holder = GameObject.Find(IQ_WALL);
         }
     }
 
@@ -135,86 +193,94 @@ public class ButtonTool : MonoBehaviour, ITool
     public void slide(Scrollbar s, Vector3 origin, Vector3 direction)
     {
         //Get the canvas component
-        Physics.Raycast(origin, direction, out hit);
-        canvas = GameObject.Find("Canvas");
-        c = canvas.GetComponent<Canvas>();
 
-        //Get the dimensions in the canvas space
-        Vector3 position = s.transform.localPosition;
-        float width = s.GetComponent<RectTransform>().rect.width;
-        float height = s.GetComponent<RectTransform>().rect.height;
+            Physics.Raycast(origin, direction, out hit);
+            canvas = GameObject.Find("Canvas1");
+            c = canvas.GetComponent<Canvas>();
 
-        //Get the dimensions of the slider or scrollbar in worldspace 
-        Vector3 sliderMiddle = s.transform.TransformPoint(s.transform.TransformPoint(position));
-        Vector3 sliderRight = c.transform.TransformPoint(new Vector3(position.x + width / 2, position.y, position.z));
-        Vector3 sliderLeft = c.transform.TransformPoint(new Vector3(position.x - width / 2, position.y, position.z));
-        Vector3 sliderTop = c.transform.TransformPoint(new Vector3(position.x, position.y + height / 2, position.z));
-        Vector3 sliderBottom = c.transform.TransformPoint(new Vector3(position.x, position.y - height / 2, position.z));
-        //Get the dimensions in the worldspace
-        float sliderWidth = Math.Abs(sliderRight.x - sliderLeft.x);
-        float sliderHeight = Math.Abs(sliderTop.y - sliderBottom.y);
+        
 
-        //Check the direction of the scroll bar
-        if (s.direction == Scrollbar.Direction.LeftToRight)
-        {
-            if (hit.point.x > sliderMiddle.x)
-            {
-                //Calculate the value depending on the direction
-                point = (hit.point.x - sliderMiddle.x) / (sliderWidth / 2);
-                s.value = .5f + Math.Abs(point) / 2;
-            }
-            else
-            {
-                point = (sliderMiddle.x - hit.point.x) / (sliderWidth / 2);
-                s.value = .5f - Math.Abs(point) / 2;
-            }
-        }
-        //Check the direction of the scroll bar
-        else if (s.direction == Scrollbar.Direction.RightToLeft)
-        {
-            //Check to see which part of the slider was hit
-            if (hit.point.x > sliderMiddle.x)
-            {
-                point = (sliderMiddle.x - hit.point.x) / (sliderWidth / 2);
-                //Set the Value
-                s.value = .5f - Math.Abs(point) / 2;
-            }
-            else
-            {
-                point = (hit.point.x - sliderMiddle.x) / (sliderWidth / 2);
-                s.value = .5f + Math.Abs(point) / 2;
-            }
-        }
-        //Check the direction of the scroll bar
-        else if (s.direction == Scrollbar.Direction.BottomToTop)
-        {
 
-            if (hit.point.y > sliderMiddle.y)
-            {
-                point = (hit.point.y - sliderMiddle.y) / (sliderHeight / 2);
-                s.value = .5f + Math.Abs(point) / 2;
-            }
-            else
-            {
-                point = (sliderMiddle.y - hit.point.y) / (sliderHeight / 2);
-                s.value = .5f - Math.Abs(point) / 2;
-            }
-        }
+        GameObject scroll = s.gameObject;
+        Component handle = scroll.GetComponent<Component>(); // gameObject.transform.FindChild("Handle").gameObject;
+        handle.gameObject.transform.position = hit.point;
+        //Debug.Log(hit.point);
+        ////Get the dimensions in the canvas space
+        //Vector3 position = s.transform.localPosition;
+        //float width = s.GetComponent<RectTransform>().rect.width;
+        //float height = s.GetComponent<RectTransform>().rect.height;
 
-        else
-        {
+        ////Get the dimensions of the slider or scrollbar in worldspace 
+        //Vector3 sliderMiddle = s.transform.TransformPoint(s.transform.TransformPoint(position));
+        //Vector3 sliderRight = c.transform.TransformPoint(new Vector3(position.x + width / 2, position.y, position.z));
+        //Vector3 sliderLeft = c.transform.TransformPoint(new Vector3(position.x - width / 2, position.y, position.z));
+        //Vector3 sliderTop = c.transform.TransformPoint(new Vector3(position.x, position.y + height / 2, position.z));
+        //Vector3 sliderBottom = c.transform.TransformPoint(new Vector3(position.x, position.y - height / 2, position.z));
+        ////Get the dimensions in the worldspace
+        //float sliderWidth = Math.Abs(sliderRight.x - sliderLeft.x);
+        //float sliderHeight = Math.Abs(sliderTop.y - sliderBottom.y);
 
-            if (hit.point.y > sliderMiddle.y)
-            {
-                point = (sliderMiddle.y - hit.point.y) / (sliderHeight / 2);
-                s.value = .5f - Math.Abs(point) / 2;
-            }
-            else
-            {
-                point = (hit.point.y - sliderMiddle.y) / (sliderHeight / 2);
-                s.value = .5f + Math.Abs(point) / 2;
-            }
-        }
+        ////Check the direction of the scroll bar
+        //if (s.direction == Scrollbar.Direction.LeftToRight)
+        //{
+        //    if (hit.point.x > sliderMiddle.x)
+        //    {
+        //        //Calculate the value depending on the direction
+        //        point = (hit.point.x - sliderMiddle.x) / (sliderWidth / 2);
+        //        s.value = .5f + Math.Abs(point) / 2;
+        //    }
+        //    else
+        //    {
+        //        point = (sliderMiddle.x - hit.point.x) / (sliderWidth / 2);
+        //        s.value = .5f - Math.Abs(point) / 2;
+        //    }
+        //}
+        ////Check the direction of the scroll bar
+        //else if (s.direction == Scrollbar.Direction.RightToLeft)
+        //{
+        //    //Check to see which part of the slider was hit
+        //    if (hit.point.x > sliderMiddle.x)
+        //    {
+        //        point = (sliderMiddle.x - hit.point.x) / (sliderWidth / 2);
+        //        //Set the Value
+        //        s.value = .5f - Math.Abs(point) / 2;
+        //    }
+        //    else
+        //    {
+        //        point = (hit.point.x - sliderMiddle.x) / (sliderWidth / 2);
+        //        s.value = .5f + Math.Abs(point) / 2;
+        //    }
+        //}
+        ////Check the direction of the scroll bar
+        //else if (s.direction == Scrollbar.Direction.BottomToTop)
+        //{
+
+        //    if (hit.point.y > sliderMiddle.y)
+        //    {
+        //        point = (hit.point.y - sliderMiddle.y) / (sliderHeight / 2);
+        //        s.value = .5f + Math.Abs(point) / 2;
+        //    }
+        //    else
+        //    {
+        //        point = (sliderMiddle.y - hit.point.y) / (sliderHeight / 2);
+        //        s.value = .5f - Math.Abs(point) / 2;
+        //    }
+        //}
+
+        //else
+        //{
+
+        //    if (hit.point.y > sliderMiddle.y)
+        //    {
+        //        point = (sliderMiddle.y - hit.point.y) / (sliderHeight / 2);
+        //        s.value = .5f - Math.Abs(point) / 2;
+        //    }
+        //    else
+        //    {
+        //        point = (hit.point.y - sliderMiddle.y) / (sliderHeight / 2);
+        //        s.value = .5f + Math.Abs(point) / 2;
+        //    }
+        //}
     }
     /// <summary>
     /// Method allows the user to interact with sliders
@@ -305,7 +371,7 @@ public class ButtonTool : MonoBehaviour, ITool
         }
     }
 
-
+   
     //Unimplemented Methods
 
     void Update()
@@ -325,7 +391,7 @@ public class ButtonTool : MonoBehaviour, ITool
 
     public void shutDown()
     {
-        //throw new NotImplementedException();
+        c = null;
     }
 }
 
