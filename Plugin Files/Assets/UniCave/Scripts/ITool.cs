@@ -1,52 +1,44 @@
 ﻿/*
- * Luke Kingsley July 2017
  * Interface that provides the methods for the various tools which the wand will use
  */
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public interface ITool 
+public interface ITool
 {
     /// <summary>
-    /// Initializes all necessary objects for the class
+    /// initializes all the objects
     /// </summary>
-    void init(); 
+    void init();
 
     /// <summary>
-    /// Basic garbage collection and cleanup
+    /// Basic cleanup and garbage collection
     /// </summary>
     void shutDown();
 
     /// <summary>
-    /// Handles all the button clicks from the input device
+    /// Handles button clicks from the input device
     /// </summary>
     /// <param name="button"></param>
     /// <param name="origin"></param>
     /// <param name="direction"></param>
     /// <param name="cave"></param>
-    /// <param name="rotate"></param>
-    void ButtonClick(int button, Vector3 origin, Vector3 direction, bool cave, bool rotate);
+    void ButtonClick(int button, Vector3 origin, Vector3 direction, bool cave);
 
     /// <summary>
-    /// Takes in the analog data from the wand so the user can move around the unity scene 
+    /// Takes in input from the analog stick
     /// </summary>
     /// <param name="x"></param>
     /// <param name="y"></param>
     void Analog(double x, double y);
 
     /// <summary>
-    /// Lets the user click and hold buttons to have different functionality than just button clicks
+    /// Handles click and drags
     /// </summary>
     /// <param name="hit"></param>
     /// <param name="offset"></param>
     /// <param name="origin"></param>
     /// <param name="direction"></param>
     void ButtonDrag(RaycastHit hit, Vector3 offset, Vector3 origin, Vector3 direction);
-
-    /// <summary>
-    /// Used only for when a button is immediatly pressed
-    /// </summary>
-    /// <param name="button"></param>
-    /// <param name="origin"></param>
-    /// <param name="direction"></param>
-    void buttonPress(int button, Vector3 origin, Vector3 direction);
 }

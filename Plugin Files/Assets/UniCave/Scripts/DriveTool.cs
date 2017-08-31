@@ -1,42 +1,21 @@
-﻿//MIT License
-//Copyright 2016-Present 
-//Ross Tredinnick
-//Brady Boettcher
-//Living Environments Laboratory
-//Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-//to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, 
-//sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-//The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
-//INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-//IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-//TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//Edited by Luke Kingsley Summer 2017
-
+﻿/*
+ * Class handles the movement of the wiimote around the worldspace
+ */
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-/// <summary>
-/// Class moves the user around the scene 
-/// </summary>
 public class DriveTool : ITool {
 
-    private const string IQ_WALL = "IQWall_Seq_1PC";
-    private const string WAND = "Wand";
-
-    private float movementSpeed;
-    private float rotationSpeed;
-    private double deadZone;
-    private bool restrictVerticalMovement = true;
-    private GameObject holder;
-    private GameObject wand;
+    public float movementSpeed;
+    public float rotationSpeed;
+    public double deadZone; 
+    public bool restrictVerticalMovement = true;
+    public GameObject holder;
+    public GameObject wand;
     bool rotateVertical = false;
     bool rotateHorizontal = false;
-    bool one = false;
-    bool two = false;
-    string text = "Default";
-
 
     /// <summary>
     /// DriveTool Constructor. Object handles all the analog 
@@ -46,8 +25,8 @@ public class DriveTool : ITool {
     /// <param name="movementSpeed_"></param>
     public DriveTool(double deadZone_, float rotationSpeed_, float movementSpeed_)
     {
-        wand = GameObject.Find(WAND);
-        holder = GameObject.Find(IQ_WALL);
+        wand = GameObject.Find("Wand");
+        holder = GameObject.Find("IQWall_Seq_1PC");
         movementSpeed = movementSpeed_;
         rotationSpeed = rotationSpeed_;
         deadZone = deadZone_;        
@@ -128,6 +107,31 @@ public class DriveTool : ITool {
             rotateVertical = true;
         }
     }
+    public void ButtonClick(int button)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void ButtonDrag(RaycastHit hit, Vector3 sdlfkg)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void init()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void init(GameObject holder, GameObject wandObject)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void shutDown()
+    {
+        throw new NotImplementedException();
+    }
+
 
     /// <summary>
     /// Function moves the object around the world space
@@ -224,99 +228,20 @@ public class DriveTool : ITool {
     /// <param name="origin"></param>
     /// <param name="direction"></param>
     /// <param name="isPressed"></param>
-    public void ButtonClick(int button, Vector3 origin, Vector3 direction, bool cave, bool rotate)
+    public void ButtonClick(int button, Vector3 origin, Vector3 direction)
     {
-        if(!cave)
+       if(button == 1)
         {
-            if (button == 1)
-            {
-                if(one)
-                {
-                    one = false;
-                }
-                else
-                {
-                    one = true;
-                }
-                setHorizontal();
-                setText();
-            }
+            setHorizontal();
+        }
 
-            if (button == 2)
-            {
-                if (two)
-                {
-                    two = false;
-                }
-                else
-                {
-                    two = true;
-                }
-                setVertical();
-                setText();
-            }
-        }     
+        if(button ==  2)
+        {
+            setVertical();
+        }
     }
-
-    public void setText()
-    {
-        
-
-        if (one && two)
-        {
-            text = "Vertical and Horizontal camera mode";
-        }
-
-        else if (one)
-        {
-            text = "Horizontal camera mode";
-        }
-        else if (two)
-        {
-            text = "Vertical camera mode";
-        }
-        else
-        {
-            text = "No camera mode";
-        }
-
-
-        GameObject.Find("buttons").GetComponent<Text>().text = text;
-    }
-
-    //////////////////Unimplemented Methods//////////////////
 
     public void ButtonDrag(RaycastHit hit, Vector3 offset, Vector3 origin, Vector3 direction)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void ButtonClick(int button)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void ButtonDrag(RaycastHit hit, Vector3 sdlfkg)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void init()
-    {
-        throw new NotImplementedException();
-    }
-
-    public void init(GameObject holder, GameObject wandObject)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void shutDown()
-    {
-        throw new NotImplementedException();
-    }
-
-    public void buttonPress(int button, Vector3 origin, Vector3 direction)
     {
         throw new NotImplementedException();
     }

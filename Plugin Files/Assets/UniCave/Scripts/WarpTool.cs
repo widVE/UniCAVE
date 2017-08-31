@@ -1,27 +1,21 @@
-﻿//Luke Kingsley, July 2017
-
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// User can teleport around the scene instead of moving there
-/// </summary>
 public class WarpTool : MonoBehaviour, ITool
 {
-    private GameObject holder;
-    private GameObject wandObject;
+    public GameObject holder;
+    public GameObject wandObject;
     private RaycastHit hit;
-    private Vector3 origin, direction;
-    private Stack<Vector3> previousWarps;
-    private int warp, undo, rayLength;
+    public int rayLength;
+    public Vector3 origin, direction;
     bool previousState = false;
     bool currentState = false;
     bool hitObject;
-
-    private const string IQ_WALL = "IQWall_Seq_1PC";
-    private const string WAND = "Wand";
+    public Stack<Vector3> previousWarps;
+    int warp;
+    int undo;
 
     /// <summary>
     /// Basically a constructor
@@ -31,12 +25,12 @@ public class WarpTool : MonoBehaviour, ITool
         //Get all necessary game objects
         if (wandObject == null)
         {
-            wandObject = GameObject.Find(WAND);
+            wandObject = GameObject.Find("Wand");
         }
 
         if (holder == null)
         {
-            holder = GameObject.Find(IQ_WALL);
+            holder = GameObject.Find("IQWall_Seq_1PC");
         }
 
         //StartCoroutine("Raycaster");
@@ -73,7 +67,7 @@ public class WarpTool : MonoBehaviour, ITool
     public void undoWarp()
     {
         //If the stack isnt empty pop off the top object
-        if(previousWarps.Count != 0)
+        if (previousWarps.Count != 0)
         {
             holder.transform.position = previousWarps.Pop();
         }
@@ -82,10 +76,10 @@ public class WarpTool : MonoBehaviour, ITool
     /// <summary>
     /// Handles the button input for the warp tool
     /// </summary>
-    public void ButtonClick(int button, Vector3 origin_, Vector3 direction_, bool cave, bool rotate)
+    public void ButtonClick(int button, Vector3 origin_, Vector3 direction_, bool cave)
     {
         //Cave Remote has different buttonmap
-        if(cave)
+        if (cave)
         {
             warp = 0;
             undo = 2;
@@ -96,6 +90,10 @@ public class WarpTool : MonoBehaviour, ITool
             undo = 3;
         }
 
+        origin = origin_;
+        direction = direction_;
+        //currentState = isPressed_;
+
         if (button == warp)
         {
             Warp();
@@ -105,8 +103,7 @@ public class WarpTool : MonoBehaviour, ITool
             undoWarp();
         }
 
-        origin = origin_;
-        direction = direction_;
+        //previousState = currentState;
     }
 
 
@@ -137,10 +134,5 @@ public class WarpTool : MonoBehaviour, ITool
     public void ButtonDrag(RaycastHit hit, Vector3 offset, Vector3 origin, Vector3 direction)
     {
         //throw new NotImplementedException();
-    }
-
-    public void buttonPress(int button, Vector3 origin, Vector3 direction)
-    {
-        throw new NotImplementedException();
     }
 }

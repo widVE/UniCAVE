@@ -1,71 +1,23 @@
-﻿//Luke Kingsley July 2017
-
-using System;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Reflection.Emit;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-/// <summary>
-/// Class handles all UI interactions for the controller including: buttons, sliders, scroll bars etc.
-/// </summary>
 public class ButtonTool : MonoBehaviour, ITool
 {
-    private const string IQ_WALL = "IQWall_Seq_1PC";
-    private const string WAND = "Wand";
-    private Canvas c;
-    private RaycastHit hit, tester;
-    private GameObject wandObject;
-    private GameObject holder;
-    private bool hide = true;
-    private Text txt;
-    private float point;
-    private int click;
-    private Event eventsystem;
-    private Dropdown dropdown;
-    private Toggle toggle;
-    private Vector3 origin, direction;
-
-
     public GameObject canvas;
-
-    /// <summary>
-    /// Selects or highlights UI elements 
-    /// </summary>
-    /// <returns></returns>
-    public void buttonInput()
-    {
-        while (true)
-        {
-            //check to see that we are on the buttonclick tool
-
-            //Raycast into the scene
-            Physics.Raycast(origin, direction, out tester);
-            if (tester.collider != null)
-            {
-                //Check what object is returned
-                if (tester.transform.gameObject.GetComponent<Dropdown>() != null)
-                {
-                    //Get the correct compnent and select it
-                    dropdown = tester.transform.gameObject.GetComponent<Dropdown>();
-                    EventSystem.current.SetSelectedGameObject(dropdown.gameObject);
-                }
-                else if (tester.transform.gameObject.GetComponent<Toggle>() != null)
-                {
-                    toggle = tester.transform.gameObject.GetComponent<Toggle>();
-                    EventSystem.current.SetSelectedGameObject(toggle.gameObject);
-                }
-                else if (tester.transform.gameObject.GetComponent<Button>() != null)
-                {
-                    Button button = tester.transform.gameObject.GetComponent<Button>();
-                    EventSystem.current.SetSelectedGameObject(button.gameObject);
-                }
-            }
-            else
-            {
-                EventSystem.current.SetSelectedGameObject(null);
-            }
-        }
-    }
+    public Canvas c;
+    RaycastHit hit;
+    public GameObject wandObject;
+    public GameObject holder;
+    bool hide = true;
+    public Text txt;
+    public float point;
+    int click;
+    int buttonDrag;
 
 
     /// <summary>
@@ -74,7 +26,7 @@ public class ButtonTool : MonoBehaviour, ITool
     /// <param name="buttonNum"></param>
     /// <param name="origin"></param>
     /// <param name="direction"></param>
-    public void ButtonClick(int buttonNum, Vector3 origin, Vector3 direction, bool cave, bool rotate)
+    public void ButtonClick(int buttonNum, Vector3 origin, Vector3 direction, bool cave)
     {
         if (cave)
         {
@@ -105,6 +57,8 @@ public class ButtonTool : MonoBehaviour, ITool
                     dropdown.Hide();
                     hide = true;
                 }
+
+
             }
 
             //If the object is a dropdown menu selectable set that as the new dropdown value and call the method attatched 
@@ -135,17 +89,14 @@ public class ButtonTool : MonoBehaviour, ITool
     }
 
     /// <summary>
-    /// Allows the user to interact with sliders and scrollbars 
+    /// Takes in the drag info and decides whether it is a slider or scrollbar
     /// </summary>
     /// <param name="hit_"></param>
     /// <param name="offset"></param>
-    /// <param name="origin_"></param>
-    /// <param name="direction_"></param>
-    public void ButtonDrag(RaycastHit hit_, Vector3 offset, Vector3 origin_, Vector3 direction_)
+    /// <param name="origin"></param>
+    /// <param name="direction"></param>
+    public void ButtonDrag(RaycastHit hit_, Vector3 offset, Vector3 origin, Vector3 direction)
     {
-        origin = origin_;
-        direction = direction_;
-
         Debug.Log(hit_.transform.gameObject.GetType());
         //Check the type of the object to know what to slide
         if (hit_.transform.gameObject.GetComponent<Slider>() != null)
@@ -166,12 +117,12 @@ public class ButtonTool : MonoBehaviour, ITool
         //Get all necessary game objects
         if (wandObject == null)
         {
-            wandObject = GameObject.Find(WAND);
+            wandObject = GameObject.Find("Wand");
         }
 
         if (holder == null)
         {
-            holder = GameObject.Find(IQ_WALL);
+            holder = GameObject.Find("IQWall_Seq_1PC");
         }
     }
 
@@ -210,12 +161,12 @@ public class ButtonTool : MonoBehaviour, ITool
             {
                 //Calculate the value depending on the direction
                 point = (hit.point.x - sliderMiddle.x) / (sliderWidth / 2);
-                s.value = .5f + Math.Abs(point);
+                s.value = .5f + Math.Abs(point) / 2;
             }
             else
             {
                 point = (sliderMiddle.x - hit.point.x) / (sliderWidth / 2);
-                s.value = .5f - Math.Abs(point);
+                s.value = .5f - Math.Abs(point) / 2;
             }
         }
         //Check the direction of the scroll bar
@@ -226,12 +177,12 @@ public class ButtonTool : MonoBehaviour, ITool
             {
                 point = (sliderMiddle.x - hit.point.x) / (sliderWidth / 2);
                 //Set the Value
-                s.value = .5f - Math.Abs(point);
+                s.value = .5f - Math.Abs(point) / 2;
             }
             else
             {
                 point = (hit.point.x - sliderMiddle.x) / (sliderWidth / 2);
-                s.value = .5f + Math.Abs(point);
+                s.value = .5f + Math.Abs(point) / 2;
             }
         }
         //Check the direction of the scroll bar
@@ -241,12 +192,12 @@ public class ButtonTool : MonoBehaviour, ITool
             if (hit.point.y > sliderMiddle.y)
             {
                 point = (hit.point.y - sliderMiddle.y) / (sliderHeight / 2);
-                s.value = .5f + Math.Abs(point);
+                s.value = .5f + Math.Abs(point) / 2;
             }
             else
             {
                 point = (sliderMiddle.y - hit.point.y) / (sliderHeight / 2);
-                s.value = .5f - Math.Abs(point);
+                s.value = .5f - Math.Abs(point) / 2;
             }
         }
 
@@ -256,12 +207,12 @@ public class ButtonTool : MonoBehaviour, ITool
             if (hit.point.y > sliderMiddle.y)
             {
                 point = (sliderMiddle.y - hit.point.y) / (sliderHeight / 2);
-                s.value = .5f - Math.Abs(point);
+                s.value = .5f - Math.Abs(point) / 2;
             }
             else
             {
                 point = (hit.point.y - sliderMiddle.y) / (sliderHeight / 2);
-                s.value = .5f + Math.Abs(point);
+                s.value = .5f + Math.Abs(point) / 2;
             }
         }
     }
@@ -375,11 +326,6 @@ public class ButtonTool : MonoBehaviour, ITool
     public void shutDown()
     {
         //throw new NotImplementedException();
-    }
-
-    public void buttonPress(int button, Vector3 origin, Vector3 direction)
-    {
-        throw new NotImplementedException();
     }
 }
 
