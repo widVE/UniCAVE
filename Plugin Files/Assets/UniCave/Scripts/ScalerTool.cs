@@ -22,7 +22,7 @@ public class ScalerTool : MonoBehaviour, ITool
 
         if (holder == null)
         {
-            Debug.LogError("Need to set holder object!");
+            Debug.LogError("Need to set top level UniCAVE object!");
         }
     }
 	
