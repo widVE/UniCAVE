@@ -21,16 +21,14 @@ using System;
 
 public class VRPNInput : MonoBehaviour
 {
-    public bool Cave = false;
 
 
     [SerializeField]
     private string trackerAddress = "WiiMote0@localhost";
-    private int channelVertical = 22;
-    private int channelHorizontal = 21;
-    private int channelMagnitude = 20;
     [SerializeField]
-    private int channel = 1; //channel for buttons, not analog
+    private int channelVertical = 5;
+    [SerializeField]
+    private int channelHorizontal = 2;
     [SerializeField]
     private bool trackButton = true;
     [SerializeField]
@@ -39,11 +37,9 @@ public class VRPNInput : MonoBehaviour
 
     public TrackerButtonList trackerButtonList;
 
-    //private DriveTool driver;
-
     public GameObject wandObject = null;
     public bool debugOutput = false;
-    public int numButtons = 6;
+    //public int numButtons = 6;
     public float movementSpeed = 0.01f;
     public float rotationSpeed = 0.05f;
     public double deadZone = 0.05;
@@ -54,64 +50,18 @@ public class VRPNInput : MonoBehaviour
     private Vector3 origin;
     private Vector3 direction;
     public float rayLength = 200;
-    //bool[] buttonState;
     Dictionary<TrackerButton, bool> buttonState = new Dictionary<TrackerButton, bool>();
     
     RaycastHit hit;
-    RaycastHit tester;
-    RaycastHit hjh;
     Vector3 offset;
-    bool hasStarted = false;
-    RaycastHit temp;
+    //bool hasStarted = false;
     public GameObject cylinder;
     public Material red;
     public Material green;
     public GameObject panel;
     
 
-    public int Channel
-    {
-        get { return channel; }
-        set
-        {
-            channel = value;
-        }
-    }
-
-    /// <summary>
-    /// Show the user what tool is currently selected.
-    /// </summary>
-   /* public IEnumerator toolName()
-    {
-        while (true)
-        {
-            if (toolManager.toolNumber == 0)
-            {
-                tool.text = "Tool: Warp";
-                //line.material.mainTexture = texture;
-            }
-
-            else if (toolManager.toolNumber == 1)
-            {
-                tool.text = "Tool: Grabber";
-                //cylinder.GetComponent<Renderer>().material.color = 
-            }
-
-            else if (toolManager.toolNumber == 2)
-            {
-                tool.text = "Tool: Clicker";
-            }
-
-
-            else if (toolManager.toolNumber == 3)
-            {
-                tool.text = "Tool: Rotator";
-            }
-
-            yield return null;
-        }
-    }*/
-
+    
   
     public bool TrackButton
     {
@@ -166,22 +116,8 @@ public class VRPNInput : MonoBehaviour
                 cylinder.GetComponent<Renderer>().material = red;
                 //cylinder.transform.localScale = new Vector3(.025f, 20, .025f);
             }
-            yield return new WaitForSeconds(.15f);
+            yield return null;
         }
-    }
-
-    private IEnumerator cylinderLength()
-    {
-        //if (Physics.Raycast(origin, wandObject.transform.forward, out hjh))
-        //{
-        //    cylinder.transform.position = origin;
-        //    cylinder.transform.localScale = new Vector3(.025f, Vector3.Distance(origin, hit.point), .025f);
-        //}
-        //else
-        //{
-        //    cylinder.transform.localScale = new Vector3(.025f, 20, .025f);
-        //}
-        yield return null;
     }
 
     private void Start()
@@ -194,35 +130,15 @@ public class VRPNInput : MonoBehaviour
             this.gameObject.AddComponent(typeof(TrackerButtonList));
             trackerButtonList = this.GetComponent<TrackerButtonList>();
         }
-        //Create a driver object to handle movement
-        //driver = new DriveTool(deadZone, rotationSpeed, movementSpeed);
         //Add a toolManager to the wandObject to shuffle between tools
         wandObject.AddComponent<ToolManager2>();
         toolManager = new ToolManager2(wandObject, holder, deadZone, rotationSpeed, movementSpeed, tool);
-        //Create an array of bools to track the button states
-        //buttonState = new bool[numButtons];
-        //Set the cylinders original color
-        //cylinder.GetComponent<Renderer>().material = red;
-
-        //Fill the array with false values
-        /*for (int i = 0; i < numButtons; i++)
-        {
-            buttonState[i] = false;
-        }*/
+        //add state of each button
         foreach(TrackerButton btn in Enum.GetValues(typeof(TrackerButton)))
         {
             buttonState.Add(btn, false);
         }
         
-
-        if (Cave)
-        {
-            isCave();
-        }
-        else
-        {
-            IQwall();
-        }
         //this gets rid of this object from non-head nodes...we only want this running on the machine that connects to VRPN...
         //this assumes a distributed type setup, where one machine connects to the tracking system and distributes information
         //to other machines...
@@ -245,8 +161,6 @@ public class VRPNInput : MonoBehaviour
         {
             StartCoroutine("Analog");
             StartCoroutine("colorChange");
-            StartCoroutine("toolName");
-            StartCoroutine("cylinderLength");
         }
     }
 
@@ -256,10 +170,11 @@ public class VRPNInput : MonoBehaviour
     /// <returns></returns>
     private IEnumerator Button()
     {
+        int maxButtons = trackerButtonList.getMaxButtons();
         while (true)
         {
             //i tracks the number of the current button
-            for (int i = 0; i < numButtons; ++i)
+            for (int i = 0; i < maxButtons; ++i)
             {
                 //Current value of the button
                 bool curValue = VRPN.vrpnButton(trackerAddress, i);
@@ -269,28 +184,18 @@ public class VRPNInput : MonoBehaviour
                 if (buttonState.ContainsKey(currentButton) && buttonState[currentButton] && !curValue)
                 {
                     //Fire the event
-                    //toolManager.list[toolManager.toolNumber].ButtonClick(currentButton, origin, direction);
                     toolManager.handleButtonClick(currentButton, origin, direction);
-                    //driver.ButtonClick(currentButton, origin, direction);
 
-                    hasStarted = false;
-                    hit = temp;
+                    //hasStarted = false;
+                    hit = new RaycastHit(); //temp;
 
                 }
                 //If the current and previous are true then it is a buttondrag event
-                //else if (buttonState[i] && curValue && i == drag)
                 else if (buttonState.ContainsKey(currentButton) && buttonState[currentButton] && curValue && (currentButton == TrackerButton.Trigger))
                 {
                     if (hit.distance > 0)
                     {
-                        //If this is the start of the drag event get the offset
-                        if (!hasStarted)
-                        {
-                            offset = hit.transform.position - hit.point;
-                            hasStarted = true;
-                        }
                         //Fire the event
-                        //toolManager.list[toolManager.toolNumber].ButtonDrag(hit, offset, origin, direction);
                         toolManager.handleButtonDrag(currentButton, hit, offset, origin, direction);
                     }
                 }
@@ -298,6 +203,8 @@ public class VRPNInput : MonoBehaviour
                 else if (!(buttonState.ContainsKey(currentButton) && buttonState[currentButton]) && curValue && (currentButton == TrackerButton.Trigger))
                 {
                     Physics.Raycast(origin, direction * rayLength, out hit);
+                    if (hit.distance > 0)
+                        offset = hit.transform.position - hit.point;
                 }
 
                 //update the previous value
@@ -305,39 +212,6 @@ public class VRPNInput : MonoBehaviour
             }
             yield return null;
         }
-    }
-
-    /// <summary>
-    /// Sets all the necessary variables for cave interaction
-    /// </summary>
-    public void isCave()
-    {
-        //Change the address to the remote in the cave
-        //Switch the channels to match those of the Cave remote
-        trackerAddress = "DTrack@localhost";
-        //click = 2;
-        //drag = 0;
-        //next = 5;
-        //Channel horizontal and vertical
-        channelHorizontal = 0;
-        channelVertical = 1;
-        numButtons = 6;
-    }
-
-
-    /// <summary>
-    /// Sets all the necessary variables for IQ_wall interaction
-    /// </summary>
-    public void IQwall()
-    {
-        //click = 3;
-        //drag = 4;
-        //previous = 5;
-        //next = 6;
-        numButtons = 11;
-
-        channelVertical = 5;
-        channelHorizontal = 2;
     }
 
     /// <summary>

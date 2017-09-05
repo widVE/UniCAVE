@@ -99,6 +99,7 @@ public class ToolManager2 : MonoBehaviour
         else
         {
             list[toolNumber].ButtonClick(button, origin, direction);
+            driveTool.ButtonClick(button, origin, direction);
             return true;
         }
     }

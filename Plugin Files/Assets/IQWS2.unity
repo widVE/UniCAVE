@@ -259,6 +259,21 @@ Prefab:
       propertyPath: trackerButtonList
       value: 
       objectReference: {fileID: 180787799}
+    - target: {fileID: 114802848907875710, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+        type: 2}
+      propertyPath: channelVertical
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114802848907875710, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+        type: 2}
+      propertyPath: channelHorizontal
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 136171275433181324, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a1e48f3a6d8c99846b96a71b54eb88e9, type: 2}
   m_IsPrefabParent: 0

@@ -4,14 +4,20 @@ using System.Collections.Generic; // Import the System.Collections.Generic class
 
 public class TrackerButtonList : MonoBehaviour {
 
-	//This is our custom class with our variables
+    //This is our custom class with our variables
 
 
-	//This is our list we want to use to represent our class as an array.
-	public List<ButtonMapping> list = new List<ButtonMapping>(1);
+    //This is our list we want to use to represent our class as an array.
+    public List<ButtonMapping> list = new List<ButtonMapping>(1);
+    private Dictionary<int, TrackerButton> buttonDictionary = new Dictionary<int, TrackerButton>();
 
 
-	void AddNew(){
+    private void Start()
+    {
+        updateButtonMappings();
+    }
+
+    void AddNew(){
 		//Add a new index position to the end of our list
 		list.Add(new ButtonMapping());
 	}
@@ -24,11 +30,33 @@ public class TrackerButtonList : MonoBehaviour {
 
     public TrackerButton MapButton(int buttonNumber)
     {
-        for(int ii=0;ii<list.Count;ii++)
+        if (buttonDictionary.Keys.Count == 0)
+            updateButtonMappings();
+        if (buttonDictionary.ContainsKey(buttonNumber))
+            return buttonDictionary[buttonNumber];
+        else
+            return TrackerButton.Unknown;
+    }
+
+    public void updateButtonMappings()
+    {
+        buttonDictionary.Clear();
+        foreach(ButtonMapping map in list)
         {
-            if (list[ii].ButtonNumber == buttonNumber)
-                return list[ii].MappedButton;
+            buttonDictionary.Add(map.ButtonNumber, map.MappedButton);
         }
-        return TrackerButton.Unknown;
+    }
+
+    public int getMaxButtons()
+    {
+        if (buttonDictionary.Keys.Count == 0)
+            updateButtonMappings();
+
+        int maxButtons = -1;
+        foreach(int btn in buttonDictionary.Keys)
+        {
+            maxButtons = Math.Max(maxButtons, btn);
+        }
+        return maxButtons+1;
     }
 }

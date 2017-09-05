@@ -52,14 +52,9 @@ public class DriveTool : ITool {
             {
                 //Check to see whether you are rotating or translating the object
                 if (rotateVertical)
-                {
                     Rotate(analogData, true);
-                }
-
                 else
-                {
                     Translate(analogData, true);
-                }
             }
         }
 
@@ -71,14 +66,9 @@ public class DriveTool : ITool {
             {
                 //Check to see whether you are rotating or translating the object
                 if (rotateHorizontal)
-                {
                     Rotate(analogData, false);
-                }
-
                 else
-                {
                     Translate(analogData, false);
-                }
             }
         }
     }
@@ -86,26 +76,12 @@ public class DriveTool : ITool {
     //Switches the orientation of the rotation of the holder object
     public void setHorizontal()
     {
-        if (rotateHorizontal)
-        {
-            rotateHorizontal = false;
-        }
-        else
-        {
-            rotateHorizontal = true;
-        }
+        rotateHorizontal = !rotateHorizontal;
     }
 
     public void setVertical()
     {
-        if (rotateVertical)
-        {
-            rotateVertical = false;
-        }
-        else
-        {
-            rotateVertical = true;
-        }
+        rotateVertical = !rotateVertical;
     }
     public void ButtonClick(TrackerButton button)
     {
@@ -230,27 +206,11 @@ public class DriveTool : ITool {
     /// <param name="isPressed"></param>
     public void ButtonClick(TrackerButton button, Vector3 origin, Vector3 direction)
     {
-        /*if(!cave)
-        {
-            if (button == TrackerButton.Button3)
-            {
-                setHorizontal();
-            }
-
-            if (button == TrackerButton.Button4)
-            {
-                setVertical();
-            }
-        }     */
+        
         if (button == TrackerButton.Button3)
-        {
             setHorizontal();
-        }
-
-        if (button == TrackerButton.Button4)
-        {
+        else if (button == TrackerButton.Button4)
             setVertical();
-        }
     }
 
     public void ButtonDrag(RaycastHit hit, Vector3 offset, Vector3 origin, Vector3 direction)

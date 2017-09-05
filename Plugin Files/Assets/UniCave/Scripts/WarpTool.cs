@@ -9,10 +9,6 @@ public class WarpTool : MonoBehaviour, ITool
     public GameObject wandObject;
     private RaycastHit hit;
     public int rayLength;
-    public Vector3 origin, direction;
-    bool previousState = false;
-    bool currentState = false;    
-    bool hitObject;
     public Stack<Vector3> previousWarps;
     //int warp;
     //int undo;
@@ -45,7 +41,7 @@ public class WarpTool : MonoBehaviour, ITool
     /// <summary>
     /// Teleports the IQstation the length of the raycast or to an object 
     /// </summary>
-    public void Warp()
+    public void Warp(Vector3 origin, Vector3 direction)
     {
         //Add the location to the stack of warps
         previousWarps.Push(holder.transform.position);
@@ -80,29 +76,15 @@ public class WarpTool : MonoBehaviour, ITool
     /// </summary>
     public void ButtonClick(TrackerButton button, Vector3 origin_, Vector3 direction_)
     {
-        //Cave Remote has different buttonmap
-        /*if(cave)
-        {
-            warp = 0;
-            undo = 2;
-        }
-        else
-        {
-            warp = 4;
-            undo = 3;
-        }*/
-
+       
         if (button == TrackerButton.Trigger)
         {
-            Warp();
+            Warp(origin_, direction_);
         }
         if (button == TrackerButton.Button1)
         {
             undoWarp();
         }
-
-        origin = origin_;
-        direction = direction_;
     }
 
 
