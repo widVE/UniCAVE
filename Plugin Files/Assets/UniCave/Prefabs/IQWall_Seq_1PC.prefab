@@ -194,7 +194,7 @@ GameObject:
   - component: {fileID: 23354082101984962}
   - component: {fileID: 114877607506948868}
   m_Layer: 0
-  m_Name: Cylinder
+  m_Name: RaycastCylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
