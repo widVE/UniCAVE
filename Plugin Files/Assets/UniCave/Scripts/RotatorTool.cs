@@ -64,8 +64,16 @@ public class RotatorTool : MonoBehaviour, ITool {
         throw new NotImplementedException();
     }
 
-    public void ButtonClick(int button, Vector3 origin, Vector3 direction, bool cave)
+    public void ButtonClick(TrackerButton button, Vector3 origin, Vector3 direction)
     {
 
+    }
+
+    public string ToolName
+    {
+        get
+        {
+            return "Rotator";
+        }
     }
 }

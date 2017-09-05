@@ -17,6 +17,7 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
+using System;
 
 public class VRPNInput : MonoBehaviour
 {
@@ -35,7 +36,10 @@ public class VRPNInput : MonoBehaviour
     [SerializeField]
     private bool trackAnalog = true;
 
-    private DriveTool driver;
+
+    public TrackerButtonList trackerButtonList;
+
+    //private DriveTool driver;
 
     public GameObject wandObject = null;
     public bool debugOutput = false;
@@ -50,8 +54,9 @@ public class VRPNInput : MonoBehaviour
     private Vector3 origin;
     private Vector3 direction;
     public float rayLength = 200;
-    bool[] buttonState;
-    bool curValue;
+    //bool[] buttonState;
+    Dictionary<TrackerButton, bool> buttonState = new Dictionary<TrackerButton, bool>();
+    
     RaycastHit hit;
     RaycastHit tester;
     RaycastHit hjh;
@@ -62,10 +67,7 @@ public class VRPNInput : MonoBehaviour
     public Material red;
     public Material green;
     public GameObject panel;
-    int click;
-    int drag;
-    int next;
-    int previous;
+    
 
     public int Channel
     {
@@ -79,7 +81,7 @@ public class VRPNInput : MonoBehaviour
     /// <summary>
     /// Show the user what tool is currently selected.
     /// </summary>
-    public IEnumerator toolName()
+   /* public IEnumerator toolName()
     {
         while (true)
         {
@@ -108,7 +110,7 @@ public class VRPNInput : MonoBehaviour
 
             yield return null;
         }
-    }
+    }*/
 
   
     public bool TrackButton
@@ -184,21 +186,34 @@ public class VRPNInput : MonoBehaviour
 
     private void Start()
     {
+        if (trackerButtonList == null)
+            trackerButtonList = this.GetComponent<TrackerButtonList>();
+
+        if (trackerButtonList == null)
+        {
+            this.gameObject.AddComponent(typeof(TrackerButtonList));
+            trackerButtonList = this.GetComponent<TrackerButtonList>();
+        }
         //Create a driver object to handle movement
-        driver = new DriveTool(deadZone, rotationSpeed, movementSpeed);
+        //driver = new DriveTool(deadZone, rotationSpeed, movementSpeed);
         //Add a toolManager to the wandObject to shuffle between tools
         wandObject.AddComponent<ToolManager2>();
-        toolManager = new ToolManager2(wandObject, holder);
+        toolManager = new ToolManager2(wandObject, holder, deadZone, rotationSpeed, movementSpeed, tool);
         //Create an array of bools to track the button states
-        buttonState = new bool[numButtons];
+        //buttonState = new bool[numButtons];
         //Set the cylinders original color
         //cylinder.GetComponent<Renderer>().material = red;
 
         //Fill the array with false values
-        for (int i = 0; i < numButtons; i++)
+        /*for (int i = 0; i < numButtons; i++)
         {
             buttonState[i] = false;
+        }*/
+        foreach(TrackerButton btn in Enum.GetValues(typeof(TrackerButton)))
+        {
+            buttonState.Add(btn, false);
         }
+        
 
         if (Cave)
         {
@@ -247,21 +262,24 @@ public class VRPNInput : MonoBehaviour
             for (int i = 0; i < numButtons; ++i)
             {
                 //Current value of the button
-                curValue = VRPN.vrpnButton(trackerAddress, i);
+                bool curValue = VRPN.vrpnButton(trackerAddress, i);
+                TrackerButton currentButton = trackerButtonList.MapButton(i);
 
                 //If the previous state is true and the current value is false it is a button click
-                if (buttonState[i] && !curValue)
+                if (buttonState.ContainsKey(currentButton) && buttonState[currentButton] && !curValue)
                 {
                     //Fire the event
-                    toolManager.list[toolManager.toolNumber].ButtonClick(i, origin, direction, Cave);
-                    driver.ButtonClick(i, origin, direction, Cave);
+                    //toolManager.list[toolManager.toolNumber].ButtonClick(currentButton, origin, direction);
+                    toolManager.handleButtonClick(currentButton, origin, direction);
+                    //driver.ButtonClick(currentButton, origin, direction);
 
                     hasStarted = false;
                     hit = temp;
 
                 }
                 //If the current and previous are true then it is a buttondrag event
-                else if (buttonState[i] && curValue && i == drag)
+                //else if (buttonState[i] && curValue && i == drag)
+                else if (buttonState.ContainsKey(currentButton) && buttonState[currentButton] && curValue && (currentButton == TrackerButton.Trigger))
                 {
                     if (hit.distance > 0)
                     {
@@ -272,33 +290,18 @@ public class VRPNInput : MonoBehaviour
                             hasStarted = true;
                         }
                         //Fire the event
-                        toolManager.list[toolManager.toolNumber].ButtonDrag(hit, offset, origin, direction);
+                        //toolManager.list[toolManager.toolNumber].ButtonDrag(hit, offset, origin, direction);
+                        toolManager.handleButtonDrag(currentButton, hit, offset, origin, direction);
                     }
                 }
                 //If the previous is false and the current is true 
-                else if (!buttonState[i] && curValue && i == drag)
+                else if (!(buttonState.ContainsKey(currentButton) && buttonState[currentButton]) && curValue && (currentButton == TrackerButton.Trigger))
                 {
                     Physics.Raycast(origin, direction * rayLength, out hit);
                 }
 
-                //Change between tools
-                if (VRPN.vrpnButton(trackerAddress, i))
-                {
-                    if (i == previous)
-                    {
-                        toolManager.PreviousTool();
-                        yield return new WaitForSeconds(.2f);
-                    }
-
-                    else if (i == next)
-                    {
-                        toolManager.NextTool();
-                        yield return new WaitForSeconds(.2f);
-                    }
-                }
-
                 //update the previous value
-                buttonState[i] = curValue;
+                buttonState[currentButton] = curValue;
             }
             yield return null;
         }
@@ -312,9 +315,9 @@ public class VRPNInput : MonoBehaviour
         //Change the address to the remote in the cave
         //Switch the channels to match those of the Cave remote
         trackerAddress = "DTrack@localhost";
-        click = 2;
-        drag = 0;
-        next = 5;
+        //click = 2;
+        //drag = 0;
+        //next = 5;
         //Channel horizontal and vertical
         channelHorizontal = 0;
         channelVertical = 1;
@@ -327,11 +330,14 @@ public class VRPNInput : MonoBehaviour
     /// </summary>
     public void IQwall()
     {
-        click = 3;
-        drag = 4;
-        previous = 5;
-        next = 6;
+        //click = 3;
+        //drag = 4;
+        //previous = 5;
+        //next = 6;
         numButtons = 11;
+
+        channelVertical = 5;
+        channelHorizontal = 2;
     }
 
     /// <summary>
@@ -347,7 +353,7 @@ public class VRPNInput : MonoBehaviour
             double analogHorizontal = VRPN.vrpnAnalog(trackerAddress, channelHorizontal);
 
             //Translate the holder
-            driver.Analog(analogHorizontal, analogVertical);
+            toolManager.handleAnalog(analogHorizontal, analogVertical);
             yield return null;
         }
     }

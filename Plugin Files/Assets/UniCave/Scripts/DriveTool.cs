@@ -15,7 +15,7 @@ public class DriveTool : ITool {
     public GameObject holder;
     public GameObject wand;
     bool rotateVertical = false;
-    bool rotateHorizontal = false;
+    bool rotateHorizontal = true;
 
     /// <summary>
     /// DriveTool Constructor. Object handles all the analog 
@@ -107,7 +107,7 @@ public class DriveTool : ITool {
             rotateVertical = true;
         }
     }
-    public void ButtonClick(int button)
+    public void ButtonClick(TrackerButton button)
     {
         throw new NotImplementedException();
     }
@@ -228,24 +228,41 @@ public class DriveTool : ITool {
     /// <param name="origin"></param>
     /// <param name="direction"></param>
     /// <param name="isPressed"></param>
-    public void ButtonClick(int button, Vector3 origin, Vector3 direction, bool cave)
+    public void ButtonClick(TrackerButton button, Vector3 origin, Vector3 direction)
     {
-        if(!cave)
+        /*if(!cave)
         {
-            if (button == 1)
+            if (button == TrackerButton.Button3)
             {
                 setHorizontal();
             }
 
-            if (button == 2)
+            if (button == TrackerButton.Button4)
             {
                 setVertical();
             }
-        }     
+        }     */
+        if (button == TrackerButton.Button3)
+        {
+            setHorizontal();
+        }
+
+        if (button == TrackerButton.Button4)
+        {
+            setVertical();
+        }
     }
 
     public void ButtonDrag(RaycastHit hit, Vector3 offset, Vector3 origin, Vector3 direction)
     {
         throw new NotImplementedException();
+    }
+
+    public string ToolName
+    {
+        get
+        {
+            return "Drive";
+        }
     }
 }

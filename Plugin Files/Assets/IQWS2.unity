@@ -154,6 +154,37 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &180787792 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1595392151113386, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+    type: 2}
+  m_PrefabInternal: {fileID: 1027662089}
+--- !u!114 &180787799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 180787792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f828acee255e08c4d81df06aafa16d2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  list:
+  - MappedButton: 0
+    ButtonNumber: 5
+  - MappedButton: 1
+    ButtonNumber: 0
+  - MappedButton: 2
+    ButtonNumber: 1
+  - MappedButton: 3
+    ButtonNumber: 2
+  - MappedButton: 4
+    ButtonNumber: 3
+  - MappedButton: 7
+    ButtonNumber: 6
+  - MappedButton: 8
+    ButtonNumber: 7
 --- !u!1001 &1027662089
 Prefab:
   m_ObjectHideFlags: 0
@@ -213,6 +244,21 @@ Prefab:
       propertyPath: m_ViewID.m_Type
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114802848907875710, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+        type: 2}
+      propertyPath: trackerAddress
+      value: RumblePad0@localhost
+      objectReference: {fileID: 0}
+    - target: {fileID: 114802848907875710, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+        type: 2}
+      propertyPath: channel
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114802848907875710, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+        type: 2}
+      propertyPath: trackerButtonList
+      value: 
+      objectReference: {fileID: 180787799}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a1e48f3a6d8c99846b96a71b54eb88e9, type: 2}
   m_IsPrefabParent: 0

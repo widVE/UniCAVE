@@ -7,9 +7,10 @@ using UnityEngine;
 
 public interface ITool 
 {
+    string ToolName { get; }
     void init(); 
     void shutDown();
-    void ButtonClick(int button, Vector3 origin, Vector3 direction, bool cave);
+    void ButtonClick(TrackerButton buttonNum, Vector3 origin, Vector3 direction);
     void Analog(double x, double y);
     void ButtonDrag(RaycastHit hit, Vector3 offset, Vector3 origin, Vector3 direction);
 }

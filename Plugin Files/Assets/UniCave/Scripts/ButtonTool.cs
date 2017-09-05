@@ -19,7 +19,7 @@ public class ButtonTool : MonoBehaviour, ITool
     bool hide = true;
     public Text txt;
     public float point;
-    int click;
+    //int click;
     int buttonDrag;
     private const string IQ_WALL = "IQWall_Seq_1PC";
     private const string WAND = "Wand";
@@ -82,21 +82,21 @@ public class ButtonTool : MonoBehaviour, ITool
     /// <param name="buttonNum"></param>
     /// <param name="origin"></param>
     /// <param name="direction"></param>
-    public void ButtonClick(int buttonNum, Vector3 origin, Vector3 direction, bool cave)
+    public void ButtonClick(TrackerButton buttonNum, Vector3 origin, Vector3 direction)
     {
-        if(cave)
+        /*if(cave)
         {
             click = 2;
         }
         else
         {
             click = 3;
-        }
+        }*/
 
         Physics.Raycast(origin, direction, out hit);
         Debug.Log(hit.point);
 
-        if (buttonNum == click)
+        if (buttonNum == TrackerButton.Trigger)
         {
             //If the object is a dropdown show or hide the menu
             if (hit.collider != null && hit.transform.gameObject.GetComponent<Dropdown>() != null)
@@ -134,7 +134,7 @@ public class ButtonTool : MonoBehaviour, ITool
             else if (hit.collider != null && hit.transform.gameObject.GetComponent<Button>() != null)
             {
                 Button button = hit.transform.gameObject.GetComponent<Button>();
-                if (buttonNum == 3)
+                if (buttonNum == TrackerButton.Trigger)
                 {
                     button.onClick.Invoke();
                 }
@@ -392,6 +392,14 @@ public class ButtonTool : MonoBehaviour, ITool
     public void shutDown()
     {
         c = null;
+    }
+
+    public string ToolName
+    {
+        get
+        {
+            return "Clicker";
+        }
     }
 }
 

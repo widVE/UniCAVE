@@ -41,7 +41,7 @@ public class ScalerTool : MonoBehaviour, ITool
         //throw new NotImplementedException();
     }
 
-    public void ButtonClick(int button, Vector3 origin, Vector3 direction, bool cave)
+    public void ButtonClick(TrackerButton button, Vector3 origin, Vector3 direction)
     {
         //throw new NotImplementedException();
     }
@@ -64,5 +64,13 @@ public class ScalerTool : MonoBehaviour, ITool
         float scale = magnitude * dotProduct;
 
         hit.transform.localScale = new Vector3(objectScale.x + scale, objectScale.y + scale, objectScale.z + scale);
+    }
+
+    public string ToolName
+    {
+        get
+        {
+            return "Scaler";
+        }
     }
 }

@@ -39,19 +39,19 @@ public class GrabberTool : MonoBehaviour, ITool
     /// Takes in every button and whether it is currently being pressed or not 
     /// While pointing at the object the user can increase or decrease the size of the object 
     /// </summary>
-    public void ButtonClick(int button, Vector3 origin_, Vector3 direction_, bool cave)
+    public void ButtonClick(TrackerButton button, Vector3 origin_, Vector3 direction_)
     {
         //Check to see if the raycast has intersected with an object
         if ((Physics.Raycast(origin, direction, out hit)))
         {
             //Get the current scale of the object
             Vector3 scale = hit.transform.localScale;
-            if (button == 10)
+            if (button == TrackerButton.Button2)
             {
                 hit.transform.localScale = new Vector3(scale.x + scale.x / 7, scale.y + scale.y / 7, scale.z + scale.z / 7);
             }
 
-            else if (button == 9)
+            else if (button == TrackerButton.Button3)
             {
                 hit.transform.localScale = new Vector3(scale.x - scale.x / 7, scale.y - scale.y / 7, scale.z - scale.z / 7);
             }
@@ -93,6 +93,14 @@ public class GrabberTool : MonoBehaviour, ITool
     public void Analog(double x, double y)
     {
         throw new NotImplementedException();
+    }
+
+    public string ToolName
+    {
+        get
+        {
+            return "Grabber";
+        }
     }
 }
 

@@ -14,8 +14,8 @@ public class WarpTool : MonoBehaviour, ITool
     bool currentState = false;    
     bool hitObject;
     public Stack<Vector3> previousWarps;
-    int warp;
-    int undo;
+    //int warp;
+    //int undo;
     private const string IQ_WALL = "IQWall_Seq_1PC";
     private const string WAND = "Wand";
 
@@ -78,10 +78,10 @@ public class WarpTool : MonoBehaviour, ITool
     /// <summary>
     /// Handles the button input for the warp tool
     /// </summary>
-    public void ButtonClick(int button, Vector3 origin_, Vector3 direction_, bool cave)
+    public void ButtonClick(TrackerButton button, Vector3 origin_, Vector3 direction_)
     {
         //Cave Remote has different buttonmap
-        if(cave)
+        /*if(cave)
         {
             warp = 0;
             undo = 2;
@@ -90,13 +90,13 @@ public class WarpTool : MonoBehaviour, ITool
         {
             warp = 4;
             undo = 3;
-        }
+        }*/
 
-        if (button == warp)
+        if (button == TrackerButton.Trigger)
         {
             Warp();
         }
-        if (button == undo)
+        if (button == TrackerButton.Button1)
         {
             undoWarp();
         }
@@ -133,5 +133,13 @@ public class WarpTool : MonoBehaviour, ITool
     public void ButtonDrag(RaycastHit hit, Vector3 offset, Vector3 origin, Vector3 direction)
     {
         //throw new NotImplementedException();
+    }
+
+    public string ToolName
+    {
+        get
+        {
+            return "Warp";
+        }
     }
 }
