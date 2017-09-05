@@ -11,8 +11,9 @@ public class ToolManager2 : MonoBehaviour
 {
     //Initialize member variables
     public List<ITool> list;
-    public GameObject holder;
     public GameObject wandObject;
+    public GameObject wandControls;
+    public GameObject TopLevelUniCAVE;
     public int toolNumber = 0;
     public Text tool;
     public GameObject canvas;
@@ -23,26 +24,32 @@ public class ToolManager2 : MonoBehaviour
     /// </summary>
     /// <param name="wandObject_"></param>
     /// <param name="holder_"></param>
-    public ToolManager2(GameObject wandObject_, GameObject holder_, double deadZone, float rotationSpeed, float movementSpeed, Text tool_)
+    public ToolManager2(GameObject wandObject_, GameObject wandControls_, GameObject TopLevelUniCAVE_, double deadZone, float rotationSpeed, float movementSpeed, Text tool_)
     {
-        holder = holder_;
         wandObject = wandObject_;
         tool = tool_;
+        wandControls = wandControls_;
+        TopLevelUniCAVE = TopLevelUniCAVE_;
 
         list = new List<ITool>();
-        //Add the scripts to the wandObject 
-        wandObject.AddComponent<GrabberTool>();
-        wandObject.AddComponent<WarpTool>();
-        wandObject.AddComponent<ButtonTool>();
-        wandObject.AddComponent<RotatorTool>();
+        //Add the scripts to the wandObject
+        /*
+        if (wandObject.GetComponent<GrabberTool>() == null)
+            wandObject.AddComponent<GrabberTool>();
+        if (wandObject.GetComponent<WarpTool>() == null)
+            wandObject.AddComponent<WarpTool>();
+        if (wandObject.GetComponent<ButtonTool>() == null)
+            wandObject.AddComponent<ButtonTool>();
+        if (wandObject.GetComponent<RotatorTool>() == null)
+            wandObject.AddComponent<RotatorTool>();*/
 
         //fill the list with all the tool interfaces 
-        list.Add(wandObject.GetComponent<WarpTool>());
-        list.Add(wandObject.GetComponent<GrabberTool>());
-        list.Add(wandObject.GetComponent<ButtonTool>());
-        list.Add(wandObject.GetComponent<RotatorTool>());
+        list.Add(wandControls.GetComponent<WarpTool>());
+        list.Add(wandControls.GetComponent<GrabberTool>());
+        list.Add(wandControls.GetComponent<ButtonTool>());
+        list.Add(wandControls.GetComponent<RotatorTool>());
 
-        driveTool = new DriveTool(deadZone, rotationSpeed, movementSpeed);
+        driveTool = new DriveTool(TopLevelUniCAVE, wandObject, deadZone, rotationSpeed, movementSpeed);
 
         toolNumber = 0;
         updateToolName(tool);

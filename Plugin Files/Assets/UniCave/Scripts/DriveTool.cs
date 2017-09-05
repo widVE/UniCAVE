@@ -23,10 +23,10 @@ public class DriveTool : ITool {
     /// <param name="deadZone_"></param>
     /// <param name="rotationSpeed_"></param>
     /// <param name="movementSpeed_"></param>
-    public DriveTool(double deadZone_, float rotationSpeed_, float movementSpeed_)
+    public DriveTool(GameObject holder_, GameObject wandObject_, double deadZone_, float rotationSpeed_, float movementSpeed_)
     {
-        wand = GameObject.Find("Wand");
-        holder = GameObject.Find("IQWall_Seq_1PC");
+        holder = holder_;
+        wand = wandObject_;
         movementSpeed = movementSpeed_;
         rotationSpeed = rotationSpeed_;
         deadZone = deadZone_;        
@@ -40,7 +40,7 @@ public class DriveTool : ITool {
     public void Analog(double x, double y)
     {
         //Create a vector fromt the X and Y data
-        Vector2 analogData = new Vector2((float)x, (float)y);
+        Vector2 analogData = new Vector2((float)x, (float)-y);
         //Set the movement speed of the wandObject to the magnitude of the vector
         movementSpeed = analogData.magnitude; /// 2f;
 

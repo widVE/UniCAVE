@@ -36,8 +36,9 @@ public class VRPNInput : MonoBehaviour
 
 
     public TrackerButtonList trackerButtonList;
-
+    public GameObject TopLevelUniCAVE;
     public GameObject wandObject = null;
+
     public bool debugOutput = false;
     //public int numButtons = 6;
     public float movementSpeed = 0.01f;
@@ -45,19 +46,14 @@ public class VRPNInput : MonoBehaviour
     public double deadZone = 0.05;
     public Text tool;
     public GameObject canvas;
-    public GameObject holder;
     private ToolManager2 toolManager;
-    private Vector3 origin;
-    private Vector3 direction;
     public float rayLength = 200;
     Dictionary<TrackerButton, bool> buttonState = new Dictionary<TrackerButton, bool>();
     
     RaycastHit hit;
     Vector3 offset;
     //bool hasStarted = false;
-    public GameObject cylinder;
-    public Material red;
-    public Material green;
+
     public GameObject panel;
     
 
@@ -91,34 +87,7 @@ public class VRPNInput : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Changes the color of raycast depending on whether an object is detected
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator colorChange()
-    {
-        while (true)
-        {
-            //Get the origin of the object
-            origin = wandObject.transform.position;
 
-            //Get the direction of the object
-            direction = wandObject.transform.forward;
-
-            if (Physics.Raycast(origin, direction))
-            {
-                cylinder.GetComponent<Renderer>().material = green;
-                //cylinder.transform.position = origin;
-                //cylinder.transform.localScale = new Vector3(.025f, Vector3.Distance(origin, hit.point), .025f);
-            }
-            else
-            {
-                cylinder.GetComponent<Renderer>().material = red;
-                //cylinder.transform.localScale = new Vector3(.025f, 20, .025f);
-            }
-            yield return null;
-        }
-    }
 
     private void Start()
     {
@@ -131,8 +100,8 @@ public class VRPNInput : MonoBehaviour
             trackerButtonList = this.GetComponent<TrackerButtonList>();
         }
         //Add a toolManager to the wandObject to shuffle between tools
-        wandObject.AddComponent<ToolManager2>();
-        toolManager = new ToolManager2(wandObject, holder, deadZone, rotationSpeed, movementSpeed, tool);
+       // wandObject.AddComponent<ToolManager2>();
+        toolManager = new ToolManager2(wandObject, this.gameObject, TopLevelUniCAVE, deadZone, rotationSpeed, movementSpeed, tool);
         //add state of each button
         foreach(TrackerButton btn in Enum.GetValues(typeof(TrackerButton)))
         {
@@ -153,15 +122,10 @@ public class VRPNInput : MonoBehaviour
 
         //Start the coroutines
         if (trackButton)
-        {
             StartCoroutine("Button");
-        }
 
         if (trackAnalog)
-        {
             StartCoroutine("Analog");
-            StartCoroutine("colorChange");
-        }
     }
 
     /// <summary>
@@ -171,8 +135,12 @@ public class VRPNInput : MonoBehaviour
     private IEnumerator Button()
     {
         int maxButtons = trackerButtonList.getMaxButtons();
+
         while (true)
         {
+            Vector3 origin = wandObject.transform.position;
+            Vector3 direction = wandObject.transform.forward;
+
             //i tracks the number of the current button
             for (int i = 0; i < maxButtons; ++i)
             {

@@ -32,6 +32,7 @@ public class TrackerButtonList : MonoBehaviour {
     {
         if (buttonDictionary.Keys.Count == 0)
             updateButtonMappings();
+
         if (buttonDictionary.ContainsKey(buttonNumber))
             return buttonDictionary[buttonNumber];
         else
@@ -49,6 +50,8 @@ public class TrackerButtonList : MonoBehaviour {
 
     public int getMaxButtons()
     {
+       
+
         if (buttonDictionary.Keys.Count == 0)
             updateButtonMappings();
 

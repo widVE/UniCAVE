@@ -16,8 +16,6 @@ public class GrabberTool : MonoBehaviour, ITool
     private RaycastHit hit;
     public int rayLength = 200;
     public Vector3 origin, direction, previousOrigin, previousDirection;
-    private const string IQ_WALL = "IQWall_Seq_1PC";
-    private const string WAND = "Wand";
 
     //Initializes all the necessary fields while rendering the scene
     private void Start()
@@ -25,12 +23,12 @@ public class GrabberTool : MonoBehaviour, ITool
         //Get all necessary game objects
         if (wandObject == null)
         {
-            wandObject = GameObject.Find(WAND);
+            Debug.LogError("Need to set wand object!");
         }
 
         if (holder == null)
         {
-            holder = GameObject.Find(IQ_WALL);
+            Debug.LogError("Need to set holder object!");
         }
     }
 

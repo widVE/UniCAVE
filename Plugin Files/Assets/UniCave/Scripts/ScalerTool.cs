@@ -17,12 +17,12 @@ public class ScalerTool : MonoBehaviour, ITool
         //Get all necessary game objects
         if (wandObject == null)
         {
-            wandObject = GameObject.Find("Wand");
+            Debug.LogError("Need to set wand object!");
         }
 
         if (holder == null)
         {
-            holder = GameObject.Find("WALL");
+            Debug.LogError("Need to set holder object!");
         }
     }
 	

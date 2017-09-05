@@ -4,11 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class RotatorTool : MonoBehaviour, ITool {
-    GameObject wandObject;
-    GameObject holder;
+    public GameObject wandObject;
+    public GameObject holder;
     RaycastHit refHit;
-    private const string IQ_WALL = "IQWall_Seq_1PC";
-    private const string WAND = "Wand";
 
 
     /// <summary>
@@ -34,12 +32,12 @@ public class RotatorTool : MonoBehaviour, ITool {
         //Get all necessary game objects
         if (wandObject == null)
         {
-            wandObject = GameObject.Find(WAND);
+            Debug.LogError("Need to set wand object!");
         }
 
         if (holder == null)
         {
-            holder = GameObject.Find(IQ_WALL);
+            Debug.LogError("Need to set holder object!");
         }
     }
 	

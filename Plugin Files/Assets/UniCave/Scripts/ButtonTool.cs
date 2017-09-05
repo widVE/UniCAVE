@@ -21,8 +21,6 @@ public class ButtonTool : MonoBehaviour, ITool
     public float point;
     //int click;
     int buttonDrag;
-    private const string IQ_WALL = "IQWall_Seq_1PC";
-    private const string WAND = "Wand";
     public Event eventsystem;
     public Dropdown dropdown;
     public Toggle toggle;
@@ -175,12 +173,12 @@ public class ButtonTool : MonoBehaviour, ITool
         //Get all necessary game objects
         if (wandObject == null)
         {
-            wandObject = GameObject.Find(WAND);
+            Debug.LogError("Need to set wand object!");
         }
 
         if (holder == null)
         {
-            holder = GameObject.Find(IQ_WALL);
+            Debug.LogError("Need to set holder object!");
         }
     }
 

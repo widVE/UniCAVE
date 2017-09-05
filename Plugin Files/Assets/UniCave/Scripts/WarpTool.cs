@@ -10,10 +10,6 @@ public class WarpTool : MonoBehaviour, ITool
     private RaycastHit hit;
     public int rayLength;
     public Stack<Vector3> previousWarps;
-    //int warp;
-    //int undo;
-    private const string IQ_WALL = "IQWall_Seq_1PC";
-    private const string WAND = "Wand";
 
     /// <summary>
     /// Basically a constructor
@@ -23,12 +19,12 @@ public class WarpTool : MonoBehaviour, ITool
         //Get all necessary game objects
         if (wandObject == null)
         {
-            wandObject = GameObject.Find(WAND);
+            Debug.LogError("Need to set wand object!");
         }
 
         if (holder == null)
         {
-            holder = GameObject.Find(IQ_WALL);
+            Debug.LogError("Need to set holder object!");
         }
 
         //StartCoroutine("Raycaster");
@@ -55,7 +51,7 @@ public class WarpTool : MonoBehaviour, ITool
         else
         {
             //Transport the IQstation to the end of the rayCast
-            holder.transform.Translate(direction * rayLength);
+            holder.transform.position = Vector3.Lerp(holder.transform.position, holder.transform.position + direction * rayLength, .75f);
         }
     }
 
