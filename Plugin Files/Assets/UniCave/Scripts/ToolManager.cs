@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ToolManager2 : MonoBehaviour
+public class ToolManager : MonoBehaviour
 {
     //Initialize member variables
     public List<ITool> list;
@@ -24,7 +24,7 @@ public class ToolManager2 : MonoBehaviour
     /// </summary>
     /// <param name="wandObject_"></param>
     /// <param name="holder_"></param>
-    public ToolManager2(GameObject wandObject_, GameObject wandControls_, GameObject TopLevelUniCAVE_, double deadZone, float rotationSpeed, float movementSpeed, Text tool_)
+    public ToolManager(GameObject wandObject_, GameObject wandControls_, GameObject TopLevelUniCAVE_, double deadZone, float rotationSpeed, float movementSpeed, Text tool_)
     {
         wandObject = wandObject_;
         tool = tool_;

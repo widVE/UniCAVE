@@ -46,7 +46,7 @@ public class VRPNInput : MonoBehaviour
     public double deadZone = 0.05;
     public Text tool;
     public GameObject canvas;
-    private ToolManager2 toolManager;
+    private ToolManager toolManager;
     public float rayLength = 200;
     Dictionary<TrackerButton, bool> buttonState = new Dictionary<TrackerButton, bool>();
     
@@ -101,7 +101,7 @@ public class VRPNInput : MonoBehaviour
         }
         //Add a toolManager to the wandObject to shuffle between tools
        // wandObject.AddComponent<ToolManager2>();
-        toolManager = new ToolManager2(wandObject, this.gameObject, TopLevelUniCAVE, deadZone, rotationSpeed, movementSpeed, tool);
+        toolManager = new ToolManager(wandObject, this.gameObject, TopLevelUniCAVE, deadZone, rotationSpeed, movementSpeed, tool);
         //add state of each button
         foreach(TrackerButton btn in Enum.GetValues(typeof(TrackerButton)))
         {
