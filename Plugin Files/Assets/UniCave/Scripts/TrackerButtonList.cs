@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic; // Import the System.Collections.Generic class to give us access to List<>
 
+
 public class TrackerButtonList : MonoBehaviour {
 
     //This is our custom class with our variables
@@ -10,10 +11,12 @@ public class TrackerButtonList : MonoBehaviour {
     //This is our list we want to use to represent our class as an array.
     public List<ButtonMapping> list = new List<ButtonMapping>(1);
     private Dictionary<int, TrackerButton> buttonDictionary = new Dictionary<int, TrackerButton>();
+    public VRPNInput vrpnInput;
 
 
     private void Start()
     {
+        vrpnInput = this.GetComponent<VRPNInput>();
         updateButtonMappings();
     }
 

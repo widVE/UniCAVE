@@ -1163,8 +1163,6 @@ MonoBehaviour:
     ButtonNumber: 5
   - MappedButton: 1
     ButtonNumber: 0
-  - MappedButton: 2
-    ButtonNumber: 1
   - MappedButton: 3
     ButtonNumber: 2
   - MappedButton: 4
@@ -1173,6 +1171,7 @@ MonoBehaviour:
     ButtonNumber: 6
   - MappedButton: 8
     ButtonNumber: 7
+  vrpnInput: {fileID: 114802848907875710}
 --- !u!114 &114141025113171312
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1349,6 +1348,7 @@ MonoBehaviour:
   canvas: {fileID: 1374427951566982}
   rayLength: 200
   panel: {fileID: 1374427951566982}
+  maxButtons: 20
 --- !u!114 &114845123749246628
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1397,9 +1397,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 542a8d9bb9907364f947c05e994a56e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wandObject: {fileID: 1059795765496838}
+  wandObject: {fileID: 114375519271296774}
   red: {fileID: 2100000, guid: 340441dc6c378f341b1cfe229819b21d, type: 2}
   green: {fileID: 2100000, guid: 19f1bfcf7dbbbad41a370f747af6ba9f, type: 2}
+  currentValue: 0
 --- !u!114 &114889943601574186
 MonoBehaviour:
   m_ObjectHideFlags: 1

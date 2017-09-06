@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 
 public static class VRPN
 {
+    static int frame = 0;
     [DllImport("unityVrpn")]
     private static extern double vrpnAnalogExtern(string address, int channel, int frameCount);
 
@@ -19,7 +20,8 @@ public static class VRPN
 
     public static bool vrpnButton(string address, int channel)
     {
-        return vrpnButtonExtern(address, channel, Time.frameCount);
+        
+        return vrpnButtonExtern(address, channel, frame++);
     }
 
     //todo - need to allow different transforms here...

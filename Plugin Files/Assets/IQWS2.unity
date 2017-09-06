@@ -161,6 +161,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114046986886136008, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+        type: 2}
+      propertyPath: list.Array.size
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4362696984026142, guid: a1e48f3a6d8c99846b96a71b54eb88e9, type: 2}
       propertyPath: m_LocalPosition.x
       value: -1.0448412
@@ -213,9 +218,85 @@ Prefab:
       propertyPath: m_ViewID.m_Type
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114046986886136008, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+        type: 2}
+      propertyPath: list.Array.data[2].ButtonNumber
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114046986886136008, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+        type: 2}
+      propertyPath: vrpnInput
+      value: 
+      objectReference: {fileID: 1027662090}
+    - target: {fileID: 114046986886136008, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+        type: 2}
+      propertyPath: list.Array.data[2].MappedButton
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114046986886136008, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+        type: 2}
+      propertyPath: list.Array.data[3].MappedButton
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114046986886136008, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+        type: 2}
+      propertyPath: list.Array.data[3].ButtonNumber
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114046986886136008, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+        type: 2}
+      propertyPath: list.Array.data[4].MappedButton
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 114046986886136008, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+        type: 2}
+      propertyPath: list.Array.data[4].ButtonNumber
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 114046986886136008, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+        type: 2}
+      propertyPath: list.Array.data[5].MappedButton
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 114046986886136008, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+        type: 2}
+      propertyPath: list.Array.data[5].ButtonNumber
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 114046986886136008, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+        type: 2}
+      propertyPath: list.Array.data[6].MappedButton
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 114046986886136008, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+        type: 2}
+      propertyPath: list.Array.data[6].ButtonNumber
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 114877607506948868, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+        type: 2}
+      propertyPath: wandControls
+      value: 
+      objectReference: {fileID: 1027662090}
+    - target: {fileID: 114877607506948868, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+        type: 2}
+      propertyPath: wandObject
+      value: 
+      objectReference: {fileID: 2137519572}
+    - target: {fileID: 114046986886136008, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+        type: 2}
+      propertyPath: list.Array.data[0].ButtonNumber
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a1e48f3a6d8c99846b96a71b54eb88e9, type: 2}
   m_IsPrefabParent: 0
+--- !u!114 &1027662090 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114802848907875710, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+    type: 2}
+  m_PrefabInternal: {fileID: 1027662089}
+  m_Script: {fileID: 11500000, guid: 54bb36da4cc6dd04caa11c4973218a22, type: 3}
 --- !u!1 &1848675253
 GameObject:
   m_ObjectHideFlags: 0
@@ -297,3 +378,9 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2137519572 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114375519271296774, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+    type: 2}
+  m_PrefabInternal: {fileID: 1027662089}
+  m_Script: {fileID: 11500000, guid: f2500cff2cf6d974ba5a748c4386fb8b, type: 3}

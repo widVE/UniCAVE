@@ -18,7 +18,10 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
 using System;
+using System.Threading;
+using UnityEditor;
 
+[ExecuteInEditMode]
 public class VRPNInput : MonoBehaviour
 {
 
@@ -34,6 +37,7 @@ public class VRPNInput : MonoBehaviour
     [SerializeField]
     private bool trackAnalog = true;
 
+    private int lastButtonPressed = -1;
 
     public TrackerButtonList trackerButtonList;
     public GameObject TopLevelUniCAVE;
@@ -55,6 +59,10 @@ public class VRPNInput : MonoBehaviour
     //bool hasStarted = false;
 
     public GameObject panel;
+
+    public int maxButtons = 20;
+    private const int MAX_LOOPS_BUTTON_CHECK = 20;
+    private const int SLEEP_TIMEOUT = 100;
     
 
     
@@ -87,51 +95,61 @@ public class VRPNInput : MonoBehaviour
         }
     }
 
-
+   
 
     private void Start()
     {
-        if (trackerButtonList == null)
-            trackerButtonList = this.GetComponent<TrackerButtonList>();
-
-        if (trackerButtonList == null)
+        if (!Application.isPlaying)
         {
-            this.gameObject.AddComponent(typeof(TrackerButtonList));
-            trackerButtonList = this.GetComponent<TrackerButtonList>();
+            //Debug.Log("Start coroutine");
+            //coroutine = EditorCoroutine.start(CheckForButton());
         }
-        //Add a toolManager to the wandObject to shuffle between tools
-       // wandObject.AddComponent<ToolManager2>();
-        toolManager = new ToolManager(wandObject, this.gameObject, TopLevelUniCAVE, deadZone, rotationSpeed, movementSpeed, tool);
-        //add state of each button
-        foreach(TrackerButton btn in Enum.GetValues(typeof(TrackerButton)))
+        else
         {
-            buttonState.Add(btn, false);
-        }
-        
-        //this gets rid of this object from non-head nodes...we only want this running on the machine that connects to VRPN...
-        //this assumes a distributed type setup, where one machine connects to the tracking system and distributes information
-        //to other machines...
-        //some setups may try to connect each machine to vrpn...
-        //in that case, we wouldn't want to destroy this object..
-        if (System.Environment.MachineName != MasterTrackingData.HeadNodeMachineName)
-        {
-            Debug.Log("Removing tracker settings from " + System.Environment.MachineName);
-            Destroy(this);
-            return;
-        }
+            if (trackerButtonList == null)
+                trackerButtonList = this.GetComponent<TrackerButtonList>();
 
-        //Start the coroutines
-        if (trackButton)
-            StartCoroutine("Button");
+            if (trackerButtonList == null)
+            {
+                this.gameObject.AddComponent(typeof(TrackerButtonList));
+                trackerButtonList = this.GetComponent<TrackerButtonList>();
+            }
+            //Add a toolManager to the wandObject to shuffle between tools
+            // wandObject.AddComponent<ToolManager2>();
+            toolManager = new ToolManager(wandObject, this.gameObject, TopLevelUniCAVE, deadZone, rotationSpeed, movementSpeed, tool);
+            //add state of each button
+            foreach (TrackerButton btn in Enum.GetValues(typeof(TrackerButton)))
+            {
+                buttonState.Add(btn, false);
+            }
 
-        if (trackAnalog)
-            StartCoroutine("Analog");
+            //this gets rid of this object from non-head nodes...we only want this running on the machine that connects to VRPN...
+            //this assumes a distributed type setup, where one machine connects to the tracking system and distributes information
+            //to other machines...
+            //some setups may try to connect each machine to vrpn...
+            //in that case, we wouldn't want to destroy this object..
+            if (System.Environment.MachineName != MasterTrackingData.HeadNodeMachineName)
+            {
+                Debug.Log("Removing tracker settings from " + System.Environment.MachineName);
+                Destroy(this);
+                return;
+            }
+
+            //Start the coroutines
+            if (trackButton)
+                StartCoroutine("Button");
+
+            if (trackAnalog)
+                StartCoroutine("Analog");
+        }
+       
     }
 
-    /// <summary>
-    /// Asynchronous method taking in button input and sending it to the current selected tool
-    /// </summary>
-    /// <returns></returns>
+
+        /// <summary>
+        /// Asynchronous method taking in button input and sending it to the current selected tool
+        /// </summary>
+        /// <returns></returns>
     private IEnumerator Button()
     {
         int maxButtons = trackerButtonList.getMaxButtons();
@@ -198,6 +216,29 @@ public class VRPNInput : MonoBehaviour
             toolManager.handleAnalog(analogHorizontal, analogVertical);
             yield return null;
         }
+    }
+
+
+    public int GetPushedButton()
+    {
+        lastButtonPressed = -1;
+        for(int ii=0;ii<MAX_LOOPS_BUTTON_CHECK;ii++)
+        {
+            for (int jj = 0; jj < maxButtons; jj++)
+            {
+                bool btnValue = VRPN.vrpnButton(trackerAddress, jj);
+                if (btnValue)
+                    lastButtonPressed = jj;
+
+            }
+            if (lastButtonPressed > -1)
+            {
+               return lastButtonPressed;
+            }
+            Thread.Sleep(SLEEP_TIMEOUT);
+        }
+        return -1;
+
     }
 
 }
