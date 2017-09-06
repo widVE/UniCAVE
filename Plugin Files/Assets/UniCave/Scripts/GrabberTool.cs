@@ -88,11 +88,19 @@ public class GrabberTool : MonoBehaviour, ITool
         //throw new NotImplementedException();
     }
 
+    /// <summary>
+    /// Handles analog input - not used
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
     public void Analog(double x, double y)
     {
         throw new NotImplementedException();
     }
 
+    /// <summary>
+    /// Handles the name of the tool - grab tool.
+    /// </summary>
     public string ToolName
     {
         get

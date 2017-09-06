@@ -5,8 +5,16 @@ using System.Linq;
 using System.Text;
 using UnityEditor;
 
+/// <summary>
+/// Class to run editor co-routines. Not used right now.
+/// </summary>
 public class EditorCoroutine
 {
+    /// <summary>
+    /// Starts a new coroutine
+    /// </summary>
+    /// <param name="_routine">Function to call</param>
+    /// <returns></returns>
     public static EditorCoroutine start(IEnumerator _routine)
     {
         EditorCoroutine coroutine = new EditorCoroutine(_routine);
@@ -14,31 +22,39 @@ public class EditorCoroutine
         return coroutine;
     }
 
+
     readonly IEnumerator routine;
+    
+    /// <summary>
+    /// Constructor for routine
+    /// </summary>
+    /// <param name="_routine"></param>
     EditorCoroutine(IEnumerator _routine)
     {
         routine = _routine;
     }
 
+    /// <summary>
+    /// Starts the coroutine exec
+    /// </summary>
     void start()
     {
-        //Debug.Log("start");
         EditorApplication.update += update;
     }
+
+    /// <summary>
+    /// Stops the coroutine
+    /// </summary>
     public void stop()
     {
-        //Debug.Log("stop");
         EditorApplication.update -= update;
     }
 
+    /// <summary>
+    /// Handles the coroutine exec.
+    /// </summary>
     void update()
     {
-        /* NOTE: no need to try/catch MoveNext,
-         * if an IEnumerator throws its next iteration returns false.
-         * Also, Unity probably catches when calling EditorApplication.update.
-         */
-
-        //Debug.Log("update");
         if (!routine.MoveNext())
         {
             stop();

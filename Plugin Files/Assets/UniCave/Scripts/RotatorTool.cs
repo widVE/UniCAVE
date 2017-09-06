@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// handles the rotation of an object.
+/// </summary>
 public class RotatorTool : MonoBehaviour, ITool {
     public GameObject wandObject;
     public GameObject holder;
@@ -67,6 +70,9 @@ public class RotatorTool : MonoBehaviour, ITool {
 
     }
 
+    /// <summary>
+    /// Name of the tool - Rotate tool.
+    /// </summary>
     public string ToolName
     {
         get

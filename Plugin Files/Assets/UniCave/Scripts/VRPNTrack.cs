@@ -31,6 +31,7 @@ public class VRPNTrack : MonoBehaviour
 
     public bool debugOutput = false;
 
+    //handles left coordinate system from right based tracking system such as ART.
     public bool convertToLeft = false;
 
     public int Channel

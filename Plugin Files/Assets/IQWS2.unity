@@ -213,6 +213,11 @@ Prefab:
       propertyPath: m_ViewID.m_Type
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114046986886136008, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+        type: 2}
+      propertyPath: list.Array.data[0].ButtonNumber
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a1e48f3a6d8c99846b96a71b54eb88e9, type: 2}
   m_IsPrefabParent: 0

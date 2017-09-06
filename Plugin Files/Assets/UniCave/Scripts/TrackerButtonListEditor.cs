@@ -3,6 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 
+
+/// <summary>
+/// Editor for the list of mappings. We could potentially move this to VRPNInput in the future.
+/// </summary>
 [CustomEditor(typeof(TrackerButtonList))]
 public class TrackerButtonListEditor : Editor
 { 
@@ -11,12 +15,18 @@ public class TrackerButtonListEditor : Editor
 	SerializedObject GetTarget;
 	SerializedProperty ThisList;
 	int ListSize;
+
+    /// <summary>
+    /// Noting to start yet.
+    /// </summary>
     private void Start()
     {
         
     }
 
-
+    /// <summary>
+    /// Handles the enabling of the editor. Gets the list currently.
+    /// </summary>
 	void OnEnable()
     {
 		t = (TrackerButtonList)target;
@@ -24,6 +34,10 @@ public class TrackerButtonListEditor : Editor
 		ThisList = GetTarget.FindProperty("list"); // Find the List in our script and create a refrence of it
 	}
 
+
+    /// <summary>
+    /// Handles the update to the GUI
+    /// </summary>
 	public override void OnInspectorGUI()
     {
 		//Update our list
@@ -77,7 +91,7 @@ public class TrackerButtonListEditor : Editor
             if (GUILayout.Button("Map Button"))
             {
                 int button = t.vrpnInput.GetPushedButton();
-                if (button >-1)
+                if (button > -1)
                     MyButtonNumber.intValue = button;
                 
             }

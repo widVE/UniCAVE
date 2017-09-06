@@ -21,6 +21,10 @@ using System;
 using System.Threading;
 using UnityEditor;
 
+
+/// <summary>
+/// Updated VRPNInput module with tool management.
+/// </summary>\
 [ExecuteInEditMode]
 public class VRPNInput : MonoBehaviour
 {
@@ -37,30 +41,31 @@ public class VRPNInput : MonoBehaviour
     [SerializeField]
     private bool trackAnalog = true;
 
-    private int lastButtonPressed = -1;
+    
 
     public TrackerButtonList trackerButtonList;
     public GameObject TopLevelUniCAVE;
     public GameObject wandObject = null;
 
     public bool debugOutput = false;
-    //public int numButtons = 6;
     public float movementSpeed = 0.01f;
     public float rotationSpeed = 0.05f;
     public double deadZone = 0.05;
     public Text tool;
     public GameObject canvas;
-    private ToolManager toolManager;
-    public float rayLength = 200;
-    Dictionary<TrackerButton, bool> buttonState = new Dictionary<TrackerButton, bool>();
-    
-    RaycastHit hit;
-    Vector3 offset;
-    //bool hasStarted = false;
-
     public GameObject panel;
-
     public int maxButtons = 20;
+    public float rayLength = 200;
+    public bool negativeAnalogX = false;
+    public bool negativeAnalogY = true;
+
+
+    private RaycastHit hit;
+    private Vector3 offset;
+    private ToolManager toolManager;
+    private int lastButtonPressed = -1;
+    private Dictionary<TrackerButton, bool> buttonState = new Dictionary<TrackerButton, bool>();
+
     private const int MAX_LOOPS_BUTTON_CHECK = 20;
     private const int SLEEP_TIMEOUT = 100;
     
@@ -96,15 +101,12 @@ public class VRPNInput : MonoBehaviour
     }
 
    
-
+    /// <summary>
+    /// Handles the startup
+    /// </summary>
     private void Start()
     {
-        if (!Application.isPlaying)
-        {
-            //Debug.Log("Start coroutine");
-            //coroutine = EditorCoroutine.start(CheckForButton());
-        }
-        else
+        if (Application.isPlaying)
         {
             if (trackerButtonList == null)
                 trackerButtonList = this.GetComponent<TrackerButtonList>();
@@ -115,8 +117,7 @@ public class VRPNInput : MonoBehaviour
                 trackerButtonList = this.GetComponent<TrackerButtonList>();
             }
             //Add a toolManager to the wandObject to shuffle between tools
-            // wandObject.AddComponent<ToolManager2>();
-            toolManager = new ToolManager(wandObject, this.gameObject, TopLevelUniCAVE, deadZone, rotationSpeed, movementSpeed, tool);
+            toolManager = new ToolManager(wandObject, this.gameObject, TopLevelUniCAVE, deadZone, rotationSpeed, movementSpeed, tool, negativeAnalogX, negativeAnalogY);
             //add state of each button
             foreach (TrackerButton btn in Enum.GetValues(typeof(TrackerButton)))
             {
@@ -146,10 +147,10 @@ public class VRPNInput : MonoBehaviour
     }
 
 
-        /// <summary>
-        /// Asynchronous method taking in button input and sending it to the current selected tool
-        /// </summary>
-        /// <returns></returns>
+    /// <summary>
+    /// Asynchronous method taking in button input and sending it to the current selected tool
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator Button()
     {
         int maxButtons = trackerButtonList.getMaxButtons();
@@ -218,7 +219,10 @@ public class VRPNInput : MonoBehaviour
         }
     }
 
-
+    /// <summary>
+    /// Gets the latest pushed button on tracker from vrpn. Stops after a preset amount of time (2 seconds currently).
+    /// </summary>
+    /// <returns>The number of the pushed button (0...n-1) or -1 if no button is pushed on tracker.</returns>
     public int GetPushedButton()
     {
         lastButtonPressed = -1;
@@ -226,10 +230,10 @@ public class VRPNInput : MonoBehaviour
         {
             for (int jj = 0; jj < maxButtons; jj++)
             {
-                bool btnValue = VRPN.vrpnButton(trackerAddress, jj);
+                bool btnValue = VRPN.vrpnButton(trackerAddress, jj, ii);
                 if (btnValue)
                     lastButtonPressed = jj;
-
+                
             }
             if (lastButtonPressed > -1)
             {

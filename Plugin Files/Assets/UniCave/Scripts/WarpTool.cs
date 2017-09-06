@@ -3,6 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// Handles the Warp tool for the user to move quickly in the scene.
+/// </summary>
 public class WarpTool : MonoBehaviour, ITool
 {
     public GameObject holder;
@@ -113,6 +117,9 @@ public class WarpTool : MonoBehaviour, ITool
         //throw new NotImplementedException();
     }
 
+    /// <summary>
+    /// Gets the tool name - warp tool.
+    /// </summary>
     public string ToolName
     {
         get

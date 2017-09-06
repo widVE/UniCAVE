@@ -6,6 +6,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Handles the movement within the scene using two analog controls.
+/// </summary>
 public class DriveTool : ITool {
 
     public float movementSpeed;
@@ -14,8 +17,11 @@ public class DriveTool : ITool {
     public bool restrictVerticalMovement = true;
     public GameObject holder;
     public GameObject wand;
-    bool rotateVertical = false;
-    bool rotateHorizontal = true;
+    private bool negateAnalogX = false;
+    private bool negateAnalogY = true;
+
+    private bool rotateVertical = false;
+    private bool rotateHorizontal = true;
 
     /// <summary>
     /// DriveTool Constructor. Object handles all the analog 
@@ -23,13 +29,15 @@ public class DriveTool : ITool {
     /// <param name="deadZone_"></param>
     /// <param name="rotationSpeed_"></param>
     /// <param name="movementSpeed_"></param>
-    public DriveTool(GameObject holder_, GameObject wandObject_, double deadZone_, float rotationSpeed_, float movementSpeed_)
+    public DriveTool(GameObject holder_, GameObject wandObject_, double deadZone_, float rotationSpeed_, float movementSpeed_, bool negateAnalogX_, bool negateAnalogY_)
     {
         holder = holder_;
         wand = wandObject_;
         movementSpeed = movementSpeed_;
         rotationSpeed = rotationSpeed_;
-        deadZone = deadZone_;        
+        deadZone = deadZone_;
+        negateAnalogX = negateAnalogX_;
+        negateAnalogY = negateAnalogY_;
     }
 
     /// <summary>
@@ -40,7 +48,7 @@ public class DriveTool : ITool {
     public void Analog(double x, double y)
     {
         //Create a vector fromt the X and Y data
-        Vector2 analogData = new Vector2((float)x, (float)-y);
+        Vector2 analogData = new Vector2((float)(((negateAnalogX) ? -1 : 1) * x), (float)(((negateAnalogY) ? -1: 1 )* y));
         //Set the movement speed of the wandObject to the magnitude of the vector
         movementSpeed = analogData.magnitude; /// 2f;
 
@@ -73,32 +81,32 @@ public class DriveTool : ITool {
         }
     }
 
-    //Switches the orientation of the rotation of the holder object
+    /// <summary>
+    /// Switches between rotate and translate for horizontal movement
+    /// </summary>
     public void setHorizontal()
     {
         rotateHorizontal = !rotateHorizontal;
     }
 
+    /// <summary>
+    /// Switches between rotate and translate for vertical movement
+    /// </summary>
     public void setVertical()
     {
         rotateVertical = !rotateVertical;
     }
+
+    /// <summary>
+    /// Handles button click - does nothing
+    /// </summary>
+    /// <param name="button"></param>
     public void ButtonClick(TrackerButton button)
     {
         throw new NotImplementedException();
     }
 
-    public void ButtonDrag(RaycastHit hit, Vector3 sdlfkg)
-    {
-        throw new NotImplementedException();
-    }
-
     public void init()
-    {
-        throw new NotImplementedException();
-    }
-
-    public void init(GameObject holder, GameObject wandObject)
     {
         throw new NotImplementedException();
     }
@@ -213,11 +221,21 @@ public class DriveTool : ITool {
             setVertical();
     }
 
+    /// <summary>
+    /// Handles button drag - not used.
+    /// </summary>
+    /// <param name="hit"></param>
+    /// <param name="offset"></param>
+    /// <param name="origin"></param>
+    /// <param name="direction"></param>
     public void ButtonDrag(RaycastHit hit, Vector3 offset, Vector3 origin, Vector3 direction)
     {
         throw new NotImplementedException();
     }
 
+    /// <summary>
+    /// The name of the tool - Drive tool.
+    /// </summary>
     public string ToolName
     {
         get

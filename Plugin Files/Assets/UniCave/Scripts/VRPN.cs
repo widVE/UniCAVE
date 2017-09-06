@@ -3,7 +3,6 @@ using System.Runtime.InteropServices;
 
 public static class VRPN
 {
-    static int frame = 0;
     [DllImport("unityVrpn")]
     private static extern double vrpnAnalogExtern(string address, int channel, int frameCount);
 
@@ -20,8 +19,19 @@ public static class VRPN
 
     public static bool vrpnButton(string address, int channel)
     {
-        
-        return vrpnButtonExtern(address, channel, frame++);
+        return vrpnButtonExtern(address, channel, Time.frameCount);
+    }
+
+    /// <summary>
+    /// Get if a tracker button is pressed. Needed for editor mode since framecount is not available.
+    /// </summary>
+    /// <param name="address">The address of the tracker</param>
+    /// <param name="channel">The button number of the button (0 based).</param>
+    /// <param name="frameCount">The count of the frame.</param>
+    /// <returns></returns>
+    public static bool vrpnButton(string address, int channel, int frameCount)
+    {
+        return vrpnButtonExtern(address, channel, frameCount);
     }
 
     //todo - need to allow different transforms here...

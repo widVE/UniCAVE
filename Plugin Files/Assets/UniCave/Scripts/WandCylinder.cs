@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Class to update the ray drawn via a cylinder to have different colors.
+/// </summary>
 public class WandCylinder : MonoBehaviour {
 
     public VRPNTrack wandObject;
@@ -10,6 +13,9 @@ public class WandCylinder : MonoBehaviour {
     public bool currentValue = false;
 
 
+    /// <summary>
+    /// Starts up and inits the ray to red.
+    /// </summary>
     // Use this for initialization
     void Start ()
     {
@@ -19,7 +25,10 @@ public class WandCylinder : MonoBehaviour {
             Debug.LogError("Wand object must be set!");
     }
 	
-	// Update is called once per frame
+
+    /// <summary>
+    /// Updates the ray to be red on no hit and green when an object is hit.
+    /// </summary>
 	void Update ()
     {
         if (wandObject != null)

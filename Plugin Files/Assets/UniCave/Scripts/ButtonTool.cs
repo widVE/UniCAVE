@@ -20,7 +20,6 @@ public class ButtonTool : MonoBehaviour, ITool
     public Text txt;
     public float point;
     //int click;
-    int buttonDrag;
     public Event eventsystem;
     public Dropdown dropdown;
     public Toggle toggle;

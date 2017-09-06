@@ -4,6 +4,10 @@ using System.Collections.Generic;
 //using UnityEditor;
 using UnityEngine;
 
+
+/// <summary>
+/// The tool for scaling an object - currently not used.
+/// </summary>
 public class ScalerTool : MonoBehaviour, ITool
 
 {
@@ -51,6 +55,14 @@ public class ScalerTool : MonoBehaviour, ITool
         throw new NotImplementedException();
     }
 
+
+    /// <summary>
+    /// Handles the scaling for the tool
+    /// </summary>
+    /// <param name="hit"></param>
+    /// <param name="offset"></param>
+    /// <param name="position"></param>
+    /// <param name="direction"></param>
     public void ButtonDrag(RaycastHit hit, Vector3 offset, Vector3 position, Vector3 direction)
     {
         if(origin == null)
@@ -66,6 +78,9 @@ public class ScalerTool : MonoBehaviour, ITool
         hit.transform.localScale = new Vector3(objectScale.x + scale, objectScale.y + scale, objectScale.z + scale);
     }
 
+    /// <summary>
+    /// The tool name - scale tool.
+    /// </summary>
     public string ToolName
     {
         get

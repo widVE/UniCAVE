@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Enumeration of the buttons we can map. This includes the trigger, 6 buttons, previous & next buttons, and Unknown for a bad mapping.
+/// </summary>
 public enum TrackerButton
 {
 	Trigger,
