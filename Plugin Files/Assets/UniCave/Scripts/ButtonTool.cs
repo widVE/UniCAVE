@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection.Emit;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -11,7 +12,7 @@ using UnityEngine.UI;
 /// </summary>
 public class ButtonTool : MonoBehaviour, ITool
 {
-    public GameObject canvas;
+    //public GameObject canvas;
     public Canvas c;
     RaycastHit hit;
     public GameObject wandObject;
@@ -25,6 +26,11 @@ public class ButtonTool : MonoBehaviour, ITool
     public Toggle toggle;
     RaycastHit tester;
     Vector3 origin, direction;
+
+    RaycastHit objectHit;
+    RaycastHit emptyHit;
+
+    Dictionary<int, Dropdown> dropDownDictionary = new Dictionary<int, Dropdown>();
 
     /// <summary>
     /// Selects or highlights UI elements 
@@ -72,6 +78,26 @@ public class ButtonTool : MonoBehaviour, ITool
             yield return null;
     }
 
+    /// <summary>
+    /// Handles button down event.
+    /// </summary>
+    /// <param name="buttonNum">The button pressed</param>
+    /// <param name="origin">The position of the tracker</param>
+    /// <param name="direction">The forward direction of the tracker</param>
+    /// <param name="hit">The object hit with raycast.</param>
+    public void ButtonDown(TrackerButton buttonNum, Vector3 origin, Vector3 direction, RaycastHit hit)
+    {
+        if (buttonNum == TrackerButton.Trigger)
+            objectHit = hit;
+    }
+
+    public void ValueChanged(Dropdown dropdown, int val)
+    {
+        Debug.Log("VALUE CHANGE");
+        dropdown.onValueChanged.RemoveAllListeners();
+        dropDownDictionary.Remove(dropdown.GetInstanceID());
+        dropdown.Hide();
+    }
 
     /// <summary>
     /// Handles the UI button click interactions 
@@ -99,30 +125,36 @@ public class ButtonTool : MonoBehaviour, ITool
             if (hit.collider != null && hit.transform.gameObject.GetComponent<Dropdown>() != null)
             {
                 Dropdown dropdown = hit.transform.gameObject.GetComponent<Dropdown>();
-                Debug.Log(dropdown.value);
+                Debug.Log(dropdown);
 
-                if (hide)
+                if (dropDownDictionary.ContainsKey(dropdown.GetInstanceID()))
                 {
-                    dropdown.Show();
-                    hide = false;
+                    dropdown.Hide();
+                    dropDownDictionary.Remove(dropdown.GetInstanceID());
                 }
                 else
                 {
-                    dropdown.Hide();
-                    hide = true;
+                    dropDownDictionary.Add(dropdown.GetInstanceID(), dropdown);
+                    dropdown.onValueChanged.AddListener((e) => { ValueChanged(dropdown, e); });
+                    dropdown.Show();
                 }
+                
+
+                
             }
 
             //If the object is a dropdown menu selectable set that as the new dropdown value and call the method attatched 
             else if (hit.collider != null && hit.transform.gameObject.GetComponent<Toggle>() != null)
             {
-                Toggle t = hit.transform.gameObject.GetComponent<Toggle>();
+                Toggle toggle = hit.transform.gameObject.GetComponent<Toggle>();
+                toggle.isOn = !toggle.isOn;
+                /*Toggle t = hit.transform.gameObject.GetComponent<Toggle>();
                 Dropdown d = t.GetComponentInParent<Dropdown>();
                 int number = t.name[5] - 48;
                 d.value = number;
                 d.RefreshShownValue();
                 d.Hide();
-                hide = true;
+                hide = true;*/
             }
 
 
@@ -130,6 +162,7 @@ public class ButtonTool : MonoBehaviour, ITool
             //If the object is a button call the onClick method
             else if (hit.collider != null && hit.transform.gameObject.GetComponent<Button>() != null)
             {
+                Debug.Log("GOT BUTTON");
                 Button button = hit.transform.gameObject.GetComponent<Button>();
                 if (buttonNum == TrackerButton.Trigger)
                 {
@@ -137,6 +170,7 @@ public class ButtonTool : MonoBehaviour, ITool
                 }
 
             }
+            objectHit = emptyHit;
         }
     }
 
@@ -152,15 +186,16 @@ public class ButtonTool : MonoBehaviour, ITool
         origin = origin_;
         direction = direction_;
 
-        Debug.Log(hit_.transform.gameObject.GetType());
         //Check the type of the object to know what to slide
-        if (hit_.transform.gameObject.GetComponent<Slider>() != null)
+        if (objectHit.transform.gameObject.GetComponent<Slider>() != null)
         {
-            slide(hit_.transform.gameObject.GetComponent<Slider>(), origin, direction);
+            Debug.Log("Got slider");
+            slide(objectHit.transform.gameObject.GetComponent<Slider>(), origin, direction);
         }
-        else if (hit_.transform.gameObject.GetComponent<Scrollbar>() != null)
+        else if (objectHit.transform.gameObject.GetComponent<Scrollbar>() != null)
         {
-            slide(hit_.transform.gameObject.GetComponent<Scrollbar>(), origin, direction);
+            Debug.Log("Got scrollbar");
+            slide(objectHit.transform.gameObject.GetComponent<Scrollbar>(), origin, direction);
         }
     }
 
@@ -187,20 +222,44 @@ public class ButtonTool : MonoBehaviour, ITool
     /// <param name="s"></param>
     /// <param name="origin"></param>
     /// <param name="direction"></param>
-    public void slide(Scrollbar s, Vector3 origin, Vector3 direction)
+    public void slide(Scrollbar scrollbar, Vector3 origin, Vector3 direction)
     {
         //Get the canvas component
 
-            Physics.Raycast(origin, direction, out hit);
-            canvas = GameObject.Find("Canvas1");
-            c = canvas.GetComponent<Canvas>();
+        Physics.Raycast(origin, direction, out hit);
+        //canvas = GameObject.Find("Canvas1");
+        c = scrollbar.GetComponentInParent<Canvas>();//canvas.GetComponent<Canvas>();
+        if (hit.distance>0)
+        {
+            RectTransform rt = scrollbar.GetComponent<RectTransform>();
+            Vector3 canvasPt = rt.InverseTransformPoint(hit.point);
+
+            float percent;
+            if ((scrollbar.direction == Scrollbar.Direction.LeftToRight) || (scrollbar.direction == Scrollbar.Direction.RightToLeft))
+                percent = (canvasPt.x - rt.rect.xMin) / (rt.rect.xMax - rt.rect.xMin);
+            else
+                percent = (canvasPt.y - rt.rect.yMin) / (rt.rect.yMax - rt.rect.yMin);
+
+            if (percent > 1.0)
+                percent = 1.0f;
+            else if (percent < 0.0)
+                percent = 0;
+
+            if ((scrollbar.direction == Scrollbar.Direction.RightToLeft) || (scrollbar.direction == Scrollbar.Direction.TopToBottom))
+                percent = 1 - percent;
+
+            scrollbar.value = percent;
+        }
+
 
         
-
-
-        GameObject scroll = s.gameObject;
+        /*GameObject scroll = s.gameObject;
         Component handle = scroll.GetComponent<Component>(); // gameObject.transform.FindChild("Handle").gameObject;
         handle.gameObject.transform.position = hit.point;
+        */
+        
+        
+        
         //Debug.Log(hit.point);
         ////Get the dimensions in the canvas space
         //Vector3 position = s.transform.localPosition;
@@ -285,87 +344,34 @@ public class ButtonTool : MonoBehaviour, ITool
     /// <param name="s"></param>
     /// <param name="origin"></param>
     /// <param name="direction"></param>
-    public void slide(Slider s, Vector3 origin, Vector3 direction)
+    public void slide(Slider slider, Vector3 origin, Vector3 direction)
     {
         Physics.Raycast(origin, direction, out hit);
-        canvas = GameObject.Find("Canvas");
-        c = canvas.GetComponent<Canvas>();
-
-        Vector3 position = s.transform.localPosition;
-        float width = s.GetComponent<RectTransform>().rect.width;
-        float height = s.GetComponent<RectTransform>().rect.height;
-
-        Vector3 sliderMiddle = s.transform.TransformPoint(s.transform.TransformPoint(position));
-        Vector3 sliderRight = c.transform.TransformPoint(new Vector3(position.x + width / 2, position.y, position.z));
-        Vector3 sliderLeft = c.transform.TransformPoint(new Vector3(position.x - width / 2, position.y, position.z));
-
-        Vector3 sliderTop = c.transform.TransformPoint(new Vector3(position.x, position.y + height / 2, position.z));
-        Vector3 sliderBottom = c.transform.TransformPoint(new Vector3(position.x, position.y - height / 2, position.z));
-
-        float sliderWidth = Math.Abs(sliderRight.x - sliderLeft.x);
-        float sliderHeight = Math.Abs(sliderTop.y - sliderBottom.y);
+        c = slider.GetComponentInParent<Canvas>();
 
 
-        float point;
-        if (s.direction == Slider.Direction.LeftToRight)
+        if (hit.distance > 0)
         {
+            RectTransform rt = slider.GetComponent<RectTransform>();
+            Vector3 canvasPt = rt.InverseTransformPoint(hit.point);
 
-            if (hit.point.x > sliderMiddle.x)
-            {
-                point = (hit.point.x - sliderMiddle.x) / (sliderWidth / 2);
-                s.value = .5f + Math.Abs(point) / 2;
-            }
+            float percent;
+            if ((slider.direction == Slider.Direction.LeftToRight) || (slider.direction == Slider.Direction.RightToLeft))
+                percent = (canvasPt.x - rt.rect.xMin) / (rt.rect.xMax - rt.rect.xMin);
             else
-            {
-                point = (sliderMiddle.x - hit.point.x) / (sliderWidth / 2);
-                s.value = .5f - Math.Abs(point) / 2;
-            }
+                percent = (canvasPt.y - rt.rect.yMin) / (rt.rect.yMax - rt.rect.yMin);
+
+            if (percent > 1.0)
+               percent = 1.0f;
+            else if (percent < 0.0)
+                percent = 0;
+
+            if ((slider.direction == Slider.Direction.RightToLeft) || (slider.direction == Slider.Direction.TopToBottom))
+                    percent = 1 - percent;
+
+            slider.value = percent * (slider.maxValue - slider.minValue) + slider.minValue;
         }
-
-        else if (s.direction == Slider.Direction.RightToLeft)
-        {
-
-            if (hit.point.x > sliderMiddle.x)
-            {
-                point = (sliderMiddle.x - hit.point.x) / (sliderWidth / 2);
-                s.value = .5f - Math.Abs(point) / 2;
-            }
-            else
-            {
-                point = (hit.point.x - sliderMiddle.x) / (sliderWidth / 2);
-                s.value = .5f + Math.Abs(point) / 2;
-            }
-        }
-
-        else if (s.direction == Slider.Direction.BottomToTop)
-        {
-
-            if (hit.point.y > sliderMiddle.y)
-            {
-                point = (hit.point.y - sliderMiddle.y) / (sliderHeight / 2);
-                s.value = .5f + Math.Abs(point) / 2;
-            }
-            else
-            {
-                point = (sliderMiddle.y - hit.point.y) / (sliderHeight / 2);
-                s.value = .5f - Math.Abs(point) / 2;
-            }
-        }
-
-        else
-        {
-
-            if (hit.point.y > sliderMiddle.y)
-            {
-                point = (sliderMiddle.y - hit.point.y) / (sliderHeight / 2);
-                s.value = .5f - Math.Abs(point) / 2;
-            }
-            else
-            {
-                point = (hit.point.y - sliderMiddle.y) / (sliderHeight / 2);
-                s.value = .5f + Math.Abs(point) / 2;
-            }
-        }
+        
     }
 
    

@@ -57,6 +57,18 @@ public class ScalerTool : MonoBehaviour, ITool
 
 
     /// <summary>
+    /// Handles button down event - does nothing right now.
+    /// </summary>
+    /// <param name="buttonNum">The button pressed</param>
+    /// <param name="origin">The position of the tracker</param>
+    /// <param name="direction">The forward direction of the tracker</param>
+    /// <param name="hit">The object hit with raycast.</param>
+    public void ButtonDown(TrackerButton buttonNum, Vector3 origin, Vector3 direction, RaycastHit hit)
+    {
+
+    }
+
+    /// <summary>
     /// Handles the scaling for the tool
     /// </summary>
     /// <param name="hit"></param>

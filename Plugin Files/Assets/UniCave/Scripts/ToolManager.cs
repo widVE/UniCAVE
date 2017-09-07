@@ -2,6 +2,7 @@
  * This class represents the toolManager object and keeps track of the different tool interfaces and shuffles between them as desired.
  */
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -110,7 +111,14 @@ public class ToolManager : MonoBehaviour
         }
         else
         {
-            list[toolNumber].ButtonClick(button, origin, direction);
+            try
+            {
+                list[toolNumber].ButtonClick(button, origin, direction);
+            }
+            catch(Exception e)
+            {
+                Debug.LogError(e);
+            }
             driveTool.ButtonClick(button, origin, direction);
             return true;
         }
@@ -128,7 +136,35 @@ public class ToolManager : MonoBehaviour
     /// <returns></returns>
     public bool handleButtonDrag(TrackerButton button,RaycastHit hit, Vector3 offset, Vector3 origin, Vector3 direction)
     {
-        list[toolNumber].ButtonDrag(hit, offset, origin, direction);
+        try
+        {
+            list[toolNumber].ButtonDrag(hit, offset, origin, direction);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e);
+        }
+        return true;
+    }
+
+    /// <summary>
+    /// Handles a button down event
+    /// </summary>
+    /// <param name="button">The button dragged</param>
+    /// <param name="hit">The object hit</param>
+    /// <param name="origin">The tracker position</param>
+    /// <param name="direction">The tracker forward direction.</param>
+    /// <returns></returns>
+    public bool handleButtonDown(TrackerButton button, RaycastHit hit, Vector3 origin, Vector3 direction)
+    {
+        try
+        {
+            list[toolNumber].ButtonDown(button, origin, direction, hit);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e);
+        }
         return true;
     }
 
@@ -140,7 +176,14 @@ public class ToolManager : MonoBehaviour
     /// <returns></returns>
     public bool handleAnalog(double horizontal, double vertical)
     {
-        driveTool.Analog(horizontal, vertical);
+        try
+        {
+            driveTool.Analog(horizontal, vertical);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e);
+        }
         return true;
     }
 

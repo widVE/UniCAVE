@@ -192,6 +192,8 @@ public class VRPNInput : MonoBehaviour
                     Physics.Raycast(origin, direction * rayLength, out hit);
                     if (hit.distance > 0)
                         offset = hit.transform.position - hit.point;
+
+                    toolManager.handleButtonDown(currentButton, hit, origin, direction);
                 }
 
                 //update the previous value

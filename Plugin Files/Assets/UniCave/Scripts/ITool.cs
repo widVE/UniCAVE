@@ -25,6 +25,9 @@ public interface ITool
     /// </summary>
     void shutDown();
 
+
+    void ButtonDown(TrackerButton buttonNum, Vector3 origin, Vector3 direction, RaycastHit hit);
+
     /// <summary>
     /// Handles the button click event. Not this happens on button up.
     /// </summary>

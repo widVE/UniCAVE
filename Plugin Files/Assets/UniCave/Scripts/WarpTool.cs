@@ -112,6 +112,18 @@ public class WarpTool : MonoBehaviour, ITool
         //Do nothing
     }
 
+    /// <summary>
+    /// Handles button down event - does nothing right now.
+    /// </summary>
+    /// <param name="buttonNum">The button pressed</param>
+    /// <param name="origin">The position of the tracker</param>
+    /// <param name="direction">The forward direction of the tracker</param>
+    /// <param name="hit">The object hit with raycast.</param>
+    public void ButtonDown(TrackerButton buttonNum, Vector3 origin, Vector3 direction, RaycastHit hit)
+    {
+
+    }
+
     public void ButtonDrag(RaycastHit hit, Vector3 offset, Vector3 origin, Vector3 direction)
     {
         //throw new NotImplementedException();
