@@ -1346,9 +1346,11 @@ MonoBehaviour:
   deadZone: 0.5
   tool: {fileID: 114616476229911742}
   canvas: {fileID: 1374427951566982}
-  rayLength: 200
   panel: {fileID: 1374427951566982}
   maxButtons: 20
+  rayLength: 200
+  negativeAnalogX: 0
+  negativeAnalogY: 1
 --- !u!114 &114845123749246628
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1360,7 +1362,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b01a2fa6d816260479a1c4f8af86c1e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvas: {fileID: 1374427951566982}
   c: {fileID: 0}
   wandObject: {fileID: 1059795765496838}
   holder: {fileID: 1627028455339872}
