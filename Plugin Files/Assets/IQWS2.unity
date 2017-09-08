@@ -1228,6 +1228,16 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 148002408733935766, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+        type: 2}
+      propertyPath: m_ViewID.m_ID
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 148002408733935766, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+        type: 2}
+      propertyPath: m_ViewID.m_Type
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 148913314269563620, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
         type: 2}
       propertyPath: m_ViewID.m_ID
@@ -1238,20 +1248,59 @@ Prefab:
       propertyPath: m_ViewID.m_Type
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 148002408733935766, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
-        type: 2}
-      propertyPath: m_ViewID.m_ID
+    - target: {fileID: 1627028455339872, guid: a1e48f3a6d8c99846b96a71b54eb88e9, type: 2}
+      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 148002408733935766, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+    - target: {fileID: 20699186716299822, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
         type: 2}
-      propertyPath: m_ViewID.m_Type
-      value: 1
+      propertyPath: m_StereoSeparation
+      value: 0.0022
       objectReference: {fileID: 0}
-    - target: {fileID: 114046986886136008, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+    - target: {fileID: 20699186716299822, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
         type: 2}
-      propertyPath: list.Array.data[0].ButtonNumber
-      value: 5
+      propertyPath: m_StereoConvergence
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 20287747065925792, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+        type: 2}
+      propertyPath: m_StereoSeparation
+      value: 0.0022
+      objectReference: {fileID: 0}
+    - target: {fileID: 20287747065925792, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+        type: 2}
+      propertyPath: m_StereoConvergence
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114141025113171312, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+        type: 2}
+      propertyPath: _LeftEyeOffset.x
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 114141025113171312, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+        type: 2}
+      propertyPath: _LeftEyeOffset.y
+      value: -0.0266
+      objectReference: {fileID: 0}
+    - target: {fileID: 114141025113171312, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+        type: 2}
+      propertyPath: _LeftEyeOffset.z
+      value: 0.031
+      objectReference: {fileID: 0}
+    - target: {fileID: 114141025113171312, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+        type: 2}
+      propertyPath: _RightEyeOffset.x
+      value: -0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 114141025113171312, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+        type: 2}
+      propertyPath: _RightEyeOffset.y
+      value: -0.0266
+      objectReference: {fileID: 0}
+    - target: {fileID: 114141025113171312, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+        type: 2}
+      propertyPath: _RightEyeOffset.z
+      value: 0.031
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a1e48f3a6d8c99846b96a71b54eb88e9, type: 2}
