@@ -6,6 +6,7 @@ using System.Collections.Generic; // Import the System.Collections.Generic class
 /// <summary>
 /// Tracks the list of button mappings
 /// </summary>
+[ExecuteInEditMode]
 public class TrackerButtonList : MonoBehaviour {
 
     //This is our custom class with our variables

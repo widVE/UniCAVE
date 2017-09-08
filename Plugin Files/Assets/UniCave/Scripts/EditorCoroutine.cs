@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 /// <summary>
 /// Class to run editor co-routines. Not used right now.
@@ -39,7 +41,9 @@ public class EditorCoroutine
     /// </summary>
     void start()
     {
+#if UNITY_EDITOR
         EditorApplication.update += update;
+#endif
     }
 
     /// <summary>
@@ -47,7 +51,9 @@ public class EditorCoroutine
     /// </summary>
     public void stop()
     {
+#if UNITY_EDITOR
         EditorApplication.update -= update;
+#endif
     }
 
     /// <summary>
@@ -61,3 +67,4 @@ public class EditorCoroutine
         }
     }
 }
+

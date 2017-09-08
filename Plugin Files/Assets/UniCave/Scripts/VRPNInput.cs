@@ -19,8 +19,9 @@ using UnityEngine.EventSystems;
 using System.Collections.Generic;
 using System;
 using System.Threading;
+#if UNITY_EDITOR
 using UnityEditor;
-
+#endif
 
 /// <summary>
 /// Updated VRPNInput module with tool management.
