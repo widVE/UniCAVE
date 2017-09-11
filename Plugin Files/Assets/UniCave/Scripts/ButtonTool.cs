@@ -1,4 +1,18 @@
-﻿using System;
+﻿//MIT License
+//Copyright 2016-Present 
+//James H. Money
+//Luke Kingsley
+//Idaho National Laboratory
+//Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
+//to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, 
+//sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+//The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+//INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection.Emit;
@@ -19,11 +33,6 @@ public class ButtonTool : MonoBehaviour, ITool
     public GameObject holder;
     bool hide = true;
     public Text txt;
-    public float point;
-    //int click;
-    public Event eventsystem;
-    public Dropdown dropdown;
-    public Toggle toggle;
     RaycastHit tester;
     Vector3 origin, direction;
 
@@ -51,14 +60,14 @@ public class ButtonTool : MonoBehaviour, ITool
                     if (tester.transform.gameObject.GetComponent<Dropdown>() != null)
                     {
                         //Get the correct compnent and select it
-                        dropdown = tester.transform.gameObject.GetComponent<Dropdown>();
+                        Dropdown dropdown = tester.transform.gameObject.GetComponent<Dropdown>();
                         EventSystem.current.SetSelectedGameObject(dropdown.gameObject);
 
                     }
 
                     else if (tester.transform.gameObject.GetComponent<Toggle>() != null)
                     {
-                        toggle = tester.transform.gameObject.GetComponent<Toggle>();
+                        Toggle toggle = tester.transform.gameObject.GetComponent<Toggle>();
                         EventSystem.current.SetSelectedGameObject(toggle.gameObject);
 
                     }
@@ -93,7 +102,6 @@ public class ButtonTool : MonoBehaviour, ITool
 
     public void ValueChanged(Dropdown dropdown, int val)
     {
-        Debug.Log("VALUE CHANGE");
         dropdown.onValueChanged.RemoveAllListeners();
         dropDownDictionary.Remove(dropdown.GetInstanceID());
         dropdown.Hide();
@@ -107,14 +115,6 @@ public class ButtonTool : MonoBehaviour, ITool
     /// <param name="direction"></param>
     public void ButtonClick(TrackerButton buttonNum, Vector3 origin, Vector3 direction)
     {
-        /*if(cave)
-        {
-            click = 2;
-        }
-        else
-        {
-            click = 3;
-        }*/
 
         Physics.Raycast(origin, direction, out hit);
         Debug.Log(hit.point);
@@ -148,21 +148,10 @@ public class ButtonTool : MonoBehaviour, ITool
             {
                 Toggle toggle = hit.transform.gameObject.GetComponent<Toggle>();
                 toggle.isOn = !toggle.isOn;
-                /*Toggle t = hit.transform.gameObject.GetComponent<Toggle>();
-                Dropdown d = t.GetComponentInParent<Dropdown>();
-                int number = t.name[5] - 48;
-                d.value = number;
-                d.RefreshShownValue();
-                d.Hide();
-                hide = true;*/
             }
-
-
-
             //If the object is a button call the onClick method
             else if (hit.collider != null && hit.transform.gameObject.GetComponent<Button>() != null)
             {
-                Debug.Log("GOT BUTTON");
                 Button button = hit.transform.gameObject.GetComponent<Button>();
                 if (buttonNum == TrackerButton.Trigger)
                 {
@@ -250,93 +239,7 @@ public class ButtonTool : MonoBehaviour, ITool
 
             scrollbar.value = percent;
         }
-
-
         
-        /*GameObject scroll = s.gameObject;
-        Component handle = scroll.GetComponent<Component>(); // gameObject.transform.FindChild("Handle").gameObject;
-        handle.gameObject.transform.position = hit.point;
-        */
-        
-        
-        
-        //Debug.Log(hit.point);
-        ////Get the dimensions in the canvas space
-        //Vector3 position = s.transform.localPosition;
-        //float width = s.GetComponent<RectTransform>().rect.width;
-        //float height = s.GetComponent<RectTransform>().rect.height;
-
-        ////Get the dimensions of the slider or scrollbar in worldspace 
-        //Vector3 sliderMiddle = s.transform.TransformPoint(s.transform.TransformPoint(position));
-        //Vector3 sliderRight = c.transform.TransformPoint(new Vector3(position.x + width / 2, position.y, position.z));
-        //Vector3 sliderLeft = c.transform.TransformPoint(new Vector3(position.x - width / 2, position.y, position.z));
-        //Vector3 sliderTop = c.transform.TransformPoint(new Vector3(position.x, position.y + height / 2, position.z));
-        //Vector3 sliderBottom = c.transform.TransformPoint(new Vector3(position.x, position.y - height / 2, position.z));
-        ////Get the dimensions in the worldspace
-        //float sliderWidth = Math.Abs(sliderRight.x - sliderLeft.x);
-        //float sliderHeight = Math.Abs(sliderTop.y - sliderBottom.y);
-
-        ////Check the direction of the scroll bar
-        //if (s.direction == Scrollbar.Direction.LeftToRight)
-        //{
-        //    if (hit.point.x > sliderMiddle.x)
-        //    {
-        //        //Calculate the value depending on the direction
-        //        point = (hit.point.x - sliderMiddle.x) / (sliderWidth / 2);
-        //        s.value = .5f + Math.Abs(point) / 2;
-        //    }
-        //    else
-        //    {
-        //        point = (sliderMiddle.x - hit.point.x) / (sliderWidth / 2);
-        //        s.value = .5f - Math.Abs(point) / 2;
-        //    }
-        //}
-        ////Check the direction of the scroll bar
-        //else if (s.direction == Scrollbar.Direction.RightToLeft)
-        //{
-        //    //Check to see which part of the slider was hit
-        //    if (hit.point.x > sliderMiddle.x)
-        //    {
-        //        point = (sliderMiddle.x - hit.point.x) / (sliderWidth / 2);
-        //        //Set the Value
-        //        s.value = .5f - Math.Abs(point) / 2;
-        //    }
-        //    else
-        //    {
-        //        point = (hit.point.x - sliderMiddle.x) / (sliderWidth / 2);
-        //        s.value = .5f + Math.Abs(point) / 2;
-        //    }
-        //}
-        ////Check the direction of the scroll bar
-        //else if (s.direction == Scrollbar.Direction.BottomToTop)
-        //{
-
-        //    if (hit.point.y > sliderMiddle.y)
-        //    {
-        //        point = (hit.point.y - sliderMiddle.y) / (sliderHeight / 2);
-        //        s.value = .5f + Math.Abs(point) / 2;
-        //    }
-        //    else
-        //    {
-        //        point = (sliderMiddle.y - hit.point.y) / (sliderHeight / 2);
-        //        s.value = .5f - Math.Abs(point) / 2;
-        //    }
-        //}
-
-        //else
-        //{
-
-        //    if (hit.point.y > sliderMiddle.y)
-        //    {
-        //        point = (sliderMiddle.y - hit.point.y) / (sliderHeight / 2);
-        //        s.value = .5f - Math.Abs(point) / 2;
-        //    }
-        //    else
-        //    {
-        //        point = (hit.point.y - sliderMiddle.y) / (sliderHeight / 2);
-        //        s.value = .5f + Math.Abs(point) / 2;
-        //    }
-        //}
     }
     /// <summary>
     /// Method allows the user to interact with sliders
@@ -376,7 +279,6 @@ public class ButtonTool : MonoBehaviour, ITool
 
    
     //Unimplemented Methods
-
     void Update()
     {
 

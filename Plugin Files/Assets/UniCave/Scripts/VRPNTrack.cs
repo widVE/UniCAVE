@@ -141,15 +141,7 @@ public class VRPNTrack : MonoBehaviour
             {
                 transform.localRotation = rotation * Quaternion.Euler(trackerRotationOffset);
             }
-
-
-            //float temp = rotation.z;
-            //rotation.z = rotation.x;
-            //rotation.x = temp;
-            //rotation.w *= -1;
-            //rotation.y *= -1;
-
-
+            
             yield return null;
         }
     }
