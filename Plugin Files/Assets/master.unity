@@ -816,18 +816,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackerAddress: Wand0@C6_V1_HEAD
-  channel: 1
+  channelHorizontal: 2
+  channelVertical: 1
   trackButton: 1
   trackAnalog: 1
+  rotationSpeed: 5
+  trackerButtonList: {fileID: 0}
+  TopLevelUniCAVE: {fileID: 0}
   wandObject: {fileID: 0}
   debugOutput: 0
-  numButtons: 6
   movementSpeed: 0.01
-  rotationSpeed: 5
   deadZone: 0.5
-  restrictVerticalMovement: 1
+  tool: {fileID: 0}
+  canvas: {fileID: 0}
   rotationMovement: 0
-  holder: {fileID: 1499604201}
+  panel: {fileID: 0}
+  maxButtons: 20
+  rayLength: 200
+  negativeAnalogX: 0
+  negativeAnalogY: 1
 --- !u!1 &80503172
 GameObject:
   m_ObjectHideFlags: 0
@@ -1105,18 +1112,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackerAddress: Wand0@DL_V1_HEAD
-  channel: 1
+  channelHorizontal: 2
+  channelVertical: 1
   trackButton: 1
   trackAnalog: 1
+  rotationSpeed: 5
+  trackerButtonList: {fileID: 0}
+  TopLevelUniCAVE: {fileID: 0}
   wandObject: {fileID: 0}
   debugOutput: 0
-  numButtons: 6
   movementSpeed: 0.01
-  rotationSpeed: 5
   deadZone: 0.5
-  restrictVerticalMovement: 1
+  tool: {fileID: 0}
+  canvas: {fileID: 0}
   rotationMovement: 0
-  holder: {fileID: 0}
+  panel: {fileID: 0}
+  maxButtons: 20
+  rayLength: 200
+  negativeAnalogX: 0
+  negativeAnalogY: 1
 --- !u!1 &120864429
 GameObject:
   m_ObjectHideFlags: 0
@@ -1540,7 +1554,9 @@ MonoBehaviour:
   channel: 1
   trackPosition: 1
   trackRotation: 1
+  trackerRotationOffset: {x: 0, y: 0, z: 0}
   debugOutput: 0
+  convertToLeft: 0
 --- !u!1 &153598289
 GameObject:
   m_ObjectHideFlags: 0
@@ -1591,7 +1607,9 @@ MonoBehaviour:
   channel: 0
   trackPosition: 1
   trackRotation: 0
+  trackerRotationOffset: {x: 0, y: 0, z: 0}
   debugOutput: 0
+  convertToLeft: 0
 --- !u!1 &171426204
 GameObject:
   m_ObjectHideFlags: 0
@@ -1938,7 +1956,9 @@ MonoBehaviour:
   channel: 0
   trackPosition: 1
   trackRotation: 0
+  trackerRotationOffset: {x: 0, y: 0, z: 0}
   debugOutput: 0
+  convertToLeft: 0
 --- !u!148 &194690674
 NetworkView:
   m_ObjectHideFlags: 0
@@ -2124,6 +2144,11 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 214618938}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &225204948 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4362696984026142, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+    type: 2}
+  m_PrefabInternal: {fileID: 2123062460}
 --- !u!1 &233844603
 GameObject:
   m_ObjectHideFlags: 0
@@ -2180,7 +2205,9 @@ MonoBehaviour:
   channel: 0
   trackPosition: 1
   trackRotation: 0
+  trackerRotationOffset: {x: 0, y: 0, z: 0}
   debugOutput: 0
+  convertToLeft: 0
 --- !u!114 &233844606
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2309,7 +2336,9 @@ MonoBehaviour:
   channel: 1
   trackPosition: 1
   trackRotation: 1
+  trackerRotationOffset: {x: 0, y: 0, z: 0}
   debugOutput: 0
+  convertToLeft: 0
 --- !u!148 &242654186
 NetworkView:
   m_ObjectHideFlags: 0
@@ -2667,7 +2696,7 @@ Transform:
   - {fileID: 187962617}
   - {fileID: 1603724215}
   m_Father: {fileID: 1842968104}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &291790018
 MonoBehaviour:
@@ -2739,7 +2768,9 @@ MonoBehaviour:
   channel: 0
   trackPosition: 0
   trackRotation: 1
+  trackerRotationOffset: {x: 0, y: 0, z: 0}
   debugOutput: 0
+  convertToLeft: 0
 --- !u!4 &294211257
 Transform:
   m_ObjectHideFlags: 0
@@ -3156,7 +3187,9 @@ MonoBehaviour:
   channel: 0
   trackPosition: 0
   trackRotation: 1
+  trackerRotationOffset: {x: 0, y: 0, z: 0}
   debugOutput: 0
+  convertToLeft: 0
 --- !u!4 &328143590
 Transform:
   m_ObjectHideFlags: 0
@@ -3604,18 +3637,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackerAddress: Wand0@cavetrackd
-  channel: 1
+  channelHorizontal: 2
+  channelVertical: 1
   trackButton: 1
   trackAnalog: 1
+  rotationSpeed: 5
+  trackerButtonList: {fileID: 0}
+  TopLevelUniCAVE: {fileID: 0}
   wandObject: {fileID: 0}
   debugOutput: 0
-  numButtons: 6
   movementSpeed: 0.01
-  rotationSpeed: 5
   deadZone: 0.5
-  restrictVerticalMovement: 1
+  tool: {fileID: 0}
+  canvas: {fileID: 0}
   rotationMovement: 0
-  holder: {fileID: 1904355507}
+  panel: {fileID: 0}
+  maxButtons: 20
+  rayLength: 200
+  negativeAnalogX: 0
+  negativeAnalogY: 1
 --- !u!1 &378160548
 GameObject:
   m_ObjectHideFlags: 0
@@ -3689,10 +3729,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08bb6071aaf093d41908548af51893a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  headNodeIP: 192.168.4.140
-  port: 7568
-  numSlaveNodes: 6
-  networkUpdatesPerSecond: 60
 --- !u!148 &378160552
 NetworkView:
   m_ObjectHideFlags: 0
@@ -4106,7 +4142,9 @@ MonoBehaviour:
   channel: 0
   trackPosition: 1
   trackRotation: 0
+  trackerRotationOffset: {x: 0, y: 0, z: 0}
   debugOutput: 0
+  convertToLeft: 0
 --- !u!1 &413302858
 GameObject:
   m_ObjectHideFlags: 0
@@ -5681,7 +5719,9 @@ MonoBehaviour:
   channel: 1
   trackPosition: 1
   trackRotation: 1
+  trackerRotationOffset: {x: 0, y: 0, z: 0}
   debugOutput: 0
+  convertToLeft: 0
 --- !u!148 &599472241
 NetworkView:
   m_ObjectHideFlags: 0
@@ -6074,7 +6114,9 @@ MonoBehaviour:
   channel: 1
   trackPosition: 1
   trackRotation: 1
+  trackerRotationOffset: {x: 0, y: 0, z: 0}
   debugOutput: 0
+  convertToLeft: 0
 --- !u!120 &623720303
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -7001,7 +7043,9 @@ MonoBehaviour:
   channel: 1
   trackPosition: 1
   trackRotation: 1
+  trackerRotationOffset: {x: 0, y: 0, z: 0}
   debugOutput: 0
+  convertToLeft: 0
 --- !u!1 &731098074
 GameObject:
   m_ObjectHideFlags: 0
@@ -7680,7 +7724,9 @@ MonoBehaviour:
   channel: 0
   trackPosition: 1
   trackRotation: 0
+  trackerRotationOffset: {x: 0, y: 0, z: 0}
   debugOutput: 0
+  convertToLeft: 0
 --- !u!148 &794829053
 NetworkView:
   m_ObjectHideFlags: 0
@@ -8140,18 +8186,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackerAddress: Wand0@C6_V1_HEAD
-  channel: 1
+  channelHorizontal: 2
+  channelVertical: 1
   trackButton: 1
   trackAnalog: 1
+  rotationSpeed: 5
+  trackerButtonList: {fileID: 0}
+  TopLevelUniCAVE: {fileID: 0}
   wandObject: {fileID: 0}
   debugOutput: 0
-  numButtons: 6
   movementSpeed: 0.01
-  rotationSpeed: 5
   deadZone: 0.5
-  restrictVerticalMovement: 1
+  tool: {fileID: 0}
+  canvas: {fileID: 0}
   rotationMovement: 0
-  holder: {fileID: 1915356133}
+  panel: {fileID: 0}
+  maxButtons: 20
+  rayLength: 200
+  negativeAnalogX: 0
+  negativeAnalogY: 1
 --- !u!1 &844317081
 GameObject:
   m_ObjectHideFlags: 0
@@ -9389,7 +9442,9 @@ MonoBehaviour:
   channel: 0
   trackPosition: 0
   trackRotation: 1
+  trackerRotationOffset: {x: 0, y: 0, z: 0}
   debugOutput: 0
+  convertToLeft: 0
 --- !u!1 &968668829
 GameObject:
   m_ObjectHideFlags: 0
@@ -9609,7 +9664,9 @@ MonoBehaviour:
   channel: 0
   trackPosition: 0
   trackRotation: 1
+  trackerRotationOffset: {x: 0, y: 0, z: 0}
   debugOutput: 0
+  convertToLeft: 0
 --- !u!1 &1015144153
 GameObject:
   m_ObjectHideFlags: 0
@@ -10369,7 +10426,9 @@ MonoBehaviour:
   channel: 0
   trackPosition: 1
   trackRotation: 0
+  trackerRotationOffset: {x: 0, y: 0, z: 0}
   debugOutput: 0
+  convertToLeft: 0
 --- !u!1 &1099884435
 GameObject:
   m_ObjectHideFlags: 0
@@ -11239,18 +11298,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackerAddress: Wand0@C6_V1_HEAD
-  channel: 1
+  channelHorizontal: 2
+  channelVertical: 1
   trackButton: 1
   trackAnalog: 1
+  rotationSpeed: 5
+  trackerButtonList: {fileID: 0}
+  TopLevelUniCAVE: {fileID: 0}
   wandObject: {fileID: 0}
   debugOutput: 0
-  numButtons: 6
   movementSpeed: 0.01
-  rotationSpeed: 5
   deadZone: 0.5
-  restrictVerticalMovement: 1
+  tool: {fileID: 0}
+  canvas: {fileID: 0}
   rotationMovement: 0
-  holder: {fileID: 2062594053}
+  panel: {fileID: 0}
+  maxButtons: 20
+  rayLength: 200
+  negativeAnalogX: 0
+  negativeAnalogY: 1
 --- !u!1 &1177347822
 GameObject:
   m_ObjectHideFlags: 0
@@ -11641,10 +11707,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08bb6071aaf093d41908548af51893a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  headNodeIP: 192.168.4.160
-  port: 7568
-  numSlaveNodes: 1
-  networkUpdatesPerSecond: 60
 --- !u!114 &1182555848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11861,8 +11923,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9607252a68887e54f825635a2a4aec32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftEye: 0
-  trackerRotation: {fileID: 0}
 --- !u!81 &1203281802
 AudioListener:
   m_ObjectHideFlags: 0
@@ -12229,18 +12289,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackerAddress: Wand0@triptych.avl.indiana.edu
-  channel: 1
+  channelHorizontal: 2
+  channelVertical: 1
   trackButton: 1
   trackAnalog: 1
+  rotationSpeed: 5
+  trackerButtonList: {fileID: 0}
+  TopLevelUniCAVE: {fileID: 0}
   wandObject: {fileID: 0}
   debugOutput: 0
-  numButtons: 6
   movementSpeed: 0.01
-  rotationSpeed: 5
   deadZone: 0.5
-  restrictVerticalMovement: 1
+  tool: {fileID: 0}
+  canvas: {fileID: 0}
   rotationMovement: 0
-  holder: {fileID: 1571592633}
+  panel: {fileID: 0}
+  maxButtons: 20
+  rayLength: 200
+  negativeAnalogX: 0
+  negativeAnalogY: 1
 --- !u!1 &1255575854
 GameObject:
   m_ObjectHideFlags: 0
@@ -13183,7 +13250,9 @@ MonoBehaviour:
   channel: 0
   trackPosition: 1
   trackRotation: 0
+  trackerRotationOffset: {x: 0, y: 0, z: 0}
   debugOutput: 0
+  convertToLeft: 0
 --- !u!148 &1321439982
 NetworkView:
   m_ObjectHideFlags: 0
@@ -13711,7 +13780,9 @@ MonoBehaviour:
   channel: 0
   trackPosition: 1
   trackRotation: 0
+  trackerRotationOffset: {x: 0, y: 0, z: 0}
   debugOutput: 0
+  convertToLeft: 0
 --- !u!4 &1407524283
 Transform:
   m_ObjectHideFlags: 0
@@ -13906,18 +13977,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackerAddress: Wand0@C6_V1_HEAD
-  channel: 1
+  channelHorizontal: 2
+  channelVertical: 1
   trackButton: 1
   trackAnalog: 1
+  rotationSpeed: 5
+  trackerButtonList: {fileID: 0}
+  TopLevelUniCAVE: {fileID: 0}
   wandObject: {fileID: 0}
   debugOutput: 0
-  numButtons: 6
   movementSpeed: 0.01
-  rotationSpeed: 5
   deadZone: 0.5
-  restrictVerticalMovement: 1
+  tool: {fileID: 0}
+  canvas: {fileID: 0}
   rotationMovement: 0
-  holder: {fileID: 378160548}
+  panel: {fileID: 0}
+  maxButtons: 20
+  rayLength: 200
+  negativeAnalogX: 0
+  negativeAnalogY: 1
 --- !u!1 &1428048372
 GameObject:
   m_ObjectHideFlags: 0
@@ -14423,7 +14501,9 @@ MonoBehaviour:
   channel: 0
   trackPosition: 0
   trackRotation: 1
+  trackerRotationOffset: {x: 0, y: 0, z: 0}
   debugOutput: 0
+  convertToLeft: 0
 --- !u!4 &1480390201
 Transform:
   m_ObjectHideFlags: 0
@@ -14662,10 +14742,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08bb6071aaf093d41908548af51893a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  headNodeIP: 192.168.4.140
-  port: 7568
-  numSlaveNodes: 12
-  networkUpdatesPerSecond: 60
 --- !u!148 &1499604204
 NetworkView:
   m_ObjectHideFlags: 0
@@ -15469,7 +15545,9 @@ MonoBehaviour:
   channel: 0
   trackPosition: 0
   trackRotation: 1
+  trackerRotationOffset: {x: 0, y: 0, z: 0}
   debugOutput: 0
+  convertToLeft: 0
 --- !u!4 &1586635404
 Transform:
   m_ObjectHideFlags: 0
@@ -16169,7 +16247,9 @@ MonoBehaviour:
   channel: 1
   trackPosition: 1
   trackRotation: 1
+  trackerRotationOffset: {x: 0, y: 0, z: 0}
   debugOutput: 0
+  convertToLeft: 0
 --- !u!148 &1670538785
 NetworkView:
   m_ObjectHideFlags: 0
@@ -16709,7 +16789,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4597406855965346, guid: aa9bd56897935254f8c3079eca82c432, type: 2}
       propertyPath: m_RootOrder
-      value: 11
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1725540623375986, guid: aa9bd56897935254f8c3079eca82c432, type: 2}
       propertyPath: m_IsActive
@@ -17040,18 +17120,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackerAddress: Wand0@DL_V1_HEAD
-  channel: 1
+  channelHorizontal: 2
+  channelVertical: 1
   trackButton: 1
   trackAnalog: 1
+  rotationSpeed: 5
+  trackerButtonList: {fileID: 0}
+  TopLevelUniCAVE: {fileID: 0}
   wandObject: {fileID: 0}
   debugOutput: 0
-  numButtons: 6
   movementSpeed: 0.01
-  rotationSpeed: 5
   deadZone: 0.5
-  restrictVerticalMovement: 1
+  tool: {fileID: 0}
+  canvas: {fileID: 0}
   rotationMovement: 0
-  holder: {fileID: 694737655}
+  panel: {fileID: 0}
+  maxButtons: 20
+  rayLength: 200
+  negativeAnalogX: 0
+  negativeAnalogY: 1
 --- !u!1 &1764301342
 GameObject:
   m_ObjectHideFlags: 0
@@ -17217,7 +17304,9 @@ MonoBehaviour:
   channel: 0
   trackPosition: 0
   trackRotation: 1
+  trackerRotationOffset: {x: 0, y: 0, z: 0}
   debugOutput: 0
+  convertToLeft: 0
 --- !u!1 &1778716259
 GameObject:
   m_ObjectHideFlags: 0
@@ -17864,9 +17953,10 @@ Transform:
   - {fileID: 1306778683}
   - {fileID: 1453334201}
   - {fileID: 1182555846}
-  - {fileID: 671301712}
   - {fileID: 291790017}
+  - {fileID: 671301712}
   - {fileID: 1741805986}
+  - {fileID: 225204948}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -18100,7 +18190,9 @@ MonoBehaviour:
   channel: 1
   trackPosition: 1
   trackRotation: 1
+  trackerRotationOffset: {x: 0, y: 0, z: 0}
   debugOutput: 0
+  convertToLeft: 0
 --- !u!148 &1854557025
 NetworkView:
   m_ObjectHideFlags: 0
@@ -18853,7 +18945,9 @@ MonoBehaviour:
   channel: 0
   trackPosition: 0
   trackRotation: 1
+  trackerRotationOffset: {x: 0, y: 0, z: 0}
   debugOutput: 0
+  convertToLeft: 0
 --- !u!1 &1904355507
 GameObject:
   m_ObjectHideFlags: 0
@@ -18948,10 +19042,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08bb6071aaf093d41908548af51893a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  headNodeIP: 192.168.4.140
-  port: 7568
-  numSlaveNodes: 6
-  networkUpdatesPerSecond: 60
 --- !u!148 &1915356136
 NetworkView:
   m_ObjectHideFlags: 0
@@ -19149,7 +19239,9 @@ MonoBehaviour:
   channel: 0
   trackPosition: 1
   trackRotation: 1
+  trackerRotationOffset: {x: 0, y: 0, z: 0}
   debugOutput: 0
+  convertToLeft: 0
 --- !u!120 &1958954157
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -20538,10 +20630,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08bb6071aaf093d41908548af51893a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  headNodeIP: 192.168.4.140
-  port: 7568
-  numSlaveNodes: 6
-  networkUpdatesPerSecond: 60
 --- !u!148 &2062594057
 NetworkView:
   m_ObjectHideFlags: 0
@@ -21172,6 +21260,68 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2113520544}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &2123062460
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1842968104}
+    m_Modifications:
+    - target: {fileID: 4362696984026142, guid: a1e48f3a6d8c99846b96a71b54eb88e9, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -1.0448412
+      objectReference: {fileID: 0}
+    - target: {fileID: 4362696984026142, guid: a1e48f3a6d8c99846b96a71b54eb88e9, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -2.3748362
+      objectReference: {fileID: 0}
+    - target: {fileID: 4362696984026142, guid: a1e48f3a6d8c99846b96a71b54eb88e9, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -1.6214728
+      objectReference: {fileID: 0}
+    - target: {fileID: 4362696984026142, guid: a1e48f3a6d8c99846b96a71b54eb88e9, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4362696984026142, guid: a1e48f3a6d8c99846b96a71b54eb88e9, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4362696984026142, guid: a1e48f3a6d8c99846b96a71b54eb88e9, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4362696984026142, guid: a1e48f3a6d8c99846b96a71b54eb88e9, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4362696984026142, guid: a1e48f3a6d8c99846b96a71b54eb88e9, type: 2}
+      propertyPath: m_RootOrder
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 148002408733935766, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+        type: 2}
+      propertyPath: m_ViewID.m_ID
+      value: 36
+      objectReference: {fileID: 0}
+    - target: {fileID: 148002408733935766, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+        type: 2}
+      propertyPath: m_ViewID.m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 148913314269563620, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+        type: 2}
+      propertyPath: m_ViewID.m_ID
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 148913314269563620, guid: a1e48f3a6d8c99846b96a71b54eb88e9,
+        type: 2}
+      propertyPath: m_ViewID.m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: a1e48f3a6d8c99846b96a71b54eb88e9, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &2125122419
 GameObject:
   m_ObjectHideFlags: 0
