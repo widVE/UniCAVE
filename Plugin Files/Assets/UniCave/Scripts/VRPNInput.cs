@@ -33,8 +33,10 @@ public class VRPNInput : MonoBehaviour
 
     [SerializeField]
     private string trackerAddress = "WiiMote0@localhost";
+    private int channelVertical = 1;
+    private int channelHorizontal = 0;
     [SerializeField]
-    private int channelVertical = 5;
+    private int channel = 1;
     [SerializeField]
     private int channelHorizontal = 2;
     [SerializeField]
@@ -50,10 +52,10 @@ public class VRPNInput : MonoBehaviour
 
     public bool debugOutput = false;
     public float movementSpeed = 0.01f;
-    public float rotationSpeed = 0.05f;
     public double deadZone = 0.05;
     public Text tool;
     public GameObject canvas;
+    public bool rotationMovement = false;
     public GameObject panel;
     public int maxButtons = 20;
     public float rayLength = 200;
@@ -227,6 +229,7 @@ public class VRPNInput : MonoBehaviour
     /// </summary>
     /// <returns>The number of the pushed button (0...n-1) or -1 if no button is pushed on tracker.</returns>
     public int GetPushedButton()
+            if (analogVertical >= deadZone || analogVertical <= -deadZone)
     {
         lastButtonPressed = -1;
         for(int ii=0;ii<MAX_LOOPS_BUTTON_CHECK;ii++)
@@ -246,6 +249,30 @@ public class VRPNInput : MonoBehaviour
         }
         return -1;
 
+                    }
+                }
+            }
+
+            if (rotationMovement)
+            {
+                if (analogHorizontal >= deadZone || analogHorizontal <= -deadZone)
+                {
+                    if (debugOutput)
+                    {
+                        Debug.Log("Analog input value " + analogHorizontal + " on channel " + channelHorizontal);
+                    }
+
+                    if (holder != null)
+                    {
+
+                        if (analogHorizontal >= deadZone)
+                        {   //rotating right
+                            holder.transform.Rotate(new Vector3(0, rotationSpeed, 0));
+                        }
+                        else
+                        {   //rotating left
+                            holder.transform.Rotate(new Vector3(0, -rotationSpeed, 0));
+                        }
     }
 
 }

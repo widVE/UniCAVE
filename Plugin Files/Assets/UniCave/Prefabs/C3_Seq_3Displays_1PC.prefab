@@ -1696,6 +1696,7 @@ MonoBehaviour:
   rotationSpeed: 5
   deadZone: 0.5
   restrictVerticalMovement: 1
+  rotationMovement: 0
   holder: {fileID: 1394255718398246}
 --- !u!120 &120216363805630136
 LineRenderer:

@@ -2631,6 +2631,7 @@ MonoBehaviour:
   rotationSpeed: 5
   deadZone: 0.5
   restrictVerticalMovement: 1
+  rotationMovement: 0
   holder: {fileID: 1028045146318092}
 --- !u!114 &114514357829278578
 MonoBehaviour:

@@ -55,6 +55,23 @@ public class ProjectionPlane : MonoBehaviour {
         }
 	}
 	
+    void CalcEyeMVP(Camera eye, GameObject plane, Vector3 eyeOffset, Quaternion trackerRotation, Camera.StereoscopicEye e)
+    {
+        Vector3 trackedHead = transform.parent.position;
+
+        pa = plane.transform.TransformPoint(plane.GetComponent<MeshFilter>().mesh.vertices[0]);
+        pb = plane.transform.TransformPoint(plane.GetComponent<MeshFilter>().mesh.vertices[2]);
+        pc = plane.transform.TransformPoint(plane.GetComponent<MeshFilter>().mesh.vertices[3]);
+
+        transform.rotation = plane.transform.rotation;
+
+        Vector3 eyePos = trackedHead + (trackerRotation * eyeOffset);
+        
+        eye.transform.position = eyePos;
+        eye.projectionMatrix = getAsymProjMatrix(pa, pb, pc, eyePos, eye);
+        eye.SetStereoProjectionMatrix(e, eye.projectionMatrix);
+    }
+
 	// Update is called once per frame
 	void LateUpdate () {
 
@@ -89,80 +106,51 @@ public class ProjectionPlane : MonoBehaviour {
                 trackerRotation = trackedRotation.transform.rotation;
             }
 
-            Vector3 trackedHead = transform.parent.position;
-
-            pa = plane.transform.TransformPoint(plane.GetComponent<MeshFilter>().mesh.vertices[0]);
-            pb = plane.transform.TransformPoint(plane.GetComponent<MeshFilter>().mesh.vertices[2]);
-            pc = plane.transform.TransformPoint(plane.GetComponent<MeshFilter>().mesh.vertices[3]);
-
-            transform.rotation = plane.transform.rotation;
-
             if (leftEye != null)
             {
-                //set camera projection matrix            
-                Vector3 eyePos = trackedHead + (trackerRotation * MasterTrackingData.LeftEyeOffset);
-                //Debug.LogError("Left Eye Proj: " + eyePos.ToString("F4"));
-                leftEye.transform.position = eyePos;
-                leftEye.projectionMatrix = getAsymProjMatrix(pa, pb, pc, eyePos, leftEye);
-                leftEye.SetStereoProjectionMatrix(Camera.StereoscopicEye.Left, leftEye.projectionMatrix);
+                CalcEyeMVP(leftEye, plane, MasterTrackingData.LeftEyeOffset, trackerRotation, Camera.StereoscopicEye.Left);
             }
 
             if (rightEye != null)
             {
-                //set camera projection matrix        
-                Vector3 eyePos = trackedHead + (trackerRotation * MasterTrackingData.RightEyeOffset);
-                //Debug.LogError("Right Eye Proj: " + eyePos.ToString("F4"));
-                rightEye.transform.position = eyePos;
-                rightEye.projectionMatrix = getAsymProjMatrix(pa, pb, pc, eyePos, rightEye);
-                rightEye.SetStereoProjectionMatrix(Camera.StereoscopicEye.Right, rightEye.projectionMatrix);
+                CalcEyeMVP(rightEye, plane, MasterTrackingData.RightEyeOffset, trackerRotation, Camera.StereoscopicEye.Right);
             }
         }
     }
 
     static Matrix4x4 getAsymProjMatrix(Vector3 pa, Vector3 pb, Vector3 pc, Vector3 pe, Camera theCam)
     {
-        Vector3 vu, vr, vn, va, vb, vc;
-        float l, r, b, t;
-
         //compute orthonormal basis for the screen - could pre-compute this...
-        vr = (pb - pa).normalized;
-        vu = (pc - pa).normalized;
-        vn = Vector3.Cross(vr, vu).normalized;
+        Vector3 vr = (pb - pa).normalized;
+        Vector3 vu = (pc - pa).normalized;
+        Vector3 vn = Vector3.Cross(vr, vu).normalized;
 
         //compute screen corner vectors
-        va = pa - pe;
-        vb = pb - pe;
-        vc = pc - pe;
+        Vector3 va = pa - pe;
+        Vector3 vb = pb - pe;
+        Vector3 vc = pc - pe;
 
         //find the distance from the eye to screen plane
         float n = theCam.nearClipPlane;
         float f = theCam.farClipPlane;
         float d = Vector3.Dot(va, vn); // distance from eye to screen
-        l = Vector3.Dot(vr, va) * n / d;
-        r = Vector3.Dot(vr, vb) * n / d;
-        b = Vector3.Dot(vu, va) * n / d;
-        t = Vector3.Dot(vu, vc) * n / d;
+		float nod = n / d;
+        float l = Vector3.Dot(vr, va) * nod;
+        float r = Vector3.Dot(vr, vb) * nod;
+        float b = Vector3.Dot(vu, va) * nod;
+        float t = Vector3.Dot(vu, vc) * nod;
 
         //put together the matrix - bout time amirite?
-        Matrix4x4 m = new Matrix4x4();
+        Matrix4x4 m = Matrix4x4.zero;
 
         //from http://forum.unity3d.com/threads/using-projection-matrix-to-create-holographic-effect.291123/
         m[0, 0] = 2.0f * n / (r - l);
-        m[0, 1] = 0;
         m[0, 2] = (r + l) / (r - l);
-        m[0, 3] = 0;
-        m[1, 0] = 0;
         m[1, 1] = 2.0f * n / (t - b);
         m[1, 2] = (t + b) / (t - b);
-        m[1, 3] = 0;
-        m[2, 0] = 0;
-        m[2, 1] = 0;
         m[2, 2] = -(f + n) / (f - n);
         m[2, 3] = (-2.0f * f * n) / (f - n);
-        m[3, 0] = 0;
-        m[3, 1] = 0;
         m[3, 2] = -1.0f;
-        m[3, 3] = 0;
 
         return m;
     } 
