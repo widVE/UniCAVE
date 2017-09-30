@@ -14,6 +14,7 @@
 
 using UnityEngine;
 using System.Collections;
+using System.Threading;
 
 public class VRPNTrack : MonoBehaviour
 {
@@ -26,7 +27,12 @@ public class VRPNTrack : MonoBehaviour
     [SerializeField]
     private bool trackRotation = true;
 
+    public Vector3 trackerRotationOffset;
+
     public bool debugOutput = false;
+
+    //handles left coordinate system from right based tracking system such as ART.
+    public bool convertToLeft = false;
 
     public int Channel
     {
@@ -72,11 +78,12 @@ public class VRPNTrack : MonoBehaviour
         //to other machines...
         //some setups may try to connect each machine to vrpn...
         //in that case, we wouldn't want to destroy this object..
+        Debug.Log(System.Environment.MachineName + " " + MasterTrackingData.HeadNodeMachineName);
         if (System.Environment.MachineName != MasterTrackingData.HeadNodeMachineName)
         {
-                Debug.Log("Removing tracker settings from " + gameObject.name + " on " + System.Environment.MachineName);
-                Destroy(this);
-                return;
+            Debug.Log("Removing tracker settings from " + gameObject.name + " on " + System.Environment.MachineName);
+            Destroy(this);
+            return;
         }
 
         if (trackPosition)
@@ -94,7 +101,24 @@ public class VRPNTrack : MonoBehaviour
     {
         while (true)
         {
-            transform.localPosition = VRPN.vrpnTrackerPos(trackerAddress, channel);
+            Vector3 pos = VRPN.vrpnTrackerPos(trackerAddress, channel);
+
+            if (convertToLeft)
+            {
+                pos.x = Interlocked.Exchange(ref pos.z, pos.x);
+                pos.y *= -1;
+                transform.localPosition = pos;
+            }
+
+            else
+            {
+                transform.localPosition = pos;
+            }
+            //float temp = pos.z;
+            //pos.z = pos.x;
+            //pos.x = temp;
+            // pos.y = -pos.y;
+
             yield return null;
         }
     }
@@ -103,7 +127,21 @@ public class VRPNTrack : MonoBehaviour
     {
         while (true)
         {
-            transform.localRotation = VRPN.vrpnTrackerQuat(trackerAddress, channel);
+            Quaternion rotation = VRPN.vrpnTrackerQuat(trackerAddress, channel);
+
+            if (convertToLeft)
+            {
+                rotation.x = Interlocked.Exchange(ref rotation.z, rotation.x);
+                rotation.y *= -1;
+               
+                transform.localRotation =  rotation * Quaternion.Euler(trackerRotationOffset);
+            }
+
+            else
+            {
+                transform.localRotation = rotation * Quaternion.Euler(trackerRotationOffset);
+            }
+            
             yield return null;
         }
     }
