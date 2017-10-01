@@ -1,6 +1,6 @@
-# UniCAVE Plugin version 1.2
+# UniCAVE Plugin version 1.3
 Ross Tredinnick, Brady Boettcher, Sam Solovy, Simon Smith, Kevin Ponto
-8/9/2017
+9/30/2017
 
 A Unity3D Plugin for Non-Head Mounted Virtual Reality Display Systems
 
@@ -17,3 +17,5 @@ We are currently taking requests for developing custom prefabs meant to work wit
 5/17/2017 - We have separated out the example scenes into a separate repository : https://github.com/livingenvironmentslab/UniCAVE_Examples to reduce the size of the repository when downloading.
 
 8/9/2017 - We have added the Kinect integration assets and code that appeared to be missing.  Work is also in progress on Unity 2017 support.
+
+9/30/2017 - We've added separate Unity 2017 and Unity 5.5 versions.  Also, a great deal of UI and other features and enhancements have been added by way of contributions made by the Idaho National Laboratory!
