@@ -77,8 +77,10 @@ public class DriveTool : ITool {
     {
         //Create a vector fromt the X and Y data
         Vector2 analogData = new Vector2((float)(((negateAnalogX) ? -1 : 1) * x), (float)(((negateAnalogY) ? -1: 1 )* y));
+        
         //Set the movement speed of the wandObject to the magnitude of the vector
-        movementSpeed = analogData.magnitude; /// 2f;
+        //**RT - 11/8/2017 commenting this out as it just ends up overriding the editor setting (and in our case was way too fast)
+        //movementSpeed = analogData.magnitude; /// 2f;
 
         //Check if the Y value is bad input 
         if (y >= deadZone || y <= -deadZone) // || movementSpeed <= -deadZone)

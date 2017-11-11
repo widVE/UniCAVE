@@ -208,7 +208,7 @@ public class ToolManager : MonoBehaviour
     /// <param name="text">The Text object to update with tool name.</param>
     public void updateToolName(Text text)
     {
-        text.text = TOOL_NAME_PREFIX + list[toolNumber].ToolName;
+        //text.text = TOOL_NAME_PREFIX + list[toolNumber].ToolName;
     }
 
     
