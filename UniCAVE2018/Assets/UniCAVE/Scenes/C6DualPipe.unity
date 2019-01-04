@@ -291,6 +291,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.x
       value: -90
       objectReference: {fileID: 0}
+    - target: {fileID: 120754738039255750, guid: 6e614dd2b8b157a46a2a9e70c76f95f8,
+        type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].value
+      value: 0.06685257
+      objectReference: {fileID: 0}
+    - target: {fileID: 114454112736020178, guid: 6e614dd2b8b157a46a2a9e70c76f95f8,
+        type: 3}
+      propertyPath: m_SendInterval
+      value: 0.033333335
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6e614dd2b8b157a46a2a9e70c76f95f8, type: 3}
 --- !u!1 &1666422105

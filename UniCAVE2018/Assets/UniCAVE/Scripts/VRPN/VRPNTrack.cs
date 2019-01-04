@@ -17,6 +17,7 @@ using System.Collections;
 using System.Threading;
 using UnityEngine.Networking;
 
+[NetworkSettings(sendInterval=0.016f)]
 public class VRPNTrack : NetworkBehaviour {
     [SerializeField]
     private string trackerAddress = "Isense900@C6_V1_HEAD";
