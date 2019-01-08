@@ -36,7 +36,7 @@ public class UCNetwork : NetworkBehaviour {
 	
     void Update() {
         if (isServer) {
-            if(Input.GetKey(KeyCode.Escape)) {
+            if(Input.GetKeyDown(KeyCode.Escape)) {
                 RpcQuitApplication();
 				Application.Quit();
             }
