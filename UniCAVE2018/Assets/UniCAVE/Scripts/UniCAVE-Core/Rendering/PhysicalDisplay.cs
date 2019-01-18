@@ -152,6 +152,7 @@ public class PhysicalDisplay : MonoBehaviour {
     [NonSerialized]
     public RenderTexture rightTex;
 
+    bool updateViewports = false;
 
     [NonSerialized]
     bool initialized = false;
@@ -462,6 +463,14 @@ public class PhysicalDisplay : MonoBehaviour {
                     }
                 }
             }
+        }
+        #else
+        //do this for Linux too
+        if (dualPipe && !dualInstance && !updatedViewports)
+        {
+            leftCam.pixelRect = new Rect(leftViewport.x, leftViewport.y, leftViewport.width, leftViewport.height);
+            rightCam.pixelRect = new Rect(rightViewport.x, rightViewport.y, rightViewport.width, rightViewport.height);
+            updatedViewports = true;
         }
         #endif
     }
