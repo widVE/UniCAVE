@@ -152,8 +152,6 @@ public class PhysicalDisplay : MonoBehaviour {
     [NonSerialized]
     public RenderTexture rightTex;
 
-    bool updateViewports = false;
-
     [NonSerialized]
     bool initialized = false;
     public bool Initialized() {
@@ -161,13 +159,13 @@ public class PhysicalDisplay : MonoBehaviour {
     }
 
     public bool ShouldBeActive() {
+#if UNITY_EDITOR
+        return true;
+#else
         //machine name doesn't matter if it has a manager
         //in that case we defer to manager's machine name
-#if UNITY_EDITOR        
-        return true;
-#endif
-
         return (manager == null ? (Util.GetMachineName() == machineName) : manager.ShouldBeActive());
+#endif
     }
 
     public List<Camera> GetAllCameras() {
@@ -218,6 +216,9 @@ public class PhysicalDisplay : MonoBehaviour {
         }
         if(exclusiveFullscreen && dualPipe) {
             errors.Add("Physical display is in dual pipe mode but also uses a certain display");
+        }
+        if(exclusiveFullscreen && manager != null) {
+            errors.Add("Physical display uses exlusive fullscreen, but is also managed");
         }
         if (dualInstance && manager != null) {
             errors.Add("Physical Display has dual instance enabled, but the display is also managed");
@@ -343,37 +344,37 @@ public class PhysicalDisplay : MonoBehaviour {
             if(!is3D) {
                 centerCam = head.CreateCenterEye(gameObject.name);
                 Debug.Log("Setting Display: " + gameObject.name + " to Non-3D Windowed");
-                #if UNITY_STANDALONE_WIN
+#if UNITY_STANDALONE_WIN
                 if(manager == null) SetMyWindowInfo("Non-3D Windowed", windowBounds.x, windowBounds.y, windowBounds.width, windowBounds.height, 441, 411);
-                #endif
+#endif
             } else {
                 if (!dualPipe && !dualInstance) {
                     leftCam = head.CreateLeftEye(gameObject.name);
                     rightCam = head.CreateRightEye(gameObject.name);
                     Debug.Log("Setting Display: " + gameObject.name + " to Passive-3D Windowed");
-                    #if UNITY_STANDALONE_WIN
+#if UNITY_STANDALONE_WIN
                     if(manager == null) SetMyWindowInfo("Passive-3D Windowed", windowBounds.x, windowBounds.y, windowBounds.width, windowBounds.height, 421, 420);
-                    #endif
+#endif
                 } else if(dualPipe && !dualInstance) {
                     leftCam = head.CreateLeftEye(gameObject.name);
                     rightCam = head.CreateRightEye(gameObject.name);
                     Debug.Log("Setting Display: " + gameObject.name + " to Dual-Eye Dual-Pipe-3D Windowed");
-                    #if UNITY_STANDALONE_WIN
+#if UNITY_STANDALONE_WIN
                     if(manager == null) SetMyWindowInfo("Dual-Eye Dual-Pipe-3D Windowed", windowBounds.x, windowBounds.y, windowBounds.width, windowBounds.height, 422, 398);
-                    #endif
+#endif
                 } else if(dualPipe && dualInstance) {
                     if(Util.GetArg("eye") == "left") {
                         leftCam = head.CreateLeftEye(gameObject.name);
                         Debug.Log("Setting Display: " + gameObject.name + " to Left-Eye Dual-Pipe-3D Windowed");
-                        #if UNITY_STANDALONE_WIN
+#if UNITY_STANDALONE_WIN
                         if(manager == null) SetMyWindowInfo("Left-Eye Dual-Pipe-3D Windowed", leftViewport.x, leftViewport.y, leftViewport.width, leftViewport.height, 300, 367);
-                        #endif
+#endif
                     } else if(Util.GetArg("eye") == "right") {
                         rightCam = head.CreateRightEye(gameObject.name);
                         Debug.Log("Setting Display: " + gameObject.name + " to Right-Eye Dual-Pipe-3D Windowed");
-                        #if UNITY_STANDALONE_WIN
+#if UNITY_STANDALONE_WIN
                         if(manager == null) SetMyWindowInfo("Right-Eye Dual-Pipe-3D Windowed", rightViewport.x, rightViewport.y, rightViewport.width, rightViewport.height, 342, 498);
-                        #endif
+#endif
                     }
                 }
             }
@@ -467,7 +468,7 @@ public class PhysicalDisplay : MonoBehaviour {
     void Update() {
         //it seems that Windows doe not immediately set the window properties so
         //we try over and over until it does
-        #if UNITY_STANDALONE_WIN
+#if UNITY_STANDALONE_WIN
         if (_resolutions != null) {
             Dictionary<long, Vector2Int> newResolutions = loadAllWindowSizes();
             foreach (var kvp in newResolutions) {
@@ -484,7 +485,7 @@ public class PhysicalDisplay : MonoBehaviour {
                 }
             }
         }
-        #else
+#else
         //do this for Linux too
         if (dualPipe && !dualInstance && !updatedViewports)
         {
@@ -492,7 +493,7 @@ public class PhysicalDisplay : MonoBehaviour {
             rightCam.pixelRect = new Rect(rightViewport.x, rightViewport.y, rightViewport.width, rightViewport.height);
             updatedViewports = true;
         }
-        #endif
+#endif
     }
 
     void EditorDraw() {
@@ -552,7 +553,7 @@ public class PhysicalDisplayDitor : Editor {
         display.head = (HeadConfiguration)EditorGUILayout.ObjectField("Head", display.head, typeof(HeadConfiguration), true);
 
         display.useXRCameras = EditorGUILayout.Toggle(new GUIContent(
-            "Use XR Cameras",
+            "Use XR Cameras (Passive Stereo)",
             @"Whether the cameras associated with this display should output to an XR device (such as headset or passive 3D display)
             If you do post processing on the cameras (such as a PhysicalDisplayCalibration) set this to false
             This is probably also unnecessary if using a Dual-Pipe 3D display"
@@ -574,22 +575,22 @@ public class PhysicalDisplayDitor : Editor {
             if(display.dualPipe = EditorGUILayout.Toggle(new GUIContent("Dual Pipe", "Does the display use a dual pipe setup?"), display.dualPipe)) {
                 if(!display.exclusiveFullscreen && !(display.dualInstance = EditorGUILayout.Toggle(new GUIContent("Dual Instance", "Use one instance of Unity for each eye?"), display.dualInstance))) {
                     //3d, dual pipe, single instance
-                    display.windowBounds = EditorGUILayout.RectIntField(new GUIContent("Window Rect", "Where the window will be positioned on the screen"), display.windowBounds);
+                    display.windowBounds = EditorGUILayout.RectIntField(new GUIContent("Viewport Rect", "Where the window will be positioned on the screen"), display.windowBounds);
                 }
                 display.leftViewport = EditorGUILayout.RectIntField("Left Viewport", display.leftViewport);
                 display.rightViewport = EditorGUILayout.RectIntField("Right Viewport", display.rightViewport);
             } else {
-                display.windowBounds = EditorGUILayout.RectIntField(new GUIContent("Window Rect", "Where the window will be positioned on the screen"), display.windowBounds);
+                display.windowBounds = EditorGUILayout.RectIntField(new GUIContent("Viewport Rect", "Where the window will be positioned on the screen"), display.windowBounds);
             }
         } else {
-            display.windowBounds = EditorGUILayout.RectIntField(new GUIContent("Window Rect", "Where the window will be positioned on the screen"), display.windowBounds);
+            display.windowBounds = EditorGUILayout.RectIntField(new GUIContent("Viewport Rect", "Where the window will be positioned on the screen"), display.windowBounds);
         }
         
         List<string> errors = display.GetSettingsErrors();
         if(errors.Count != 0) {
             GUIStyle style = new GUIStyle();
             style.richText = true;
-            EditorGUILayout.LabelField("<color=red>Warning: This PhysicalDisplay has some incompatible or invalid settings, behavior may be undefined!</color>", style);
+            EditorGUILayout.LabelField("<color=red>This PhysicalDisplay has some incompatible or invalid settings, behavior may be undefined!</color>", style);
         }
         foreach(string error in errors) {
             GUIStyle style = new GUIStyle();

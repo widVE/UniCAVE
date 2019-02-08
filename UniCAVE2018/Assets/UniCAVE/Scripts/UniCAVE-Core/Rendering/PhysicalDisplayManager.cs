@@ -22,6 +22,7 @@ using UnityEngine;
 public class PhysicalDisplayManager : MonoBehaviour {
 
     public string machineName;
+    public int displayNumber = 0;
     public List<PhysicalDisplay> displays = new List<PhysicalDisplay>();
 
     public bool ShouldBeActive() {

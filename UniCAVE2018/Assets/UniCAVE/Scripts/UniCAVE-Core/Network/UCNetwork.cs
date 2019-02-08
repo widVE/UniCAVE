@@ -13,6 +13,7 @@
 //TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -31,8 +32,7 @@ public class UCNetwork : NetworkBehaviour {
 
     private float lastTime = 0.0f;
 	private bool syncedRandomSeed = false;
-	private int frameCount = 0;
-	private int numSlaveNodes = 12;
+    private int frameCount = 0;
 	
     void Update() {
         if (isServer) {
@@ -102,7 +102,7 @@ public class UCNetwork : NetworkBehaviour {
             ps.Stop();
         }
 
-        Random.InitState(seed);
+        UnityEngine.Random.InitState(seed);
 
         foreach (ParticleSystem ps in particleSystems) {
             ps.useAutoRandomSeed = false;
@@ -152,13 +152,13 @@ public class UCNetwork : NetworkBehaviour {
             res += "\nIf ($env:ComputerName -eq \"" + displays[i].machineName + "\") {";
             if(displays[i].dualPipe && displays[i].dualInstance) {
                 for (int j = 0; j < 2; j++) {
-                    res += "\n\t" + Application.productName + ".exe";
+                    res += "\n\t&('.\\" + Application.productName + ".exe')";
                     res += " " + (displays[i].exclusiveFullscreen ? "-screen-fullscreen 1 -adapter " + displays[i].display : "-screen-fullscreen 0 -popupwindow");
                     res += " " + ((displays[i].is3D && !displays[i].dualPipe) ? "-vrmode stereo" : "");
                     res += " " + "eye " + (j == 0 ? "left" : "right");
                 }
             } else {
-                res += "\n\t" + Application.productName + ".exe";
+                res += "\n\t&('.\\" + Application.productName + ".exe')";
                 res += " " + (displays[i].exclusiveFullscreen ? "-screen-fullscreen 1 -adapter " + displays[i].display : "-screen-fullscreen 0 -popupwindow");
                 res += " " + ((displays[i].is3D && !displays[i].dualPipe) ? "-vrmode stereo" : "");
             }
@@ -170,9 +170,17 @@ public class UCNetwork : NetworkBehaviour {
             res += "\n\n# Display Group: " + managers[i].name;
             res += "\nIf ($env:ComputerName -eq \"" + managers[i].machineName + "\") {";
             
-            res += "\n\t" + Application.productName + ".exe";
-            res += " " + (displays[i].exclusiveFullscreen ? "-screen-fullscreen 1 -adapter " + displays[i].display : "-screen-fullscreen 0 -popupwindow");
-            res += " " + ((displays[i].is3D && !displays[i].dualPipe) ? "-vrmode stereo" : "");
+            res += "\n\t&('.\\" + Application.productName + ".exe') -adapter " + managers[i].displayNumber;
+
+            bool anyVr = false;
+            foreach(PhysicalDisplay disp in displays) {
+                if (displays[i].is3D && !displays[i].dualPipe) {
+                    anyVr = true;
+                    break;
+                }
+            }
+            if (anyVr) res += "\n\t-vrmode stereo";
+            //res += " " + ((displays[i].is3D && !displays[i].dualPipe) ? "-vrmode stereo" : "");
 
             res += "\n}";
         }
@@ -180,14 +188,13 @@ public class UCNetwork : NetworkBehaviour {
         return res;
     }
     private void IterateAllRelevantChildren(GameObject it, List<PhysicalDisplay> displays, List<PhysicalDisplayManager> managers) {
+        if (it.GetComponent<PhysicalDisplay>() != null) {
+            displays.Add(it.GetComponent<PhysicalDisplay>());
+        } else if (it.GetComponent<PhysicalDisplayManager>() != null) {
+            managers.Add(it.GetComponent<PhysicalDisplayManager>());
+        }
         for (int i = 0; i < it.transform.childCount; i++) {
-            GameObject child = it.transform.GetChild(i).gameObject;
-            if (child.GetComponent<PhysicalDisplay>() != null) {
-                displays.Add(child.GetComponent<PhysicalDisplay>());
-            } else if(child.GetComponent<PhysicalDisplayManager>()) {
-                managers.Add(child.GetComponent<PhysicalDisplayManager>());
-            }
-            IterateAllRelevantChildren(child, displays, managers);
+            IterateAllRelevantChildren(it.transform.GetChild(i).gameObject, displays, managers);
         }
     }
 
