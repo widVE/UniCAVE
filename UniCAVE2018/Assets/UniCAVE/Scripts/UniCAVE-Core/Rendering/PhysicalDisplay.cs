@@ -163,6 +163,10 @@ public class PhysicalDisplay : MonoBehaviour {
     public bool ShouldBeActive() {
         //machine name doesn't matter if it has a manager
         //in that case we defer to manager's machine name
+#if UNITY_EDITOR        
+        return true;
+#endif
+
         return (manager == null ? (Util.GetMachineName() == machineName) : manager.ShouldBeActive());
     }
 
@@ -392,6 +396,7 @@ public class PhysicalDisplay : MonoBehaviour {
                 }
             }
         }
+
         if(useRenderTextures) {
             if(leftCam != null) {
                 leftTex = new RenderTexture(renderTextureSize.x, renderTextureSize.y, 0);
@@ -406,11 +411,26 @@ public class PhysicalDisplay : MonoBehaviour {
                 rightCam.targetTexture = rightTex;
             }
         }
+
         if(exclusiveFullscreen) {
             if (leftCam != null) leftCam.targetDisplay = display;
             if (centerCam != null) centerCam.targetDisplay = display;
             if (rightCam != null) rightCam.targetDisplay = display;
         }
+#if UNITY_EDITOR
+        if(rightCam == null && leftCam == null && centerCam == null)
+        {
+            if(is3D)
+            {
+                leftCam = head.CreateLeftEye(gameObject.name);
+                rightCam = head.CreateRightEye(gameObject.name);
+            }
+            else
+            {
+                centerCam = head.CreateCenterEye(gameObject.name);
+            }
+        }
+#endif
     }
 
     private void LateUpdate() {
@@ -564,7 +584,7 @@ public class PhysicalDisplayDitor : Editor {
         } else {
             display.windowBounds = EditorGUILayout.RectIntField(new GUIContent("Window Rect", "Where the window will be positioned on the screen"), display.windowBounds);
         }
-
+        
         List<string> errors = display.GetSettingsErrors();
         if(errors.Count != 0) {
             GUIStyle style = new GUIStyle();

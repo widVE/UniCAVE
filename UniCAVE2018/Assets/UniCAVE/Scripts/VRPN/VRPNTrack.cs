@@ -83,7 +83,7 @@ public class VRPNTrack : NetworkBehaviour {
             Destroy(this);
             return;
         }
-
+#if !UNITY_EDITOR
         if (trackPosition) {
             StartCoroutine("Position");
         }
@@ -91,6 +91,7 @@ public class VRPNTrack : NetworkBehaviour {
         if (trackRotation) {
             StartCoroutine("Rotation");
         }
+#endif
     }
 
     private IEnumerator Position() {

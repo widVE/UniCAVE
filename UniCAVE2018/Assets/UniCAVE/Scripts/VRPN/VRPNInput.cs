@@ -131,13 +131,14 @@ public class VRPNInput : NetworkBehaviour {
                 Destroy(this);
                 return;
             }
-
+#if !UNITY_EDITOR
             //Start the coroutines
             if (trackButton)
                 StartCoroutine("Button");
 
             if (trackAnalog)
                 StartCoroutine("Analog");
+#endif
         }
 
     }

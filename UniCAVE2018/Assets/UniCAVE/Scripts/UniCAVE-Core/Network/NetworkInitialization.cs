@@ -45,12 +45,15 @@ public class NetworkInitialization : MonoBehaviour {
 
         networkManager.networkAddress = serverAddress;
         networkManager.networkPort = serverPort;
-        
+#if !UNITY_EDITOR
         if (Util.GetMachineName() == headMachine) {
             networkManager.StartServer();
         } else {
             networkManager.StartClient();
         }
+#else
+        networkManager.StartServer();
+#endif
     }
 
     void Update() {
