@@ -138,6 +138,8 @@ public class PhysicalDisplay : MonoBehaviour {
 
     public bool loadSettingsAtRuntime;
 
+    private bool updatedViewports = false;
+
     [NonSerialized]
     public Camera leftCam;
     [NonSerialized]

@@ -22,7 +22,8 @@ using UnityEditor;
 #endif
 
 [RequireComponent(typeof(PhysicalDisplay))]
-public class PhysicalDisplayCalibration : MonoBehaviour {
+public class PhysicalDisplayCalibration : MonoBehaviour
+{
 
     public static Vector3 globalPostOffset = new Vector3(0.0f, 0.0f, 0.0f);
 
@@ -42,59 +43,76 @@ public class PhysicalDisplayCalibration : MonoBehaviour {
     public Vector2 lowerLeftPosition;
     public Vector2 lowerRightPosition;
 
+    [Tooltip("Proportion of screenspace to blend")]
+    public float rightBlend, topBlend, leftBlend, bottomBlend;
+
     [Tooltip("The resolution the camera will render at before warp correction")]
     public Vector2Int resolution = new Vector2Int(1280, 720);
 
     [ContextMenuItem("Load Warp File", "preloadWarpFile")]
     public string warpFile;
-    private void preloadWarpFile() {
+    private void preloadWarpFile()
+    {
 #if UNITY_EDITOR
-        string loaded= System.IO.File.ReadAllText(warpFile);
+        string loaded = System.IO.File.ReadAllText(warpFile);
         string[] lines = loaded.Split('\n');
         Vector2 offset = new Vector2(-0.5f, -0.5f);
 
-        for(int i = 0; i < lines.Length; i++) {
-            try {
+        for (int i = 0; i < lines.Length; i++)
+        {
+            try
+            {
                 string line = lines[i].Substring(3);
-                if(line.StartsWith("0_0")) { //lower left, I assume
+                if (line.StartsWith("0_0"))
+                { //lower left, I assume
                     string[] parts = line.Split(':')[1].Split(',');
                     lowerLeftPosition = (new Vector2(float.Parse(parts[0]), float.Parse(parts[1])) + offset) * 2.0f;
                     Debug.Log("Found Lower Left");
-                } else if (line.StartsWith("0_12")) {
+                }
+                else if (line.StartsWith("0_12"))
+                {
                     string[] parts = line.Split(':')[1].Split(',');
                     upperLeftPosition = (new Vector2(float.Parse(parts[0]), float.Parse(parts[1])) + offset) * 2.0f;
                     Debug.Log("Found Upper Left");
-                } else if (line.StartsWith("16_0")) {
+                }
+                else if (line.StartsWith("16_0"))
+                {
                     string[] parts = line.Split(':')[1].Split(',');
                     lowerRightPosition = (new Vector2(float.Parse(parts[0]), float.Parse(parts[1])) + offset) * 2.0f;
                     Debug.Log("Found Lower Right");
-                } else if (line.StartsWith("16_12")) {
+                }
+                else if (line.StartsWith("16_12"))
+                {
                     string[] parts = line.Split(':')[1].Split(',');
                     upperRightPosition = (new Vector2(float.Parse(parts[0]), float.Parse(parts[1])) + offset) * 2.0f;
                     Debug.Log("Found Upper Right");
                 }
-            } catch (Exception ignored) { }
+            }
+            catch (Exception ignored) { }
         }
         EditorUtility.SetDirty(this);
         EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
 #endif
     }
 
-    private GameObject leftChild, rightChild, camChild;
+    public GameObject leftChild, rightChild, camChild;
 
     private Material leftRenderMat, rightRenderMat;
 
     public List<Camera> postCams = new List<Camera>();
 
-    void SetupPostProcessing() {
+    void SetupPostProcessing()
+    {
         PhysicalDisplay display = GetComponent<PhysicalDisplay>();
+        GameObject staticParent = new GameObject("Post Holder For: " + gameObject.name);
 
         bool stereo = true;
-        if (display.leftCam != null) {
+        if (display.leftCam != null)
+        {
             //create left child object that will contain the dewarping mesh
             leftChild = new GameObject("Dewarp Mesh (left) For: " + gameObject.name);
             leftChild.layer = 8;
-            leftChild.transform.parent = transform;
+            leftChild.transform.parent = staticParent.transform;
 
             //add the dewarping mesh to the left child
             MeshFilter meshComponent = leftChild.AddComponent<MeshFilter>();
@@ -143,15 +161,18 @@ public class PhysicalDisplayCalibration : MonoBehaviour {
             leftRenderMat.mainTexture = display.leftTex;
             leftChild.AddComponent<MeshRenderer>().material = leftRenderMat;
 
-        } else {
+        }
+        else
+        {
             stereo = false;
         }
 
-        if (display.rightCam != null) {
+        if (display.rightCam != null)
+        {
             //create right child object that will contain the dewarping mesh
             rightChild = new GameObject("Dewarp Mesh (right) For: " + gameObject.name);
             rightChild.layer = 8;
-            rightChild.transform.parent = transform;
+            rightChild.transform.parent = staticParent.transform;
 
             //add the dewarping mesh to the right child
             MeshFilter meshComponent = rightChild.AddComponent<MeshFilter>();
@@ -199,21 +220,23 @@ public class PhysicalDisplayCalibration : MonoBehaviour {
             //assign the render texture to the material and the material to the mesh
             rightRenderMat.mainTexture = display.rightTex;
             rightChild.AddComponent<MeshRenderer>().material = rightRenderMat;
-        } else {
+        }
+        else
+        {
             stereo = false;
         }
 
         //set the positions of the dewarping mesh children
         //we have to do this later because if its not stereo only one exists and it should be at the center of the screen
-        if (leftChild != null) leftChild.transform.localPosition = globalPostOffset + new Vector3(stereo ? -displayRatio : 0.0f, 0.0f, 0.0f);
-        if (rightChild != null) rightChild.transform.localPosition = globalPostOffset + new Vector3(stereo ? displayRatio : 0.0f, 0.0f, 0.0f);
+        if (leftChild != null) leftChild.transform.localPosition = globalPostOffset + new Vector3(stereo ? -displayRatio * 2.0f : 0.0f, 0.0f, 0.0f);
+        if (rightChild != null) rightChild.transform.localPosition = globalPostOffset + new Vector3(stereo ? displayRatio * 2.0f : 0.0f, 0.0f, 0.0f);
 
 
         {
             camChild = new GameObject("Calibration Cam (Left)");
-            camChild.transform.parent = transform;
+            camChild.transform.parent = staticParent.transform;
             Camera postCam = camChild.AddComponent<Camera>();
-            postCam.transform.localPosition = globalPostOffset + new Vector3(stereo ? -displayRatio : 0.0f, 0.0f, -1.0f);
+            postCam.transform.localPosition = globalPostOffset + new Vector3(stereo ? -displayRatio * 2.0f : 0.0f, 0.0f, -1.0f);
             postCam.nearClipPlane = 0.1f;
             postCam.farClipPlane = 10.0f;
             postCam.fieldOfView = 90.0f;
@@ -231,9 +254,9 @@ public class PhysicalDisplayCalibration : MonoBehaviour {
         }
         {
             GameObject obj2 = new GameObject("Calibration Cam (Right)");
-            obj2.transform.parent = transform;
+            obj2.transform.parent = staticParent.transform;
             Camera postCam = obj2.AddComponent<Camera>();
-            postCam.transform.localPosition = globalPostOffset + new Vector3(stereo ? displayRatio : 0.0f, 0.0f, -1.0f);
+            postCam.transform.localPosition = globalPostOffset + new Vector3(stereo ? displayRatio * 2.0f : 0.0f, 0.0f, -1.0f);
             postCam.nearClipPlane = 0.1f;
             postCam.farClipPlane = 10.0f;
             postCam.fieldOfView = 90.0f;
@@ -252,27 +275,74 @@ public class PhysicalDisplayCalibration : MonoBehaviour {
         globalPostOffset = globalPostOffset + new Vector3(10, 10, 10);
     }
 
-    void OnDrawGizmosSelected() {
+    void OnDrawGizmosSelected()
+    {
+#if UNITY_EDITOR
+        if (EditorApplication.isPlaying) return;
+#endif
+
         PhysicalDisplay disp = GetComponent<PhysicalDisplay>();
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(disp.ScreenspaceToWorld(upperRightPosition), disp.ScreenspaceToWorld(upperLeftPosition));
-        Gizmos.DrawLine(disp.ScreenspaceToWorld(upperRightPosition), disp.ScreenspaceToWorld(lowerRightPosition));
-        Gizmos.DrawLine(disp.ScreenspaceToWorld(lowerLeftPosition), disp.ScreenspaceToWorld(upperLeftPosition));
-        Gizmos.DrawLine(disp.ScreenspaceToWorld(lowerLeftPosition), disp.ScreenspaceToWorld(lowerRightPosition));
+
+        if (leftBlend != 0)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(disp.ScreenspaceToWorld(new Vector2(-1.0f - leftBlend, 1.0f)), disp.ScreenspaceToWorld(new Vector2(-1.0f - leftBlend, -1.0f)));
+            Gizmos.color = Color.blue;
+            Gizmos.DrawLine(disp.ScreenspaceToWorld(new Vector2(-1.0f + leftBlend, 1.0f)), disp.ScreenspaceToWorld(new Vector2(-1.0f + leftBlend, -1.0f)));
+        }
+        if (topBlend != 0)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(disp.ScreenspaceToWorld(new Vector2(-1.0f, 1.0f + topBlend)), disp.ScreenspaceToWorld(new Vector2(1.0f, 1.0f + topBlend)));
+            Gizmos.color = Color.blue;
+            Gizmos.DrawLine(disp.ScreenspaceToWorld(new Vector2(-1.0f, 1.0f - topBlend)), disp.ScreenspaceToWorld(new Vector2(1.0f, 1.0f - topBlend)));
+        }
+        if (rightBlend != 0)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(disp.ScreenspaceToWorld(new Vector2(1.0f + rightBlend, 1.0f)), disp.ScreenspaceToWorld(new Vector2(1.0f + rightBlend, -1.0f)));
+            Gizmos.color = Color.blue;
+            Gizmos.DrawLine(disp.ScreenspaceToWorld(new Vector2(1.0f - rightBlend, 1.0f)), disp.ScreenspaceToWorld(new Vector2(1.0f - rightBlend, -1.0f)));
+        }
+        if (bottomBlend != 0)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(disp.ScreenspaceToWorld(new Vector2(-1.0f, -1.0f - bottomBlend)), disp.ScreenspaceToWorld(new Vector2(1.0f, -1.0f - bottomBlend)));
+            Gizmos.color = Color.blue;
+            Gizmos.DrawLine(disp.ScreenspaceToWorld(new Vector2(-1.0f, -1.0f + bottomBlend)), disp.ScreenspaceToWorld(new Vector2(1.0f, -1.0f + bottomBlend)));
+        }
     }
 
-    public bool Initialized() {
+    public bool Initialized()
+    {
         return initialized;
     }
 
+    void Start()
+    {
+        PhysicalDisplay disp = gameObject.GetComponent<PhysicalDisplay>();
+        disp.transform.localPosition = disp.transform.localPosition +
+            disp.transform.right.normalized * (rightBlend - leftBlend) * disp.halfWidth() * 0.5f +
+            disp.transform.up.normalized * (topBlend - bottomBlend) * disp.halfHeight() * 0.5f;
+
+        Vector2 shift = new Vector2((leftBlend + rightBlend) * disp.halfWidth(), (bottomBlend + topBlend) * disp.halfHeight());
+        disp.width += shift.x;
+        disp.height += shift.y;
+    }
+
     private bool initialized = false;
-    void Update() {
-        if (!initialized) {
-            if(GetComponent<PhysicalDisplay>().Initialized()) {
+    void Update()
+    {
+        if (!initialized)
+        {
+            if (GetComponent<PhysicalDisplay>().Initialized())
+            {
                 SetupPostProcessing();
                 initialized = true;
             }
-        } else {
+        }
+        else
+        {
             PhysicalDisplay display = GetComponent<PhysicalDisplay>();
         }
     }
