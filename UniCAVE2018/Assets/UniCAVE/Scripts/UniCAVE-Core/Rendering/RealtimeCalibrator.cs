@@ -56,6 +56,16 @@ public class RealtimeCalibrator : NetworkBehaviour
             selected.sharedMesh.vertices = verts;
             selected.sharedMesh.UploadMeshData(false);
         }
+
+        if (toUpdate.Count != 0) {
+            PhysicalDisplayCalibration cali = GetComponent<PhysicalDisplayCalibration>();
+            Vector3[] verts = toUpdate[0].sharedMesh.vertices;
+            cali.upperRightPosition = new Vector3(verts[0].x, verts[0].y);
+            cali.upperLeftPosition = new Vector3(verts[1].x, verts[1].y);
+            cali.lowerLeftPosition = new Vector3(verts[2].x, verts[2].y);
+            cali.lowerRightPosition = new Vector3(verts[3].x, verts[3].y);
+            cali.SaveWarpFile();
+        }
     }
 
     [ClientRpc]

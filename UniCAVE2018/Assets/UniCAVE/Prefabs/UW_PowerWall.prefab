@@ -131,8 +131,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   head: {fileID: 1679515209769254197}
-  launchScript: "# Windows Powershell Launch Script\n# Script Generated On Wednesday,
-    February 27, 2019, 2:13:48 PM\n# Setup contains 6 displays and 3 display managers\n\n#
+  launchScript: "# Windows Powershell Launch Script\n# Script Generated On Friday,
+    March 1, 2019, 11:37:41 AM\n# Setup contains 6 displays and 3 display managers\n\n#
     Display Group: Top\nIf ($env:ComputerName -eq \"LEL-INSPIRON01\") {\n\tUniCAVE2018.exe
     -screen-fullscreen 0 -popupwindow -vrmode stereo\n}\n\n# Display Group: Middle\nIf
     ($env:ComputerName -eq \"DL_V2\") {\n\tUniCAVE2018.exe -screen-fullscreen 0 -popupwindow
@@ -245,10 +245,10 @@ MonoBehaviour:
   upperLeftPosition: {x: -0.9904, y: 0.96800005}
   lowerLeftPosition: {x: -1.0116, y: -0.956}
   lowerRightPosition: {x: 0.6144, y: -0.9354}
-  rightBlend: 0.05
+  rightBlend: 0.02
   topBlend: 0
   leftBlend: 0
-  bottomBlend: 0.05
+  bottomBlend: 0.02
   resolution: {x: 1280, y: 720}
   warpFile: Assets/Warp Data/DL_V1_HEAD_Display_0.scd
   leftChild: {fileID: 0}
@@ -381,8 +381,8 @@ MonoBehaviour:
   lowerLeftPosition: {x: -0.643, y: -0.946}
   lowerRightPosition: {x: 1.0150001, y: -0.989}
   rightBlend: 0
-  topBlend: 0.05
-  leftBlend: 0.05
+  topBlend: 0.02
+  leftBlend: 0.02
   bottomBlend: 0
   resolution: {x: 1280, y: 720}
   warpFile: Assets/Warp Data/LEL-08_Display_1.scd
@@ -585,9 +585,9 @@ MonoBehaviour:
   lowerLeftPosition: {x: -0.62160003, y: -0.9466}
   lowerRightPosition: {x: 0.9806, y: -0.954}
   rightBlend: 0
-  topBlend: 0.05
-  leftBlend: 0.05
-  bottomBlend: 0.05
+  topBlend: 0.02
+  leftBlend: 0.02
+  bottomBlend: 0.02
   resolution: {x: 1280, y: 720}
   warpFile: Assets/Warp Data/DL_V2_Display_1.scd
   leftChild: {fileID: 0}
@@ -686,8 +686,8 @@ MonoBehaviour:
   upperLeftPosition: {x: -0.985, y: 0.99600005}
   lowerLeftPosition: {x: -0.991, y: -0.963}
   lowerRightPosition: {x: 0.66999996, y: -0.962}
-  rightBlend: 0.05
-  topBlend: 0.05
+  rightBlend: 0.02
+  topBlend: 0.02
   leftBlend: 0
   bottomBlend: 0
   resolution: {x: 1280, y: 720}
@@ -888,10 +888,10 @@ MonoBehaviour:
   upperLeftPosition: {x: -0.9976, y: 0.90540004}
   lowerLeftPosition: {x: -0.9554, y: -0.969}
   lowerRightPosition: {x: 0.584, y: -0.9536}
-  rightBlend: 0.05
-  topBlend: 0.05
+  rightBlend: 0.02
+  topBlend: 0.02
   leftBlend: 0
-  bottomBlend: 0.05
+  bottomBlend: 0.02
   resolution: {x: 1280, y: 720}
   warpFile: Assets/Warp Data/DL_V2_Display_0.scd
   leftChild: {fileID: 0}
@@ -992,8 +992,8 @@ MonoBehaviour:
   lowerRightPosition: {x: 0.99740005, y: -0.881}
   rightBlend: 0
   topBlend: 0
-  leftBlend: 0.05
-  bottomBlend: 0.05
+  leftBlend: 0.02
+  bottomBlend: 0.02
   resolution: {x: 1280, y: 720}
   warpFile: Assets/Warp Data/DL_V1_HEAD_Display_1.scd
   leftChild: {fileID: 0}

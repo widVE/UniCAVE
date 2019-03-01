@@ -3325,6 +3325,63 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &2084667960
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1596864304886432, guid: 4dda0e52b0aba794c8c35164557249ab, type: 3}
+      propertyPath: m_Name
+      value: Default Network Manager
+      objectReference: {fileID: 0}
+    - target: {fileID: 4114309282547442, guid: 4dda0e52b0aba794c8c35164557249ab, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4114309282547442, guid: 4dda0e52b0aba794c8c35164557249ab, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4114309282547442, guid: 4dda0e52b0aba794c8c35164557249ab, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4114309282547442, guid: 4dda0e52b0aba794c8c35164557249ab, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4114309282547442, guid: 4dda0e52b0aba794c8c35164557249ab, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4114309282547442, guid: 4dda0e52b0aba794c8c35164557249ab, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4114309282547442, guid: 4dda0e52b0aba794c8c35164557249ab, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4114309282547442, guid: 4dda0e52b0aba794c8c35164557249ab, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4114309282547442, guid: 4dda0e52b0aba794c8c35164557249ab, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4114309282547442, guid: 4dda0e52b0aba794c8c35164557249ab, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4114309282547442, guid: 4dda0e52b0aba794c8c35164557249ab, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4dda0e52b0aba794c8c35164557249ab, type: 3}
 --- !u!1001 &2138284171
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3395,14 +3452,29 @@ PrefabInstance:
     - target: {fileID: 1679515209129585675, guid: 1b709b8fdf1195743bf6aff0446e9cfb,
         type: 3}
       propertyPath: launchScript
-      value: "# Windows Powershell Launch Script\n# Script Generated On Wednesday,
-        February 27, 2019, 2:13:58 PM\n# Setup contains 6 displays and 3 display managers\n\n#
+      value: "# Windows Powershell Launch Script\n# Script Generated On Friday, March
+        1, 2019, 11:37:41 AM\n# Setup contains 6 displays and 3 display managers\n\n#
         Display Group: Top\nIf ($env:ComputerName -eq \"LEL-INSPIRON01\") {\n\tUniCAVE2018.exe
         -screen-fullscreen 0 -popupwindow -vrmode stereo\n}\n\n# Display Group: Middle\nIf
         ($env:ComputerName -eq \"DL_V2\") {\n\tUniCAVE2018.exe -screen-fullscreen
         0 -popupwindow -vrmode stereo\n}\n\n# Display Group: Bottom\nIf ($env:ComputerName
         -eq \"LEL-08\") {\n\tUniCAVE2018.exe -screen-fullscreen 0 -popupwindow -vrmode
         stereo\n}"
+      objectReference: {fileID: 0}
+    - target: {fileID: 1679515209356576569, guid: 1b709b8fdf1195743bf6aff0446e9cfb,
+        type: 3}
+      propertyPath: upperRightPosition.x
+      value: 0.598
+      objectReference: {fileID: 0}
+    - target: {fileID: 1679515209356576569, guid: 1b709b8fdf1195743bf6aff0446e9cfb,
+        type: 3}
+      propertyPath: upperRightPosition.y
+      value: 0.9665999
+      objectReference: {fileID: 0}
+    - target: {fileID: 1679515209356576569, guid: 1b709b8fdf1195743bf6aff0446e9cfb,
+        type: 3}
+      propertyPath: upperLeftPosition.y
+      value: 0.9680001
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1b709b8fdf1195743bf6aff0446e9cfb, type: 3}

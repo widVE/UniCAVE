@@ -16,6 +16,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 #if UNITY_EDITOR
 using UnityEditor.SceneManagement;
 using UnityEditor;
@@ -49,50 +50,33 @@ public class PhysicalDisplayCalibration : MonoBehaviour
     [Tooltip("The resolution the camera will render at before warp correction")]
     public Vector2Int resolution = new Vector2Int(1280, 720);
 
-    [ContextMenuItem("Load Warp File", "preloadWarpFile")]
-    public string warpFile;
-    private void preloadWarpFile()
-    {
-#if UNITY_EDITOR
-        string loaded = System.IO.File.ReadAllText(warpFile);
-        string[] lines = loaded.Split('\n');
-        Vector2 offset = new Vector2(-0.5f, -0.5f);
-
-        for (int i = 0; i < lines.Length; i++)
-        {
-            try
-            {
-                string line = lines[i].Substring(3);
-                if (line.StartsWith("0_0"))
-                { //lower left, I assume
-                    string[] parts = line.Split(':')[1].Split(',');
-                    lowerLeftPosition = (new Vector2(float.Parse(parts[0]), float.Parse(parts[1])) + offset) * 2.0f;
-                    Debug.Log("Found Lower Left");
-                }
-                else if (line.StartsWith("0_12"))
-                {
-                    string[] parts = line.Split(':')[1].Split(',');
-                    upperLeftPosition = (new Vector2(float.Parse(parts[0]), float.Parse(parts[1])) + offset) * 2.0f;
-                    Debug.Log("Found Upper Left");
-                }
-                else if (line.StartsWith("16_0"))
-                {
-                    string[] parts = line.Split(':')[1].Split(',');
-                    lowerRightPosition = (new Vector2(float.Parse(parts[0]), float.Parse(parts[1])) + offset) * 2.0f;
-                    Debug.Log("Found Lower Right");
-                }
-                else if (line.StartsWith("16_12"))
-                {
-                    string[] parts = line.Split(':')[1].Split(',');
-                    upperRightPosition = (new Vector2(float.Parse(parts[0]), float.Parse(parts[1])) + offset) * 2.0f;
-                    Debug.Log("Found Upper Right");
-                }
+    [ContextMenu("Load Warp File")]
+    public void LoadWarpFile() {
+        string path = Util.ObjectFullName(gameObject) + ".txt";
+        Debug.Log("Loading warp file \"" + path + "\"");
+        if (File.Exists(path)) {
+            string content = File.ReadAllText(path);
+            string[] lines = content.Split('\n');
+            List<Vector2> vecs = new List<Vector2>();
+            foreach(string str in lines) {
+                string[] parts = str.Split(',');
+                vecs.Add(new Vector2(float.Parse(parts[0]), float.Parse(parts[1])));
             }
-            catch (Exception ignored) { }
+            upperRightPosition = vecs[0];
+            upperLeftPosition = vecs[1];
+            lowerLeftPosition = vecs[2];
+            lowerRightPosition = vecs[3];
+        } else {
+            Debug.Log("Warp file does not exist...");
         }
-        EditorUtility.SetDirty(this);
-        EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
-#endif
+    }
+    [ContextMenu("Save Warp File")]
+    public void SaveWarpFile() {
+        File.WriteAllText(Util.ObjectFullName(gameObject) + ".txt",
+            upperRightPosition.x + "," + upperRightPosition.y + "\n" +
+            upperLeftPosition.x + "," + upperLeftPosition.y + "\n" +
+            lowerLeftPosition.x + "," + lowerLeftPosition.y + "\n" +
+            lowerRightPosition.x + "," + lowerRightPosition.y);
     }
 
     public GameObject leftChild, rightChild, camChild;

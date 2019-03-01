@@ -16,6 +16,7 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 public static class Util {
     public static string GetMachineName() {
@@ -77,6 +78,16 @@ public static class Util {
         m[3, 2] = -1.0f;
 
         return m;
+    }
+
+    public static string ObjectFullName(GameObject obj) {
+        string res = "";
+        while(obj != null) {
+            res = obj.name + "." + res;
+            obj = (obj.transform.parent == null) ? null : obj.transform.parent.gameObject;
+        }
+        Regex rgx = new Regex("[^a-zA-Z0-9 -\\.]"); //convert string to a valid filepath
+        return rgx.Replace(res, "");
     }
 }
 
