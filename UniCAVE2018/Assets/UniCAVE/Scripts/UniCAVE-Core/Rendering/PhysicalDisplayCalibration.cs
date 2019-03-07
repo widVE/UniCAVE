@@ -30,7 +30,7 @@ public class PhysicalDisplayCalibration : MonoBehaviour
 
     public bool loadAtRuntime = false;
 
-    private float displayRatio {
+    public float displayRatio {
         get {
             return GetComponent<PhysicalDisplay>().windowBounds.width / (float)GetComponent<PhysicalDisplay>().windowBounds.height;
         }
