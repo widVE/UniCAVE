@@ -66,6 +66,9 @@ public class PhysicalDisplayCalibration : MonoBehaviour
             upperLeftPosition = vecs[1];
             lowerLeftPosition = vecs[2];
             lowerRightPosition = vecs[3];
+#if UNITY_EDITOR
+            EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
+#endif
         } else {
             Debug.Log("Warp file does not exist...");
         }

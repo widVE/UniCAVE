@@ -7,6 +7,8 @@
 		_FadeSizePY ("Fade Size PY", Float) = 0.25
 		_FadeSizeNX ("Fade Size NX", Float) = 0.25
 		_FadeSizeNY ("Fade Size NY", Float) = 0.25
+		_DebugDraw ("Debug Mode", Int) = 0
+		_DebugMag ("Debug Magnitude", Float) = 0.25
     }
     SubShader
     {
@@ -43,6 +45,8 @@
 			float _FadeSizePY;
 			float _FadeSizeNX;
 			float _FadeSizeNY;
+			int _DebugDraw;
+			float _DebugMag;
 
             v2f vert (appdata v)
             {
@@ -59,16 +63,17 @@
 				float brightnessY = clamp(min(i.uv.y / _FadeSizeNY, (1 - i.uv.y) / _FadeSizePY), 0.0, 1.0);
 				float brightness = brightnessX * brightnessY;
 
-				float debugDif = 0.01;
-				float debugVal = min(brightnessX, brightnessY);
-				if (debugVal <= debugDif) {
-					return fixed4(1, 0, 0, 1);
-				}
-				else if (debugVal >= (0.5 - debugDif / 2.0) && debugVal <= (0.5 + debugDif / 2.0)) {
-					return fixed4(0, 1, 0, 1);
-				}
-				else if (brightness >= (1 - debugDif) && debugVal < 1) {
-					return fixed4(0, 0, 1, 1);
+				if (_DebugDraw != 0) {
+					float debugVal = min(brightnessX, brightnessY);
+					if (debugVal <= _DebugMag) {
+						return fixed4(0, 1, 0, 1);
+					}
+					else if (debugVal >= (0.5 - _DebugMag / 2.0) && debugVal <= (0.5 + _DebugMag / 2.0)) {
+						return fixed4(1, 0, 0, 1);
+					}
+					else if (brightness >= (1 - _DebugMag) && debugVal < 1) {
+						return fixed4(0, 0, 1, 1);
+					}
 				}
                 // sample the texture
                 fixed4 col = tex2D(_MainTex, i.uv) * brightness;

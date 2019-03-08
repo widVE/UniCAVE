@@ -91,22 +91,22 @@ public class RealtimeCalibrator : NetworkBehaviour
 
         Vector2 direction = Vector2.zero;
         bool anyPressed = false;
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.RightArrow))
         {
             direction.x = 1;
             anyPressed = true;
         }
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        else if (Input.GetKey(KeyCode.UpArrow))
         {
             direction.y = 1;
             anyPressed = true;
         }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        else if (Input.GetKey(KeyCode.LeftArrow))
         {
             direction.x = -1;
             anyPressed = true;
         }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        else if (Input.GetKey(KeyCode.DownArrow))
         {
             direction.y = -1;
             anyPressed = true;
@@ -117,8 +117,8 @@ public class RealtimeCalibrator : NetworkBehaviour
             Debug.Log("RealtimeCalibration: isServer = " + isServer);
             if (isServer)
             {
-                LocalShift(direction, 0.01f, selectedIndex, vertexIndex);
-                RpcShift(direction, 0.01f, selectedIndex, vertexIndex);
+                LocalShift(direction, 0.005f, selectedIndex, vertexIndex);
+                RpcShift(direction, 0.005f, selectedIndex, vertexIndex);
             }
         }
     }
