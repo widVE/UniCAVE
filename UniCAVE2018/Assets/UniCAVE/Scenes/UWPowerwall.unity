@@ -1731,87 +1731,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1262768693}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1001 &1322649280
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 3603416879660378380, guid: 1b709b8fdf1195743bf6aff0446e9cfb,
-        type: 3}
-      propertyPath: m_Name
-      value: UW_PowerWall
-      objectReference: {fileID: 0}
-    - target: {fileID: 3603416879660378383, guid: 1b709b8fdf1195743bf6aff0446e9cfb,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3603416879660378383, guid: 1b709b8fdf1195743bf6aff0446e9cfb,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.92
-      objectReference: {fileID: 0}
-    - target: {fileID: 3603416879660378383, guid: 1b709b8fdf1195743bf6aff0446e9cfb,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -11.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3603416879660378383, guid: 1b709b8fdf1195743bf6aff0446e9cfb,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3603416879660378383, guid: 1b709b8fdf1195743bf6aff0446e9cfb,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3603416879660378383, guid: 1b709b8fdf1195743bf6aff0446e9cfb,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3603416879660378383, guid: 1b709b8fdf1195743bf6aff0446e9cfb,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3603416879660378383, guid: 1b709b8fdf1195743bf6aff0446e9cfb,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 3603416879660378383, guid: 1b709b8fdf1195743bf6aff0446e9cfb,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3603416879660378383, guid: 1b709b8fdf1195743bf6aff0446e9cfb,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3603416879660378383, guid: 1b709b8fdf1195743bf6aff0446e9cfb,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3603416879660378381, guid: 1b709b8fdf1195743bf6aff0446e9cfb,
-        type: 3}
-      propertyPath: launchScript
-      value: "# Windows Powershell Launch Script\n# Script Generated On Friday, March
-        8, 2019, 11:26:51 AM\n# Setup contains 6 displays and 3 display managers\n\n#
-        Display Group: Top\nIf ($env:ComputerName -eq \"LEL-INSPIRON01\") {\n\tUniCAVE2018.exe
-        -screen-fullscreen 0 -popupwindow -vrmode stereo\n}\n\n# Display Group: Middle\nIf
-        ($env:ComputerName -eq \"DL_V2\") {\n\tUniCAVE2018.exe -screen-fullscreen
-        0 -popupwindow -vrmode stereo\n}\n\n# Display Group: Bottom\nIf ($env:ComputerName
-        -eq \"LEL-08\") {\n\tUniCAVE2018.exe -screen-fullscreen 0 -popupwindow -vrmode
-        stereo\n}"
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 1b709b8fdf1195743bf6aff0446e9cfb, type: 3}
 --- !u!1 &1409926792
 GameObject:
   m_ObjectHideFlags: 0
@@ -2542,6 +2461,87 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1780397393}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &1784081884
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3603416879660378380, guid: 1b709b8fdf1195743bf6aff0446e9cfb,
+        type: 3}
+      propertyPath: m_Name
+      value: UW_PowerWall
+      objectReference: {fileID: 0}
+    - target: {fileID: 3603416879660378383, guid: 1b709b8fdf1195743bf6aff0446e9cfb,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3603416879660378383, guid: 1b709b8fdf1195743bf6aff0446e9cfb,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.92
+      objectReference: {fileID: 0}
+    - target: {fileID: 3603416879660378383, guid: 1b709b8fdf1195743bf6aff0446e9cfb,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -11.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3603416879660378383, guid: 1b709b8fdf1195743bf6aff0446e9cfb,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3603416879660378383, guid: 1b709b8fdf1195743bf6aff0446e9cfb,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3603416879660378383, guid: 1b709b8fdf1195743bf6aff0446e9cfb,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3603416879660378383, guid: 1b709b8fdf1195743bf6aff0446e9cfb,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3603416879660378383, guid: 1b709b8fdf1195743bf6aff0446e9cfb,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3603416879660378383, guid: 1b709b8fdf1195743bf6aff0446e9cfb,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3603416879660378383, guid: 1b709b8fdf1195743bf6aff0446e9cfb,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3603416879660378383, guid: 1b709b8fdf1195743bf6aff0446e9cfb,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3603416879660378381, guid: 1b709b8fdf1195743bf6aff0446e9cfb,
+        type: 3}
+      propertyPath: launchScript
+      value: "# Windows Powershell Launch Script\n# Script Generated On Friday, April
+        5, 2019, 12:05:04 PM\n# Setup contains 6 displays and 3 display managers\n\n#
+        Display Group: Top\nIf ($env:ComputerName -eq \"LEL-INSPIRON01\") {\n\tUniCAVE2018.exe
+        -screen-fullscreen 0 -popupwindow -vrmode stereo\n}\n\n# Display Group: Middle\nIf
+        ($env:ComputerName -eq \"DL_V2\") {\n\tUniCAVE2018.exe -screen-fullscreen
+        0 -popupwindow -vrmode stereo\n}\n\n# Display Group: Bottom\nIf ($env:ComputerName
+        -eq \"LEL-08\") {\n\tUniCAVE2018.exe -screen-fullscreen 0 -popupwindow -vrmode
+        stereo\n}"
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1b709b8fdf1195743bf6aff0446e9cfb, type: 3}
 --- !u!1 &1785842473
 GameObject:
   m_ObjectHideFlags: 0
@@ -3460,6 +3460,11 @@ PrefabInstance:
     - target: {fileID: 4114309282547442, guid: 4dda0e52b0aba794c8c35164557249ab, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114957343911598916, guid: 4dda0e52b0aba794c8c35164557249ab,
+        type: 3}
+      propertyPath: headMachine
+      value: DL_V1_HEAD
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4dda0e52b0aba794c8c35164557249ab, type: 3}
