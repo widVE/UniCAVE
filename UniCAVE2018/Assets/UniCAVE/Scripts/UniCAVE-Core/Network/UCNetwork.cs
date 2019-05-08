@@ -179,12 +179,12 @@ public class UCNetwork : NetworkBehaviour
             if (displays[i].manager != null) continue;
 
             res += "\n\n# Display: " + displays[i].name;
-            res += "\nIf ($env:ComputerName -eq \"" + displays[i].machineName + "\") {";
+            res += "\nIf ($env:ComputerName -eq '" + displays[i].machineName + "') {";
             if (displays[i].dualPipe && displays[i].dualInstance)
             {
                 for (int j = 0; j < 2; j++)
                 {
-                    res += "\n\t" + Application.productName + ".exe";
+                    res += "\n\t& '" + Application.productName + ".exe'";
                     res += " " + (displays[i].exclusiveFullscreen ? "-screen-fullscreen 1 -adapter " + displays[i].display : "-screen-fullscreen 0 -popupwindow");
                     res += " " + ((displays[i].is3D && !displays[i].dualPipe) ? "-vrmode stereo" : "");
                     res += " " + "eye " + (j == 0 ? "left" : "right");
@@ -192,7 +192,7 @@ public class UCNetwork : NetworkBehaviour
             }
             else
             {
-                res += "\n\t" + Application.productName + ".exe";
+                res += "\n\t& '" + Application.productName + ".exe'";
                 res += " " + (displays[i].exclusiveFullscreen ? "-screen-fullscreen 1 -adapter " + displays[i].display : "-screen-fullscreen 0 -popupwindow");
                 res += " " + ((displays[i].is3D && !displays[i].dualPipe) ? "-vrmode stereo" : "");
             }
@@ -203,9 +203,9 @@ public class UCNetwork : NetworkBehaviour
         for (int i = 0; i < managers.Count; i++)
         {
             res += "\n\n# Display Group: " + managers[i].name;
-            res += "\nIf ($env:ComputerName -eq \"" + managers[i].machineName + "\") {";
+            res += "\nIf ($env:ComputerName -eq '" + managers[i].machineName + "') {";
 
-            res += "\n\t" + Application.productName + ".exe";
+            res += "\n\t& '" + Application.productName + ".exe'";
             res += " " + (displays[i].exclusiveFullscreen ? "-screen-fullscreen 1 -adapter " + displays[i].display : "-screen-fullscreen 0 -popupwindow");
             res += " " + ((displays[i].is3D && !displays[i].dualPipe) ? "-vrmode stereo" : "");
 
