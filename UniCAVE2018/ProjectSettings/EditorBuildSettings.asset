@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/UniCAVE/Scenes/UWPowerwall Calibration.unity
+    guid: dfee0748c449a684ba106e457a371071
   m_configObjects: {}
