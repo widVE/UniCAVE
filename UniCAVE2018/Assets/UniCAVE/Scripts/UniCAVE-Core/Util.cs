@@ -82,8 +82,10 @@ public static class Util {
 
     public static string ObjectFullName(GameObject obj) {
         string res = "";
-        while(obj != null) {
-            res = obj.name + "." + res;
+        bool first = true;
+        while (obj != null) {
+            res = obj.name + (first ? "" : ".") + res;
+            first = false;
             obj = (obj.transform.parent == null) ? null : obj.transform.parent.gameObject;
         }
         Regex rgx = new Regex("[^a-zA-Z0-9 -\\.]"); //convert string to a valid filepath

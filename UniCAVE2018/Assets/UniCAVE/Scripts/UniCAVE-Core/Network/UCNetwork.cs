@@ -15,9 +15,12 @@
 
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEditor.SceneManagement;
+#endif
 
 
 [NetworkSettings(channel = 1, sendInterval = 0.016f)]
@@ -164,7 +167,7 @@ public class UCNetwork : NetworkBehaviour
         return disps;
     }
 
-    string GenerateLaunchScript()
+    public string GenerateLaunchScript()
     {
         List<PhysicalDisplay> displays = new List<PhysicalDisplay>();
         List<PhysicalDisplayManager> managers = new List<PhysicalDisplayManager>();
@@ -236,3 +239,175 @@ public class UCNetwork : NetworkBehaviour
         launchScript = GenerateLaunchScript();
     }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(UCNetwork))]
+public class UCNetworkEditor : Editor {
+    private Material material;
+    private int selectedIndex = 0;
+
+    void OnEnable() {
+        //this is used for rendering, don't remove
+        material = new Material(Shader.Find("Hidden/Internal-Colored"));
+    }
+
+    private void TextAtPosition(int x, int y, int height, string text) {
+        GUIStyle myStyle = new GUIStyle();
+
+        myStyle.fontSize = height;
+        myStyle.alignment = TextAnchor.UpperLeft;
+
+
+        //Color32 color = Color.red;
+        //EditorGUI.DrawRect(new Rect(x - 11, y, text.Length * 16 + 11, 32 - 2), color);
+        //Rect r = GUILayoutUtility.GetLastRect();
+        EditorGUI.SelectableLabel(new Rect(x, y, text.Length * 16, height), text, myStyle);
+    }
+
+    private void IterateAllRelevantChildren(GameObject it, List<PhysicalDisplay> displays, List<PhysicalDisplayManager> managers) {
+        for (int i = 0; i < it.transform.childCount; i++) {
+            GameObject child = it.transform.GetChild(i).gameObject;
+            if (child.GetComponent<PhysicalDisplay>() != null) {
+                displays.Add(child.GetComponent<PhysicalDisplay>());
+            } else if (child.GetComponent<PhysicalDisplayManager>()) {
+                managers.Add(child.GetComponent<PhysicalDisplayManager>());
+            }
+            IterateAllRelevantChildren(child, displays, managers);
+        }
+    }
+
+    private List<PhysicalDisplay> GetAllDisplays() {
+        List<PhysicalDisplay> disps = new List<PhysicalDisplay>();
+        List<PhysicalDisplayManager> managers = new List<PhysicalDisplayManager>();
+        IterateAllRelevantChildren((target as UCNetwork).gameObject, disps, managers);
+        return disps;
+    }
+    private List<PhysicalDisplayManager> GetAllManagers() {
+        List<PhysicalDisplay> disps = new List<PhysicalDisplay>();
+        List<PhysicalDisplayManager> managers = new List<PhysicalDisplayManager>();
+        IterateAllRelevantChildren((target as UCNetwork).gameObject, disps, managers);
+        return managers;
+    }
+
+    public override void OnInspectorGUI() {
+        UCNetwork cave = target as UCNetwork;
+
+        cave.head = (HeadConfiguration)EditorGUILayout.ObjectField("Head", cave.head, typeof(HeadConfiguration), true);
+
+        if (GUILayout.Button("Save Launch Script")) {
+            string launchScript = cave.GenerateLaunchScript();
+            string savePath = EditorUtility.SaveFilePanel("Save Launch Script", "./", Application.productName + ".ps1", "ps1");
+            if (savePath != null && savePath.Length != 0) {
+                System.IO.File.WriteAllText(savePath, launchScript);
+                Debug.Log("Saved launch script to " + savePath);
+            } else {
+                Debug.Log("Didn't save file (no path given)");
+            }
+        }
+        List<PhysicalDisplay> displays = GetAllDisplays();
+        List<PhysicalDisplayManager> managers = GetAllManagers();
+        Dictionary<string, List<object>> havingName = new Dictionary<string, List<object>>();
+        List<string> machines = new List<string>();
+        for (int i = 0; i < managers.Count; i++) {
+            if (!havingName.ContainsKey(managers[i].machineName)) {
+                havingName[managers[i].machineName] = new List<object> { managers[i] };
+                machines.Add(managers[i].machineName);
+            } else {
+                havingName[managers[i].machineName].Add(managers[i].gameObject);
+            }
+        }
+        for (int i = 0; i < displays.Count; i++) {
+            if (displays[i].manager == null) {
+                if (!havingName.ContainsKey(displays[i].machineName)) {
+                    havingName[displays[i].machineName] = new List<object> { displays[i] };
+                    machines.Add(displays[i].machineName);
+                } else {
+                    havingName[displays[i].machineName].Add(displays[i].gameObject);
+                }
+            }
+        }
+
+        //List<string> errors = new List<string>();
+        //foreach(var kvp in havingName) {
+        //    if(kvp.Value.Count > 1) {
+        //        errors.Add("These GameObjects have conflicting use of machine name " + kvp.Key + " :");
+        //        foreach(var obj in kvp.Value) {
+        //            errors.Add("\t" + Util.ObjectFullName(obj));
+        //        }
+        //    }
+        //}
+
+        //if(errors.Count != 0) {
+        //    GUIStyle colored = new GUIStyle();
+        //    colored.fontSize = 18;
+        //    colored.normal.textColor = new Color(0.7f, 0, 0);
+        //    EditorGUILayout.LabelField("WARNING: Invalid CAVE Configuration", colored);
+        //    foreach (var er in errors) {
+        //        EditorGUILayout.LabelField(er);
+        //    }
+        //    return;
+        //}
+
+        //if (selectedIndex >= machines.Count) selectedIndex = 0;
+        //selectedIndex = EditorGUILayout.Popup("Selected Machine", selectedIndex, machines.ToArray(), EditorStyles.popup);
+
+        /*
+        List<object> selectedObjs = havingName[machines[selectedIndex]];
+        Dictionary<int, List<KeyValuePair<string, RectInt>>> usingDisplay = new Dictionary<int, List<KeyValuePair<string, RectInt>>>();
+        for (int i = 0; i < selectedObjs.Count; i++) {
+            int displayIndex = -1;
+            List<RectInt> viewports = new List<RectInt>();
+            if (selectedObjs[i] is PhysicalDisplayManager) {
+                displayIndex = (selectedObjs[i] as PhysicalDisplayManager).displayNumber;
+                foreach (PhysicalDisplay disp in (selectedObjs[i] as PhysicalDisplayManager).displays) {
+                    viewports.Add(new KeyValuePair<string, RectInt>());
+                }
+            } else if (selectedObjs[i] is PhysicalDisplay) {
+                if ((selectedObjs[i] as PhysicalDisplay).exclusiveFullscreen) {
+                    displayIndex = (selectedObjs[i] as PhysicalDisplay).display;
+                }
+            }
+            if (usingDisplay.ContainsKey(displayIndex)) {
+                usingDisplay[displayIndex].Add(sele)
+            } else {
+                usingDisplay[displayIndex] = new List<RectInt> { }
+            }
+        }
+        for (int i = 0; i < selectedObjs.Count; i++) {
+            selectedObjs[i].GetComponent < PhysicalDisplayManager >
+            int dispIndex = managers[i].displayNumber;
+
+            EditorGUILayout.LabelField("Display " + dispIndex + " :");
+            GUILayout.BeginHorizontal(EditorStyles.helpBox);
+            Rect drawSpace = GUILayoutUtility.GetRect(10, 10000, 200, 200);
+            if (Event.current.type == EventType.Repaint) {
+                GUI.BeginClip(drawSpace);
+                GL.PushMatrix();
+
+                //GL.Viewport(drawSpace);
+                //GL.Clear(true, false, Color.black);
+                //material.SetPass(0);
+
+                //GL.Begin(GL.QUADS);
+                //GL.Color(Color.white);
+                //    GL.Vertex3(0,               0,                  0);
+                //    GL.Vertex3(drawSpace.width, 0,                  0);
+                //    GL.Vertex3(drawSpace.width, drawSpace.height,   0);
+                //    GL.Vertex3(0,               drawSpace.height,   0);
+                //GL.End();
+
+                TextAtPosition(0, 0, 12, "long ass string");
+
+                GL.PopMatrix();
+                GUI.EndClip();
+            }
+            GUILayout.EndHorizontal();
+        }*/
+
+        if (GUI.changed) {
+            EditorUtility.SetDirty(cave);
+            EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
+        }
+    }
+}
+#endif

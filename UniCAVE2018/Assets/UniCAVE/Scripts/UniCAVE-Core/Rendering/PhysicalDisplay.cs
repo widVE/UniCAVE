@@ -50,7 +50,7 @@ struct Settings {
 [Serializable]
 public class PhysicalDisplay : MonoBehaviour {
     #region Windows Utils
-    #if UNITY_STANDALONE_WIN
+#if UNITY_STANDALONE_WIN
     [DllImport("user32.dll")]
     public static extern bool SetWindowPos(IntPtr hwnd, int hWndInsertAfter, int x, int y, int cx, int cy, int wFlags);
 
@@ -216,10 +216,10 @@ public class PhysicalDisplay : MonoBehaviour {
         if (exclusiveFullscreen && useRenderTextures) {
             errors.Add("Physical Display uses renderTextures but also uses a certain display");
         }
-        if(exclusiveFullscreen && dualPipe) {
+        if (exclusiveFullscreen && dualPipe) {
             errors.Add("Physical display is in dual pipe mode but also uses a certain display");
         }
-        if(exclusiveFullscreen && manager != null) {
+        if (exclusiveFullscreen && manager != null) {
             errors.Add("Physical display uses exlusive fullscreen, but is also managed");
         }
         if (dualInstance && manager != null) {
@@ -231,10 +231,10 @@ public class PhysicalDisplay : MonoBehaviour {
         if (useXRCameras && dualPipe) {
             errors.Add("Physical Display uses XR cameras but is also dual pipe");
         }
-        if(useXRCameras && !is3D) {
+        if (useXRCameras && !is3D) {
             errors.Add("Physical Display uses XR cameras but is not 3D");
         }
-        if(exclusiveFullscreen &&
+        if (exclusiveFullscreen &&
             (SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.OpenGLES2 ||
             SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.OpenGLES3 ||
             SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.OpenGLCore)) {
@@ -304,7 +304,7 @@ public class PhysicalDisplay : MonoBehaviour {
     }
 
     void Start() {
-        
+
         centerCam = null;
         leftCam = null;
         rightCam = null;
@@ -333,21 +333,21 @@ public class PhysicalDisplay : MonoBehaviour {
         initialized = true;
 
         if (exclusiveFullscreen) {
-            if(display < Display.displays.Length) {
+            if (display < Display.displays.Length) {
                 Display.displays[display].Activate();
             } else {
                 Debug.Log("Display Error for Display: " + gameObject.name + ": Physical Display uses display index " + display + " but Unity does not detect that many displays");
             }
         }
-            
 
-        if(!exclusiveFullscreen) {
+
+        if (!exclusiveFullscreen) {
             Debug.Log("Setting Display: " + gameObject.name + " to Windowed Mode...");
-            if(!is3D) {
+            if (!is3D) {
                 centerCam = head.CreateCenterEye(gameObject.name);
                 Debug.Log("Setting Display: " + gameObject.name + " to Non-3D Windowed");
 #if UNITY_STANDALONE_WIN
-                if(manager == null) SetMyWindowInfo("Non-3D Windowed", windowBounds.x, windowBounds.y, windowBounds.width, windowBounds.height, 441, 411);
+                if (manager == null) SetMyWindowInfo("Non-3D Windowed", windowBounds.x, windowBounds.y, windowBounds.width, windowBounds.height, 441, 411);
 #endif
             } else {
                 if (!dualPipe && !dualInstance) {
@@ -355,53 +355,53 @@ public class PhysicalDisplay : MonoBehaviour {
                     rightCam = head.CreateRightEye(gameObject.name);
                     Debug.Log("Setting Display: " + gameObject.name + " to Passive-3D Windowed");
 #if UNITY_STANDALONE_WIN
-                    if(manager == null) SetMyWindowInfo("Passive-3D Windowed", windowBounds.x, windowBounds.y, windowBounds.width, windowBounds.height, 421, 420);
+                    if (manager == null) SetMyWindowInfo("Passive-3D Windowed", windowBounds.x, windowBounds.y, windowBounds.width, windowBounds.height, 421, 420);
 #endif
-                } else if(dualPipe && !dualInstance) {
+                } else if (dualPipe && !dualInstance) {
                     leftCam = head.CreateLeftEye(gameObject.name);
                     rightCam = head.CreateRightEye(gameObject.name);
                     Debug.Log("Setting Display: " + gameObject.name + " to Dual-Eye Dual-Pipe-3D Windowed");
 #if UNITY_STANDALONE_WIN
-                    if(manager == null) SetMyWindowInfo("Dual-Eye Dual-Pipe-3D Windowed", windowBounds.x, windowBounds.y, windowBounds.width, windowBounds.height, 422, 398);
+                    if (manager == null) SetMyWindowInfo("Dual-Eye Dual-Pipe-3D Windowed", windowBounds.x, windowBounds.y, windowBounds.width, windowBounds.height, 422, 398);
 #endif
-                } else if(dualPipe && dualInstance) {
-                    if(Util.GetArg("eye") == "left") {
+                } else if (dualPipe && dualInstance) {
+                    if (Util.GetArg("eye") == "left") {
                         leftCam = head.CreateLeftEye(gameObject.name);
                         Debug.Log("Setting Display: " + gameObject.name + " to Left-Eye Dual-Pipe-3D Windowed");
 #if UNITY_STANDALONE_WIN
-                        if(manager == null) SetMyWindowInfo("Left-Eye Dual-Pipe-3D Windowed", leftViewport.x, leftViewport.y, leftViewport.width, leftViewport.height, 300, 367);
+                        if (manager == null) SetMyWindowInfo("Left-Eye Dual-Pipe-3D Windowed", leftViewport.x, leftViewport.y, leftViewport.width, leftViewport.height, 300, 367);
 #endif
-                    } else if(Util.GetArg("eye") == "right") {
+                    } else if (Util.GetArg("eye") == "right") {
                         rightCam = head.CreateRightEye(gameObject.name);
                         Debug.Log("Setting Display: " + gameObject.name + " to Right-Eye Dual-Pipe-3D Windowed");
 #if UNITY_STANDALONE_WIN
-                        if(manager == null) SetMyWindowInfo("Right-Eye Dual-Pipe-3D Windowed", rightViewport.x, rightViewport.y, rightViewport.width, rightViewport.height, 342, 498);
+                        if (manager == null) SetMyWindowInfo("Right-Eye Dual-Pipe-3D Windowed", rightViewport.x, rightViewport.y, rightViewport.width, rightViewport.height, 342, 498);
 #endif
                     }
                 }
             }
         } else {
-            if(!is3D) {
+            if (!is3D) {
                 centerCam = head.CreateCenterEye(gameObject.name);
             } else {
-                if (!dualPipe && !dualInstance) {   
+                if (!dualPipe && !dualInstance) {
                     leftCam = head.CreateLeftEye(gameObject.name);
                     rightCam = head.CreateRightEye(gameObject.name);
-                } else if(dualPipe && !dualInstance) {
+                } else if (dualPipe && !dualInstance) {
                     leftCam = head.CreateLeftEye(gameObject.name);
                     rightCam = head.CreateRightEye(gameObject.name);
-                } else if(dualPipe && dualInstance) {
-                    if(Util.GetArg("eye") == "left") {
+                } else if (dualPipe && dualInstance) {
+                    if (Util.GetArg("eye") == "left") {
                         leftCam = head.CreateLeftEye(gameObject.name);
-                    } else if(Util.GetArg("eye") == "right") {
+                    } else if (Util.GetArg("eye") == "right") {
                         rightCam = head.CreateRightEye(gameObject.name);
                     }
                 }
             }
         }
 
-        if(useRenderTextures) {
-            if(leftCam != null) {
+        if (useRenderTextures) {
+            if (leftCam != null) {
                 leftTex = new RenderTexture(renderTextureSize.x, renderTextureSize.y, 0);
                 leftCam.targetTexture = leftTex;
             }
@@ -415,21 +415,17 @@ public class PhysicalDisplay : MonoBehaviour {
             }
         }
 
-        if(exclusiveFullscreen) {
+        if (exclusiveFullscreen) {
             if (leftCam != null) leftCam.targetDisplay = display;
             if (centerCam != null) centerCam.targetDisplay = display;
             if (rightCam != null) rightCam.targetDisplay = display;
         }
 #if UNITY_EDITOR
-        if(rightCam == null && leftCam == null && centerCam == null)
-        {
-            if(is3D)
-            {
+        if (rightCam == null && leftCam == null && centerCam == null) {
+            if (is3D) {
                 leftCam = head.CreateLeftEye(gameObject.name);
                 rightCam = head.CreateRightEye(gameObject.name);
-            }
-            else
-            {
+            } else {
                 centerCam = head.CreateCenterEye(gameObject.name);
             }
         }
@@ -442,7 +438,7 @@ public class PhysicalDisplay : MonoBehaviour {
             centerCam.transform.rotation = transform.rotation;
         }
 
-        if(leftCam != null) {
+        if (leftCam != null) {
             Matrix4x4 leftMat = Util.getAsymProjMatrix(LowerLeft, LowerRight, UpperLeft, leftCam.transform.position, head.nearClippingPlane, head.farClippingPlane);
 
             if (useXRCameras) {
@@ -481,7 +477,7 @@ public class PhysicalDisplay : MonoBehaviour {
 
                     //we must also defer setting the camera viewports until the screen has the correct resolution
                     if (dualPipe && !dualInstance) {
-                        leftCam.pixelRect  = new Rect(leftViewport.x,  leftViewport.y,  leftViewport.width,  leftViewport.height);
+                        leftCam.pixelRect = new Rect(leftViewport.x, leftViewport.y, leftViewport.width, leftViewport.height);
                         rightCam.pixelRect = new Rect(rightViewport.x, rightViewport.y, rightViewport.width, rightViewport.height);
                     }
                 }
@@ -539,17 +535,17 @@ public class PhysicalDisplayDitor : Editor {
         PhysicalDisplay display = target as PhysicalDisplay;
 
         PhysicalDisplayManager newMan = (PhysicalDisplayManager)EditorGUILayout.ObjectField("Manager", display.manager, typeof(PhysicalDisplayManager), true);
-        if(newMan != display.manager) {
-            if(newMan != null) {
+        if (newMan != display.manager) {
+            if (newMan != null) {
                 newMan.displays.Add(display);
             }
-            if(display.manager != null) {
+            if (display.manager != null) {
                 display.manager.displays.Remove(display);
             }
         }
         display.manager = newMan;
 
-        if(newMan == null) display.machineName = EditorGUILayout.TextField("Machine Name", display.machineName);
+        if (newMan == null) display.machineName = EditorGUILayout.TextField("Machine Name", display.machineName);
         display.width = EditorGUILayout.FloatField("Physical Width", display.width);
         display.height = EditorGUILayout.FloatField("Physical Height", display.height);
         display.head = (HeadConfiguration)EditorGUILayout.ObjectField("Head", display.head, typeof(HeadConfiguration), true);
@@ -562,20 +558,19 @@ public class PhysicalDisplayDitor : Editor {
             ), display.useXRCameras
         );
         display.useRenderTextures = EditorGUILayout.Toggle(new GUIContent("Use Render Textures", "Render to render textures instead of screen, for post processing"), display.useRenderTextures);
-        if(display.useRenderTextures) {
+        if (display.useRenderTextures) {
             display.renderTextureSize = EditorGUILayout.Vector2IntField("Render Texture Size", display.renderTextureSize);
         }
 
         if (!display.useRenderTextures) {
-            if (display.exclusiveFullscreen = EditorGUILayout.Toggle("Use Specific Display", display.exclusiveFullscreen))
-            {
+            if (display.exclusiveFullscreen = EditorGUILayout.Toggle("Use Specific Display", display.exclusiveFullscreen)) {
                 display.display = EditorGUILayout.IntField("Display", display.display);
             }
         }
 
         if (display.is3D = EditorGUILayout.Toggle("Is 3D", display.is3D)) {
-            if(display.dualPipe = EditorGUILayout.Toggle(new GUIContent("Dual Pipe", "Does the display use a dual pipe setup?"), display.dualPipe)) {
-                if(!display.exclusiveFullscreen && !(display.dualInstance = EditorGUILayout.Toggle(new GUIContent("Dual Instance", "Use one instance of Unity for each eye?"), display.dualInstance))) {
+            if (display.dualPipe = EditorGUILayout.Toggle(new GUIContent("Dual Pipe", "Does the display use a dual pipe setup?"), display.dualPipe)) {
+                if (!display.exclusiveFullscreen && !(display.dualInstance = EditorGUILayout.Toggle(new GUIContent("Dual Instance", "Use one instance of Unity for each eye?"), display.dualInstance))) {
                     //3d, dual pipe, single instance
                     display.windowBounds = EditorGUILayout.RectIntField(new GUIContent("Viewport Rect", "Where the window will be positioned on the screen"), display.windowBounds);
                 }
@@ -583,18 +578,21 @@ public class PhysicalDisplayDitor : Editor {
                 display.rightViewport = EditorGUILayout.RectIntField("Right Viewport", display.rightViewport);
             } else {
                 display.windowBounds = EditorGUILayout.RectIntField(new GUIContent("Viewport Rect", "Where the window will be positioned on the screen"), display.windowBounds);
+                display.dualInstance = false;
             }
         } else {
             display.windowBounds = EditorGUILayout.RectIntField(new GUIContent("Viewport Rect", "Where the window will be positioned on the screen"), display.windowBounds);
+            display.dualPipe = false;
+            display.dualInstance = false;
         }
-        
+
         List<string> errors = display.GetSettingsErrors();
-        if(errors.Count != 0) {
+        if (errors.Count != 0) {
             GUIStyle style = new GUIStyle();
             style.richText = true;
             EditorGUILayout.LabelField("<color=red>This PhysicalDisplay has some incompatible or invalid settings, behavior may be undefined!</color>", style);
         }
-        foreach(string error in errors) {
+        foreach (string error in errors) {
             GUIStyle style = new GUIStyle();
             style.richText = true;
             EditorGUILayout.LabelField("<color=red>" + error + "</color>", style);
