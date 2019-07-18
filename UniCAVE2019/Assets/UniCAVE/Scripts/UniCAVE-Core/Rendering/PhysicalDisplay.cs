@@ -240,11 +240,9 @@ public class PhysicalDisplay : MonoBehaviour {
             SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.OpenGLCore)) {
             errors.Add("Physical Display uses a certain display but the Unity Player isn't using DirectX");
         }
-        if (is3D && !dualPipe && !XRSettings.enabled) {
-            errors.Add("Physical Display is passive stereo but VR is not enabled (Enable with Edit->Project Settings->Player->XR Settings)");
-        }
+		
         if (is3D && !dualPipe && (XRSettings.supportedDevices.Length < 1 || XRSettings.supportedDevices[0] != "stereo")) {
-            errors.Add("Physical Display is passive stereo but the primary XR device is not passive stereo");
+            errors.Add(gameObject.name + " expecting quad-buffered stereo but VR Supported - \"Stereo display non-head mounted\" not enabled.");
         }
 
         return errors;
@@ -353,9 +351,9 @@ public class PhysicalDisplay : MonoBehaviour {
                 if (!dualPipe && !dualInstance) {
                     leftCam = head.CreateLeftEye(gameObject.name);
                     rightCam = head.CreateRightEye(gameObject.name);
-                    Debug.Log("Setting Display: " + gameObject.name + " to Passive-3D Windowed");
+                    Debug.Log("Setting Display: " + gameObject.name + " to Quad Buffer 3D Windowed");
 #if UNITY_STANDALONE_WIN
-                    if (manager == null) SetMyWindowInfo("Passive-3D Windowed", windowBounds.x, windowBounds.y, windowBounds.width, windowBounds.height, 421, 420);
+                    if (manager == null) SetMyWindowInfo("Quad Buffer 3D Windowed", windowBounds.x, windowBounds.y, windowBounds.width, windowBounds.height, 421, 420);
 #endif
                 } else if (dualPipe && !dualInstance) {
                     leftCam = head.CreateLeftEye(gameObject.name);
@@ -551,8 +549,8 @@ public class PhysicalDisplayDitor : Editor {
         display.head = (HeadConfiguration)EditorGUILayout.ObjectField("Head", display.head, typeof(HeadConfiguration), true);
 
         display.useXRCameras = EditorGUILayout.Toggle(new GUIContent(
-            "Use XR Cameras (Passive Stereo)",
-            @"Whether the cameras associated with this display should output to an XR device (such as headset or passive 3D display)
+            "Use XR Cameras (Quad Buffer)",
+            @"Whether the cameras associated with this display should output to an XR device (such as headset or quad-buffered stereo 3D display)
             If you do post processing on the cameras (such as a PhysicalDisplayCalibration) set this to false
             This is probably also unnecessary if using a Dual-Pipe 3D display"
             ), display.useXRCameras
