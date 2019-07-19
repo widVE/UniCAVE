@@ -36,7 +36,6 @@ public class UCNetwork : NetworkBehaviour
     private float lastTime = 0.0f;
     private bool syncedRandomSeed = false;
     private int frameCount = 0;
-    private int numSlaveNodes = 12;
 
     void Update()
     {
@@ -187,7 +186,7 @@ public class UCNetwork : NetworkBehaviour
             {
                 for (int j = 0; j < 2; j++)
                 {
-                    res += "\n\t& '" + Application.productName + ".exe'";
+                    res += "\n\t& '.\\" + Application.productName + ".exe'";
                     res += " " + (displays[i].exclusiveFullscreen ? "-screen-fullscreen 1 -adapter " + displays[i].display : "-screen-fullscreen 0 -popupwindow");
                     res += " " + ((displays[i].is3D && !displays[i].dualPipe) ? "-vrmode stereo" : "");
                     res += " " + "eye " + (j == 0 ? "left" : "right");
@@ -195,7 +194,7 @@ public class UCNetwork : NetworkBehaviour
             }
             else
             {
-                res += "\n\t& '" + Application.productName + ".exe'";
+                res += "\n\t& '.\\" + Application.productName + ".exe'";
                 res += " " + (displays[i].exclusiveFullscreen ? "-screen-fullscreen 1 -adapter " + displays[i].display : "-screen-fullscreen 0 -popupwindow");
                 res += " " + ((displays[i].is3D && !displays[i].dualPipe) ? "-vrmode stereo" : "");
             }
@@ -208,9 +207,10 @@ public class UCNetwork : NetworkBehaviour
             res += "\n\n# Display Group: " + managers[i].name;
             res += "\nIf ($env:ComputerName -eq '" + managers[i].machineName + "') {";
 
-            res += "\n\t& '" + Application.productName + ".exe'";
-            res += " " + (displays[i].exclusiveFullscreen ? "-screen-fullscreen 1 -adapter " + displays[i].display : "-screen-fullscreen 0 -popupwindow");
-            res += " " + ((displays[i].is3D && !displays[i].dualPipe) ? "-vrmode stereo" : "");
+            res += "\n\t& '.\\" + Application.productName + ".exe'";
+            res += " " + "-screen-fullscreen 1 -adapter " + managers[i].displayNumber;
+            res += " " + "-screen-width " + managers[i].displayResolution.x + " -screen-height " + managers[i].displayResolution.y;
+            res += " " + ((displays[0].is3D && !displays[0].dualPipe) ? "-vrmode stereo" : "");
 
             res += "\n}";
         }
@@ -318,7 +318,7 @@ public class UCNetworkEditor : Editor {
         }
         for (int i = 0; i < displays.Count; i++) {
             if (displays[i].manager == null) {
-                if (!havingName.ContainsKey(displays[i].machineName)) {
+                if (displays[i].machineName == null || !havingName.ContainsKey(displays[i].machineName)) {
                     havingName[displays[i].machineName] = new List<object> { displays[i] };
                     machines.Add(displays[i].machineName);
                 } else {
