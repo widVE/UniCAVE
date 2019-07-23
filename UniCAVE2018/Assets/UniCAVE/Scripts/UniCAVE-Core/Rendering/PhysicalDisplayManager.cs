@@ -66,24 +66,24 @@ public class PhysicalDisplayManager : MonoBehaviour {
 
                     PhysicalDisplayCalibration cali = display.gameObject.GetComponent<PhysicalDisplayCalibration>();
                     if (cali == null) {
-                        if (!display.exclusiveFullscreen) { //do nothing if fullscreen
-                            if (!display.useRenderTextures) {
-                                if (display.dualPipe) {
-                                    Vector2Int windowSpaceOffset = display.dualInstance ? new Vector2Int(0, 0) : new Vector2Int(display.windowBounds.x, display.windowBounds.y);
-                                    display.leftCam.pixelRect = new Rect(
-                                        windowSpaceOffset.x + display.leftViewport.x,
-                                        windowSpaceOffset.y + display.leftViewport.y,
-                                        display.leftViewport.width,
-                                        display.leftViewport.height);
-                                    display.rightCam.pixelRect = new Rect(
-                                        windowSpaceOffset.x + display.rightViewport.x,
-                                        windowSpaceOffset.y + display.rightViewport.y,
-                                        display.rightViewport.width,
-                                        display.rightViewport.height);
-                                } else {
-                                    foreach (Camera cam in display.GetAllCameras()) {
-                                        cam.pixelRect = new Rect(display.windowBounds.x, display.windowBounds.y, display.windowBounds.width, display.windowBounds.height);
-                                    }
+                        if (!display.useRenderTextures) {
+                            if (display.dualPipe) {
+                                Vector2Int windowSpaceOffset = display.dualInstance ? new Vector2Int(0, 0) : new Vector2Int(display.windowBounds.x, display.windowBounds.y);
+                                display.leftCam.pixelRect = new Rect(
+                                    windowSpaceOffset.x + display.leftViewport.x,
+                                    windowSpaceOffset.y + display.leftViewport.y,
+                                    display.leftViewport.width,
+                                    display.leftViewport.height);
+                                display.rightCam.pixelRect = new Rect(
+                                    windowSpaceOffset.x + display.rightViewport.x,
+                                    windowSpaceOffset.y + display.rightViewport.y,
+                                    display.rightViewport.width,
+                                    display.rightViewport.height);
+                            } else {
+                                foreach (Camera cam in display.GetAllCameras()) {
+                                    Debug.Log("Manager [" + name + "] set Camera [" + cam.name + "] viewport to <"
+                                        + display.windowBounds.x + ", " + display.windowBounds.y + ", " + display.windowBounds.width + ", " + display.windowBounds.height + ">");
+                                    cam.pixelRect = new Rect(display.windowBounds.x, display.windowBounds.y, display.windowBounds.width, display.windowBounds.height);
                                 }
                             }
                         }

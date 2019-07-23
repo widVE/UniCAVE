@@ -49,71 +49,7 @@ struct Settings {
 
 [Serializable]
 public class PhysicalDisplay : MonoBehaviour {
-    #region Windows Utils
-#if UNITY_STANDALONE_WIN
-    [DllImport("user32.dll")]
-    public static extern bool SetWindowPos(IntPtr hwnd, int hWndInsertAfter, int x, int y, int cx, int cy, int wFlags);
-
-    [DllImport("user32.dll")]
-    public static extern bool SetWindowText(System.IntPtr hwnd, System.String lpString);
-
-    public delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
-    [DllImport("user32.dll")]
-    private static extern bool EnumWindows(EnumWindowsProc enumProc, IntPtr lParam);
-
-    [DllImport("user32.dll")]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
-
-    [StructLayout(LayoutKind.Sequential)]
-    public struct RECT {
-        public int Left;        // x position of upper-left corner
-        public int Top;         // y position of upper-left corner
-        public int Right;       // x position of lower-right corner
-        public int Bottom;      // y position of lower-right corner
-    }
-
-    private int _setWidth = -1, _setHeight = -1;
-    private int _desiredWidth = -1, _desiredHeight = -1;
-    private int _desiredX = -1, _desiredY = -1;
-    private string _desiredName;
-    //setWidth and setHeight are used to uniquely identify the window
-    //so if there are multiple instances of this application running at once,
-    //make setWidth and setHeight unique values so the wrong window is not selected
-    //this solution is terrible but this is the only way to uniquely find which window
-    //this instance of unity is related to
-    private void SetMyWindowInfo(string text, int posX, int posY, int width, int height, int setWidth, int setHeight) {
-        _setWidth = setWidth;
-        _setHeight = setHeight;
-        _desiredWidth = width;
-        _desiredHeight = height;
-        _desiredName = text;
-        _desiredX = posX;
-        _desiredY = posY;
-        _resolutions = loadAllWindowSizes();
-        Screen.SetResolution(setWidth, setHeight, false);
-    }
-
-    private Dictionary<long, Vector2Int> _resolutions = null;
-    Dictionary<long, Vector2Int> loadAllWindowSizes() {
-        Dictionary<long, Vector2Int> res = new Dictionary<long, Vector2Int>();
-
-        EnumWindows(delegate (IntPtr wnd, IntPtr param) {
-            RECT r = new RECT();
-            GetWindowRect(wnd, out r);
-
-            int wndWidth = r.Right - r.Left;
-            int wndHeight = r.Bottom - r.Top;
-
-            res.Add(wnd.ToInt64(), new Vector2Int(wndWidth, wndHeight));
-
-            return true;
-        }, IntPtr.Zero);
-
-        return res;
-    }
-#endif
-    #endregion
+    
 
     public PhysicalDisplayManager manager;
     public string machineName;
@@ -240,11 +176,9 @@ public class PhysicalDisplay : MonoBehaviour {
             SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.OpenGLCore)) {
             errors.Add("Physical Display uses a certain display but the Unity Player isn't using DirectX");
         }
-        if (is3D && !dualPipe && !XRSettings.enabled) {
-            errors.Add("Physical Display is passive stereo but VR is not enabled (Enable with Edit->Project Settings->Player->XR Settings)");
-        }
+		
         if (is3D && !dualPipe && (XRSettings.supportedDevices.Length < 1 || XRSettings.supportedDevices[0] != "stereo")) {
-            errors.Add("Physical Display is passive stereo but the primary XR device is not passive stereo");
+            errors.Add(gameObject.name + " expecting quad-buffered stereo but VR Supported - \"Stereo display non-head mounted\" not enabled.");
         }
 
         return errors;
@@ -311,7 +245,7 @@ public class PhysicalDisplay : MonoBehaviour {
 
         if (loadSettingsAtRuntime) {
             Debug.Log("Attempting to Load Settings for Display: " + gameObject.name);
-            TryToDeSerialize();
+            TryToDeSerialize(serializedLocation);
         }
 
         if (!ShouldBeActive()) {
@@ -346,37 +280,37 @@ public class PhysicalDisplay : MonoBehaviour {
             if (!is3D) {
                 centerCam = head.CreateCenterEye(gameObject.name);
                 Debug.Log("Setting Display: " + gameObject.name + " to Non-3D Windowed");
-#if UNITY_STANDALONE_WIN
-                if (manager == null) SetMyWindowInfo("Non-3D Windowed", windowBounds.x, windowBounds.y, windowBounds.width, windowBounds.height, 441, 411);
-#endif
+                #if UNITY_STANDALONE_WIN
+                if (manager == null) WindowsUtils.SetMyWindowInfo("Non-3D Windowed", windowBounds.x, windowBounds.y, windowBounds.width, windowBounds.height, 441, 411);
+                #endif
             } else {
                 if (!dualPipe && !dualInstance) {
                     leftCam = head.CreateLeftEye(gameObject.name);
                     rightCam = head.CreateRightEye(gameObject.name);
-                    Debug.Log("Setting Display: " + gameObject.name + " to Passive-3D Windowed");
-#if UNITY_STANDALONE_WIN
-                    if (manager == null) SetMyWindowInfo("Passive-3D Windowed", windowBounds.x, windowBounds.y, windowBounds.width, windowBounds.height, 421, 420);
-#endif
+                    Debug.Log("Setting Display: " + gameObject.name + " to Quad Buffer 3D Windowed");
+                    #if UNITY_STANDALONE_WIN
+                    if (manager == null) WindowsUtils.SetMyWindowInfo("Quad Buffer 3D Windowed", windowBounds.x, windowBounds.y, windowBounds.width, windowBounds.height, 421, 420);
+                    #endif
                 } else if (dualPipe && !dualInstance) {
                     leftCam = head.CreateLeftEye(gameObject.name);
                     rightCam = head.CreateRightEye(gameObject.name);
                     Debug.Log("Setting Display: " + gameObject.name + " to Dual-Eye Dual-Pipe-3D Windowed");
-#if UNITY_STANDALONE_WIN
-                    if (manager == null) SetMyWindowInfo("Dual-Eye Dual-Pipe-3D Windowed", windowBounds.x, windowBounds.y, windowBounds.width, windowBounds.height, 422, 398);
-#endif
+                    #if UNITY_STANDALONE_WIN
+                    if (manager == null) WindowsUtils.SetMyWindowInfo("Dual-Eye Dual-Pipe-3D Windowed", windowBounds.x, windowBounds.y, windowBounds.width, windowBounds.height, 422, 398);
+                    #endif
                 } else if (dualPipe && dualInstance) {
                     if (Util.GetArg("eye") == "left") {
                         leftCam = head.CreateLeftEye(gameObject.name);
                         Debug.Log("Setting Display: " + gameObject.name + " to Left-Eye Dual-Pipe-3D Windowed");
-#if UNITY_STANDALONE_WIN
-                        if (manager == null) SetMyWindowInfo("Left-Eye Dual-Pipe-3D Windowed", leftViewport.x, leftViewport.y, leftViewport.width, leftViewport.height, 300, 367);
-#endif
+                        #if UNITY_STANDALONE_WIN
+                        if (manager == null) WindowsUtils.SetMyWindowInfo("Left-Eye Dual-Pipe-3D Windowed", leftViewport.x, leftViewport.y, leftViewport.width, leftViewport.height, 300, 367);
+                        #endif
                     } else if (Util.GetArg("eye") == "right") {
                         rightCam = head.CreateRightEye(gameObject.name);
                         Debug.Log("Setting Display: " + gameObject.name + " to Right-Eye Dual-Pipe-3D Windowed");
-#if UNITY_STANDALONE_WIN
-                        if (manager == null) SetMyWindowInfo("Right-Eye Dual-Pipe-3D Windowed", rightViewport.x, rightViewport.y, rightViewport.width, rightViewport.height, 342, 498);
-#endif
+                        #if UNITY_STANDALONE_WIN
+                        if (manager == null) WindowsUtils.SetMyWindowInfo("Right-Eye Dual-Pipe-3D Windowed", rightViewport.x, rightViewport.y, rightViewport.width, rightViewport.height, 342, 498);
+                        #endif
                     }
                 }
             }
@@ -443,6 +377,7 @@ public class PhysicalDisplay : MonoBehaviour {
 
             if (useXRCameras) {
                 leftCam.SetStereoProjectionMatrix(Camera.StereoscopicEye.Left, leftMat);
+                leftCam.stereoTargetEye = StereoTargetEyeMask.Left;
             } else {
                 leftCam.projectionMatrix = leftMat;
             }
@@ -455,6 +390,7 @@ public class PhysicalDisplay : MonoBehaviour {
 
             if (useXRCameras) {
                 rightCam.SetStereoProjectionMatrix(Camera.StereoscopicEye.Right, rightMat);
+                rightCam.stereoTargetEye = StereoTargetEyeMask.Right;
             } else {
                 rightCam.projectionMatrix = rightMat;
             }
@@ -464,34 +400,14 @@ public class PhysicalDisplay : MonoBehaviour {
     }
 
     void Update() {
-        //it seems that Windows doe not immediately set the window properties so
-        //we try over and over until it does
-#if UNITY_STANDALONE_WIN
-        if (_resolutions != null) {
-            Dictionary<long, Vector2Int> newResolutions = loadAllWindowSizes();
-            foreach (var kvp in newResolutions) {
-                if (kvp.Value.x == _setWidth && kvp.Value.y == _setHeight) {
-                    SetWindowText(new IntPtr(kvp.Key), _desiredName);
-                    SetWindowPos(new IntPtr(kvp.Key), 0, _desiredX, _desiredY, _desiredWidth, _desiredHeight, _desiredWidth * _desiredHeight == 0 ? 1 : 0);
-                    _resolutions = null;
-
-                    //we must also defer setting the camera viewports until the screen has the correct resolution
-                    if (dualPipe && !dualInstance) {
-                        leftCam.pixelRect = new Rect(leftViewport.x, leftViewport.y, leftViewport.width, leftViewport.height);
-                        rightCam.pixelRect = new Rect(rightViewport.x, rightViewport.y, rightViewport.width, rightViewport.height);
-                    }
-                }
+        if(!updatedViewports && WindowsUtils.CompletedOperation()) {
+            //we must also defer setting the camera viewports until the screen has the correct resolution
+            if (dualPipe && !dualInstance) {
+                leftCam.pixelRect = new Rect(leftViewport.x, leftViewport.y, leftViewport.width, leftViewport.height);
+                rightCam.pixelRect = new Rect(rightViewport.x, rightViewport.y, rightViewport.width, rightViewport.height);
             }
-        }
-#else
-        //do this for Linux too
-        if (dualPipe && !dualInstance && !updatedViewports)
-        {
-            leftCam.pixelRect = new Rect(leftViewport.x, leftViewport.y, leftViewport.width, leftViewport.height);
-            rightCam.pixelRect = new Rect(rightViewport.x, rightViewport.y, rightViewport.width, rightViewport.height);
             updatedViewports = true;
         }
-#endif
     }
 
     void EditorDraw() {
@@ -515,14 +431,12 @@ public class PhysicalDisplay : MonoBehaviour {
         Gizmos.DrawLine((transform.position * 2.0f + up) / 3.0f, up);
     }
 
-    public string serializedLocation = "serialization path";
-    public void TryToSerialize(string path = null) {
-        if (path == null) path = serializedLocation;
+    public string serializedLocation = "settings.json";
+    public void TryToSerialize(string path) {
         System.IO.File.WriteAllText(path, JsonUtility.ToJson(GetSettings()));
         Debug.Log("Serialized settings to " + new System.IO.FileInfo(path).FullName);
     }
-    public void TryToDeSerialize(string path = null) {
-        if (path == null) path = serializedLocation;
+    public void TryToDeSerialize(string path) {
         SetSettings(JsonUtility.FromJson<Settings>(System.IO.File.ReadAllText(path)));
         Debug.Log("Deserialized settings from " + new System.IO.FileInfo(path).FullName);
     }
@@ -551,8 +465,8 @@ public class PhysicalDisplayDitor : Editor {
         display.head = (HeadConfiguration)EditorGUILayout.ObjectField("Head", display.head, typeof(HeadConfiguration), true);
 
         display.useXRCameras = EditorGUILayout.Toggle(new GUIContent(
-            "Use XR Cameras (Passive Stereo)",
-            @"Whether the cameras associated with this display should output to an XR device (such as headset or passive 3D display)
+            "Use XR Cameras (Quad Buffer)",
+            @"Whether the cameras associated with this display should output to an XR device (such as headset or quad-buffered stereo 3D display)
             If you do post processing on the cameras (such as a PhysicalDisplayCalibration) set this to false
             This is probably also unnecessary if using a Dual-Pipe 3D display"
             ), display.useXRCameras
@@ -562,11 +476,12 @@ public class PhysicalDisplayDitor : Editor {
             display.renderTextureSize = EditorGUILayout.Vector2IntField("Render Texture Size", display.renderTextureSize);
         }
 
-        if (!display.useRenderTextures) {
+        if (!display.useRenderTextures && display.manager == null) {
             if (display.exclusiveFullscreen = EditorGUILayout.Toggle("Use Specific Display", display.exclusiveFullscreen)) {
                 display.display = EditorGUILayout.IntField("Display", display.display);
             }
         }
+        if (display.manager != null) display.exclusiveFullscreen = false;
 
         if (display.is3D = EditorGUILayout.Toggle("Is 3D", display.is3D)) {
             if (display.dualPipe = EditorGUILayout.Toggle(new GUIContent("Dual Pipe", "Does the display use a dual pipe setup?"), display.dualPipe)) {
@@ -598,13 +513,22 @@ public class PhysicalDisplayDitor : Editor {
             EditorGUILayout.LabelField("<color=red>" + error + "</color>", style);
         }
 
-        display.serializedLocation = EditorGUILayout.TextField(display.serializedLocation);
-        display.loadSettingsAtRuntime = EditorGUILayout.Toggle("Load Settings At Runtime", display.loadSettingsAtRuntime);
+        
+        if(display.loadSettingsAtRuntime = EditorGUILayout.Toggle("Load Settings At Runtime", display.loadSettingsAtRuntime)) {
+            display.serializedLocation = EditorGUILayout.TextField(display.serializedLocation);
+        }
         if (GUILayout.Button("Export Display Settings to JSON")) {
-            display.TryToSerialize();
+            string path = EditorUtility.SaveFilePanel("Export Settings", "./", "settings.json", "json");
+            if(path != null) {
+                display.TryToSerialize(path);
+            }
         }
         if (GUILayout.Button("Import Display Settings from JSON")) {
-            display.TryToDeSerialize();
+            string path = EditorUtility.SaveFilePanel("Import Settings", "./", "settings.json", "json");
+            if (path != null) {
+                display.TryToDeSerialize(path);
+            }
+            
         }
 
         if (GUI.changed) {
