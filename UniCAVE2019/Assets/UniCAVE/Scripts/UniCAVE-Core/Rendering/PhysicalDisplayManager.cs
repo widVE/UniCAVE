@@ -108,6 +108,10 @@ public class PhysicalDisplayManager : MonoBehaviour {
         AssignManagerChildren_h(null);
     }
 
+    /// <summary>
+    /// helper function to assign this manager to all its children
+    /// </summary>
+    /// <param name="it">initial object to recursively iterate through</param>
     void AssignManagerChildren_h(GameObject it = null) {
         if (it == null) it = gameObject;
 

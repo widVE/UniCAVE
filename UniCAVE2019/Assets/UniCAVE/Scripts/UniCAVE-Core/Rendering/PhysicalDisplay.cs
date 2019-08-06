@@ -277,8 +277,16 @@ public class PhysicalDisplay : MonoBehaviour {
 
         if (!exclusiveFullscreen) {
             Debug.Log("Setting Display: " + gameObject.name + " to Windowed Mode...");
-            if (!is3D) {
+            if (!is3D || useXRCameras) {
                 centerCam = head.CreateCenterEye(gameObject.name);
+                if (useXRCameras) {
+                    leftCam = head.CreateLeftEye(gameObject.name);
+                    rightCam = head.CreateRightEye(gameObject.name);
+                    StereoBlit blit = centerCam.gameObject.AddComponent<StereoBlit>();
+                    blit.lcam = leftCam;
+                    blit.rcam = rightCam;
+                    Debug.Log("Created dummy cams");
+                }
                 Debug.Log("Setting Display: " + gameObject.name + " to Non-3D Windowed");
                 #if UNITY_STANDALONE_WIN
                 if (manager == null) WindowsUtils.SetMyWindowInfo("Non-3D Windowed", windowBounds.x, windowBounds.y, windowBounds.width, windowBounds.height, 441, 411);
@@ -315,8 +323,16 @@ public class PhysicalDisplay : MonoBehaviour {
                 }
             }
         } else {
-            if (!is3D) {
+            if (!is3D || useXRCameras) {
                 centerCam = head.CreateCenterEye(gameObject.name);
+                if (useXRCameras) {
+                    leftCam = head.CreateLeftEye(gameObject.name);
+                    rightCam = head.CreateRightEye(gameObject.name);
+                    StereoBlit blit = centerCam.gameObject.AddComponent<StereoBlit>();
+                    blit.lcam = leftCam;
+                    blit.rcam = rightCam;
+                    Debug.Log("Created dummy cams");
+                }
             } else {
                 if (!dualPipe && !dualInstance) {
                     leftCam = head.CreateLeftEye(gameObject.name);
@@ -356,46 +372,34 @@ public class PhysicalDisplay : MonoBehaviour {
         }
 #if UNITY_EDITOR
         if (rightCam == null && leftCam == null && centerCam == null) {
-            if (is3D) {
+            if (!is3D || useXRCameras) {
+                centerCam = head.CreateCenterEye(gameObject.name);
+            } else {
                 leftCam = head.CreateLeftEye(gameObject.name);
                 rightCam = head.CreateRightEye(gameObject.name);
-            } else {
-                centerCam = head.CreateCenterEye(gameObject.name);
             }
         }
 #endif
     }
 
     private void LateUpdate() {
-        if (centerCam != null) {
-            centerCam.projectionMatrix = Util.getAsymProjMatrix(LowerLeft, LowerRight, UpperLeft, centerCam.transform.position, head.nearClippingPlane, head.farClippingPlane);
-            centerCam.transform.rotation = transform.rotation;
-        }
-
         if (leftCam != null) {
             Matrix4x4 leftMat = Util.getAsymProjMatrix(LowerLeft, LowerRight, UpperLeft, leftCam.transform.position, head.nearClippingPlane, head.farClippingPlane);
-
-            if (useXRCameras) {
-                leftCam.SetStereoProjectionMatrix(Camera.StereoscopicEye.Left, leftMat);
-                leftCam.stereoTargetEye = StereoTargetEyeMask.Left;
-            } else {
-                leftCam.projectionMatrix = leftMat;
-            }
-
+            leftCam.projectionMatrix = leftMat;
             leftCam.transform.rotation = transform.rotation;
         }
 
         if (rightCam != null) {
             Matrix4x4 rightMat = Util.getAsymProjMatrix(LowerLeft, LowerRight, UpperLeft, rightCam.transform.position, head.nearClippingPlane, head.farClippingPlane);
-
-            if (useXRCameras) {
-                rightCam.SetStereoProjectionMatrix(Camera.StereoscopicEye.Right, rightMat);
-                rightCam.stereoTargetEye = StereoTargetEyeMask.Right;
-            } else {
-                rightCam.projectionMatrix = rightMat;
-            }
-
+            rightCam.projectionMatrix = rightMat;
             rightCam.transform.rotation = transform.rotation;
+        }
+
+        if (centerCam != null) {
+            if (!useXRCameras) {
+                centerCam.projectionMatrix = Util.getAsymProjMatrix(LowerLeft, LowerRight, UpperLeft, centerCam.transform.position, head.nearClippingPlane, head.farClippingPlane);
+            }
+            centerCam.transform.rotation = transform.rotation;
         }
     }
 
