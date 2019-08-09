@@ -172,6 +172,8 @@ public class UCNetwork : NetworkBehaviour
         List<PhysicalDisplayManager> managers = new List<PhysicalDisplayManager>();
         IterateAllRelevantChildren(gameObject, displays, managers);
 
+        bool headStarted = false;
+
         string res = "# Windows Powershell Launch Script\n";
         res += "# Script Generated On " + System.DateTime.Now.ToLongDateString() + ", " + System.DateTime.Now.ToLongTimeString() + "\n";
         res += "# Setup contains " + displays.Count + " displays and " + managers.Count + " display managers";
@@ -208,7 +210,7 @@ public class UCNetwork : NetworkBehaviour
             res += "\nIf ($env:ComputerName -eq '" + managers[i].machineName + "') {";
 
             res += "\n\t& '.\\" + Application.productName + ".exe'";
-            res += " " + "-screen-fullscreen 1 -adapter " + managers[i].displayNumber;
+            res += " " + (managers[i].fullscreen ? ("-screen-fullscreen 1 -adapter " + managers[i].displayNumber) : ("-screen-fullscreen 0 -popupwindow"));
             res += " " + "-screen-width " + managers[i].displayResolution.x + " -screen-height " + managers[i].displayResolution.y;
             res += " " + ((displays[0].is3D && !displays[0].dualPipe) ? "-vrmode stereo" : "");
 

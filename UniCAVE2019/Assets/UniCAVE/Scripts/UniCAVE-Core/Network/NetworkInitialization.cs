@@ -46,10 +46,10 @@ public class NetworkInitialization : MonoBehaviour {
         networkManager.networkAddress = serverAddress;
         networkManager.networkPort = serverPort;
 #if !UNITY_EDITOR
-        if (Util.GetMachineName() == headMachine) {
-            networkManager.StartServer();
-        } else {
+        if ((Util.GetArg("forceClient") == "1") || (Util.GetMachineName() != headMachine)) {
             networkManager.StartClient();
+        } else {
+            networkManager.StartServer();
         }
 #else
         networkManager.StartServer();

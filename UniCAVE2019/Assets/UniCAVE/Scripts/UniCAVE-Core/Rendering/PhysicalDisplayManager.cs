@@ -26,6 +26,7 @@ using UnityEditor;
 public class PhysicalDisplayManager : MonoBehaviour {
 
     public string machineName;
+    public bool fullscreen = true;
     public int displayNumber = 0;
     public Vector2Int displayResolution;
     public List<PhysicalDisplay> displays = new List<PhysicalDisplay>();
@@ -138,7 +139,9 @@ public class PhysicalDisplayManagerEditor : Editor {
         PhysicalDisplayManager manager = target as PhysicalDisplayManager;
 
         manager.machineName = EditorGUILayout.TextField("Machine Name", manager.machineName);
-        manager.displayNumber = EditorGUILayout.IntField("Display Number", manager.displayNumber);
+        if(manager.fullscreen = EditorGUILayout.Toggle("Fullscreen", manager.fullscreen)) {
+            manager.displayNumber = EditorGUILayout.IntField("Display Number", manager.displayNumber);
+        }
         manager.displayResolution = EditorGUILayout.Vector2IntField("Resolution", manager.displayResolution);
         if (GUILayout.Button("Assign children to this manager")) {
             foreach (Transform child in manager.transform) {
