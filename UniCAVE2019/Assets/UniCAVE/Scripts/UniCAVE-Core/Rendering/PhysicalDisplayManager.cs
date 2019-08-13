@@ -81,10 +81,15 @@ public class PhysicalDisplayManager : MonoBehaviour {
                                     display.rightViewport.width,
                                     display.rightViewport.height);
                             } else {
-                                foreach (Camera cam in display.GetAllCameras()) {
-                                    Debug.Log("Manager [" + name + "] set Camera [" + cam.name + "] viewport to <"
-                                        + display.windowBounds.x + ", " + display.windowBounds.y + ", " + display.windowBounds.width + ", " + display.windowBounds.height + ">");
-                                    cam.pixelRect = new Rect(display.windowBounds.x, display.windowBounds.y, display.windowBounds.width, display.windowBounds.height);
+                                //if stereo blit is enabled, only update the viewport of the center cam (in the future perhaps consolidate this logic with useRenderTextures)
+                                if(display.centerCam != null && display.centerCam.GetComponent<StereoBlit>() != null) {
+                                    display.centerCam.pixelRect = new Rect(display.windowBounds.x, display.windowBounds.y, display.windowBounds.width, display.windowBounds.height);
+                                } else {
+                                    foreach (Camera cam in display.GetAllCameras()) {
+                                        Debug.Log("Manager [" + name + "] set Camera [" + cam.name + "] viewport to <"
+                                            + display.windowBounds.x + ", " + display.windowBounds.y + ", " + display.windowBounds.width + ", " + display.windowBounds.height + ">");
+                                        cam.pixelRect = new Rect(display.windowBounds.x, display.windowBounds.y, display.windowBounds.width, display.windowBounds.height);
+                                    }
                                 }
                             }
                         }
