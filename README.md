@@ -1,18 +1,27 @@
-# UniCAVE Plugin version 1.4
+# UniCAVE Plugin version 2.0
 Ross Tredinnick, Brady Boettcher, Sam Solovy, Simon Smith, Benny Wysong-Grass, Kevin Ponto
 2/4/2019
 
 A Unity3D Plugin for Non-Head Mounted Virtual Reality Display Systems
 
-# Contents
+The Uni-CAVE Plugin is a solution for running Unity within immersive projection VR display systems.
 
-The Uni-CAVE Plugin is a solution for running Unity within immersive projection VR display systems. 
- 
-See the documentation in the root folder of the repository for installation of the plugin.
+# Setup and Documentation
 
-The plugin has been tested on Unity versions 5.4.0f3 and 5.5.0f3  
+For installation info, see the [Web Documentation for 2018 / 2019 Installation](https://unicave.discovery.wisc.edu/2018-documentation/).
+
+For detailed script info, see the [Web Documentation for 2018 / 2019 Scripts](https://unicave.discovery.wisc.edu/unicave-2018-scripts-documentation/).
+
+For a basic example, see the [Web Documentation for 2018 / 2019 Basic Custom Setup](https://unicave.discovery.wisc.edu/unicave-2018-scripts-documentation/#BasicCustomSetup), or look at the sample prefabs in each Unity project (UniCAVE2017, UniCAVE2018, UniCAVE2019).
+
+# Status and Update History
+
+For Unity 2018.X and Unity 2019.X, the UniCAVE 2018 and UniCAVE 2019 projects represent the up-to-date version 2.0 of UniCAVE. A legacy version of UniCAVE, versions 1.X, is available for Unity 2017.X and 5.X, respectively. Documentation is available for all version of UniCAVE at https://unicave.discovery.wisc.edu/.
 
 We are currently taking requests for developing custom prefabs meant to work with your immersive projection setup, or feel free to try yourself by taking a look at the examples within the "ExampleScenes" folder and following the guide in this documentation or on the website.
+
+12/2/2019 - Minor changes listed below:
+* PhysicalDisplayManager added resolution field which affects script generation
 
 7/19/2019 - Minor changes listed below:
 * PhysicalDisplayManager now logs viewport changes to child PhysicalDisplays
