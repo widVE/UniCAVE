@@ -18,7 +18,19 @@ For a basic example, see the [Web Documentation for 2018 / 2019 Basic Custom Set
 
 For Unity 2018.X and Unity 2019.X, the UniCAVE 2018 and UniCAVE 2019 projects represent the up-to-date version 2.0 of UniCAVE. A legacy version of UniCAVE, versions 1.X, is available for Unity 2017.X and 5.X, respectively. Documentation is available for all version of UniCAVE at https://unicave.discovery.wisc.edu/.
 
-We are currently taking requests for developing custom prefabs meant to work with your immersive projection setup, or feel free to try yourself by taking a look at the examples within the "ExampleScenes" folder and following the guide in this documentation or on the website.
+We are currently taking requests for developing custom prefabs meant to work with your immersive projection setup, or feel free to try yourself by taking a look at the documentation on the website.
+
+1/13/2020 - Changes listed below:
+* Improved warp calibration functionality from 2x2 quad to 8x8 mesh:
+  * Warp can be loaded at runtime or be baked into the prefab
+  * Post process layer can be assigned per display (default = 1 << 10)
+* Improved realtime calibration functionality as well:
+  * + or -: Increase or decrease brush size for moving adjacent vertices
+  * WASD: chanes the selected vertex in an 8x8 grid
+  * Arrowkeys: moves the selected vertex
+  * Enter: advances to next display
+  * Home: assigns internal vertices based on corners (WARNING: Overwrites internal vertex data
+  * Visual indicator for which vertex is being modified
 
 12/2/2019 - Minor changes listed below:
 * PhysicalDisplayManager added resolution field which affects script generation
