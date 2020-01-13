@@ -21,6 +21,7 @@ For Unity 2018.X and Unity 2019.X, the UniCAVE 2018 and UniCAVE 2019 projects re
 We are currently taking requests for developing custom prefabs meant to work with your immersive projection setup, or feel free to try yourself by taking a look at the documentation on the website.
 
 1/13/2020 - Changes listed below:
+* Thanks to Christoffer A Træen (github freshfish70) for major contributions to the changes below:
 * Improved warp calibration functionality from 2x2 quad to 8x8 mesh:
   * Warp can be loaded at runtime or be baked into the prefab
   * Post process layer can be assigned per display (default = 1 << 10)
@@ -29,7 +30,7 @@ We are currently taking requests for developing custom prefabs meant to work wit
   * WASD: chanes the selected vertex in an 8x8 grid
   * Arrowkeys: moves the selected vertex
   * Enter: advances to next display
-  * Home: assigns internal vertices based on corners (WARNING: Overwrites internal vertex data
+  * Home: assigns internal vertices based on corners (WARNING: Overwrites internal vertex data)
   * Visual indicator for which vertex is being modified
 
 12/2/2019 - Minor changes listed below:
