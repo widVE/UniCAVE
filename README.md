@@ -25,7 +25,7 @@ We are currently taking requests for developing custom prefabs meant to work wit
   * Warp can be loaded at runtime or be baked into the prefab
   * Post process layer can be assigned per display (default = 1 << 10)
 * Improved realtime calibration functionality as well:
-  * + or -: Increase or decrease brush size for moving adjacent vertices
+  * \+ or -: Increase or decrease brush size for moving adjacent vertices
   * WASD: chanes the selected vertex in an 8x8 grid
   * Arrowkeys: moves the selected vertex
   * Enter: advances to next display
