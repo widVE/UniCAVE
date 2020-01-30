@@ -31,10 +31,17 @@ public class PhysicalDisplayManager : MonoBehaviour {
     public Vector2Int displayResolution;
     public List<PhysicalDisplay> displays = new List<PhysicalDisplay>();
 
+    /// <summary>
+    /// Whether or not this display should be active, in this case if the machine name matches actual machine name
+    /// </summary>
+    /// <returns>Should be active or not</returns>
     public bool ShouldBeActive() {
         return machineName == Util.GetMachineName();
     }
 
+    /// <summary>
+    /// Deactivate if needed
+    /// </summary>
     void Start() {
         if (!ShouldBeActive()) {
             Debug.Log("Deactivating Display Manager: " + gameObject.name);
@@ -44,12 +51,21 @@ public class PhysicalDisplayManager : MonoBehaviour {
         Debug.Log("Display Manager Active: " + gameObject.name);
     }
 
+    /// <summary>
+    /// Whether all initialization operations have completed
+    /// </summary>
     bool _initialized = false;
+
+    /// <summary>
+    /// Waits for all displays to be initialized, then repositions camera viewports and/or sets up post processing
+    /// </summary>
     void Update() {
         if (!_initialized) {
             bool displaysInitialized = true;
             for (int i = 0; i < displays.Count; i++) {
-                if (displays[i].gameObject.activeSelf && displays[i].enabled && !displays[i].Initialized()) {
+                if (!displays[i].gameObject.activeSelf) continue;
+
+                if (displays[i].enabled && !displays[i].Initialized()) {
                     displaysInitialized = false;
                     break;
                 }
@@ -97,18 +113,21 @@ public class PhysicalDisplayManager : MonoBehaviour {
                         //special case for PhysicalDisplayCalibration
                         Debug.Log("Display:");
                         foreach (Camera cam in cali.postCams) {
-                            cam.pixelRect = new Rect(display.windowBounds.x, display.windowBounds.y, display.windowBounds.width, display.windowBounds.height);
+                            Rect r = new Rect(display.windowBounds.x, display.windowBounds.y, display.windowBounds.width, display.windowBounds.height);
+                            Debug.Log("Set cam " + cam.name + " to " + r);
+                            cam.pixelRect = r;
                         }
                     }
                 }
-
-
 
                 _initialized = true;
             }
         }
     }
 
+    /// <summary>
+    /// Search entire child tree for PhysicalDisplays and assign their manager to be this
+    /// </summary>
     [ContextMenu("Assign This Manager to Children")]
     void AssignManagerChildren() {
         AssignManagerChildren_h(null);

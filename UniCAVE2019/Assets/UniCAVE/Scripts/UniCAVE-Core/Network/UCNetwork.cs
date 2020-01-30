@@ -24,19 +24,18 @@ using UnityEditor.SceneManagement;
 
 
 [NetworkSettings(channel = 1, sendInterval = 0.016f)]
-public class UCNetwork : NetworkBehaviour
-{
-
+public class UCNetwork : NetworkBehaviour {
     [Tooltip("This object will be transformed by this script")]
     public HeadConfiguration head;
 
-    [TextArea(20, 20)]
-    public string launchScript;
 
     private float lastTime = 0.0f;
     private bool syncedRandomSeed = false;
     private int frameCount = 0;
 
+    /// <summary>
+    /// If server, broadcast information to all clients
+    /// </summary>
     void Update()
     {
         if (isServer)
@@ -72,6 +71,13 @@ public class UCNetwork : NetworkBehaviour
         }
     }
 
+    /// <summary>
+    /// Set transform of CAVE and head object
+    /// </summary>
+    /// <param name="myPos">global CAVE position</param>
+    /// <param name="myOri">gobal CAVE orientation</param>
+    /// <param name="headPos">global head position</param>
+    /// <param name="headOri">global head orientation</param>
     [ClientRpc]
     void RpcSetTransforms(Vector3 myPos, Quaternion myOri, Vector3 headPos, Quaternion headOri)
     {
@@ -80,6 +86,10 @@ public class UCNetwork : NetworkBehaviour
             head.transform.SetPositionAndRotation(headPos, headOri);
     }
 
+    /// <summary>
+    /// Set unity time, mainly for video players
+    /// </summary>
+    /// <param name="canonicalTime">time</param>
     [ClientRpc]
     void RpcSetTime(float canonicalTime)
     {
@@ -108,6 +118,10 @@ public class UCNetwork : NetworkBehaviour
         }
     }
 
+    /// <summary>
+    /// Assign unity random seed
+    /// </summary>
+    /// <param name="seed">the seed</param>
     [ClientRpc]
     void RpcSetRandomSeed(int seed)
     {
@@ -129,12 +143,25 @@ public class UCNetwork : NetworkBehaviour
         }
     }
 
+    /// <summary>
+    /// Shutdown unity
+    /// </summary>
     [ClientRpc]
     void RpcQuitApplication()
     {
         Application.Quit();
     }
 
+    public bool Initialized {
+        get {
+            foreach(PhysicalDisplay disp in GetAllDisplays()) {
+                if (disp.enabled && disp.gameObject.activeSelf) {
+                    if (!disp.Initialized()) return false;
+                }
+            }
+            return true;
+        }
+    }
 
     [Tooltip("You can load PhysicalDisplay settings for all children recursively, right click the name of this script and settings will be loaded from this file path")]
     public string settingsToLoad;
@@ -158,6 +185,10 @@ public class UCNetwork : NetworkBehaviour
         }
     }
 
+    /// <summary>
+    /// Return all displays associated with this network
+    /// </summary>
+    /// <returns>all displays associated</returns>
     public List<PhysicalDisplay> GetAllDisplays()
     {
         List<PhysicalDisplay> disps = new List<PhysicalDisplay>();
@@ -166,6 +197,10 @@ public class UCNetwork : NetworkBehaviour
         return disps;
     }
 
+    /// <summary>
+    /// Produce a Windows Powershell script that can be invoked on any machine to properly start the App
+    /// </summary>
+    /// <returns>the powershell launch script</returns>
     public string GenerateLaunchScript()
     {
         List<PhysicalDisplay> displays = new List<PhysicalDisplay>();
@@ -219,6 +254,13 @@ public class UCNetwork : NetworkBehaviour
 
         return res;
     }
+
+    /// <summary>
+    /// Recursively search child tree for PhysicalDisplays and PhysicalDisplayManagers and produce a list of them
+    /// </summary>
+    /// <param name="it">Start iterating from</param>
+    /// <param name="displays">List of displays to add to</param>
+    /// <param name="managers">List of managers to add to</param>
     private void IterateAllRelevantChildren(GameObject it, List<PhysicalDisplay> displays, List<PhysicalDisplayManager> managers)
     {
         for (int i = 0; i < it.transform.childCount; i++)
@@ -235,12 +277,9 @@ public class UCNetwork : NetworkBehaviour
             IterateAllRelevantChildren(child, displays, managers);
         }
     }
-
-    void OnValidate()
-    {
-        launchScript = GenerateLaunchScript();
-    }
 }
+
+
 
 #if UNITY_EDITOR
 [CustomEditor(typeof(UCNetwork))]

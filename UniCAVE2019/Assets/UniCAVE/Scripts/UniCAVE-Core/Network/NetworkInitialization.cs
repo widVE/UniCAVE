@@ -12,13 +12,14 @@
 //IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 //TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
+/// <summary>
+/// Starts the program as either client or server depending on machine
+/// </summary>
 public class NetworkInitialization : MonoBehaviour {
 
     public NetworkManager networkManager;
@@ -31,6 +32,9 @@ public class NetworkInitialization : MonoBehaviour {
     [Tooltip("This can be overriden at runtime with parameter serverPort, for example \"serverPort 8421\"")]
     public int serverPort = 7568;
 
+    /// <summary>
+    /// Starts as client or server
+    /// </summary>
     void Start () {
         var serverArg = Util.GetArg("serverAddress");
         if(serverArg != null) {
@@ -56,6 +60,9 @@ public class NetworkInitialization : MonoBehaviour {
 #endif
     }
 
+    /// <summary>
+    /// Quit after 20 seconds if no connection is made to server
+    /// </summary>
     void Update() {
         if (Util.GetMachineName() != headMachine) {
             if(networkManager.client == null)

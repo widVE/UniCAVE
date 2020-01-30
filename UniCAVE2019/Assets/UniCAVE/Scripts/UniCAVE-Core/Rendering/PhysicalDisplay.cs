@@ -75,27 +75,63 @@ public class PhysicalDisplay : MonoBehaviour {
     public bool loadSettingsAtRuntime;
 
     private bool updatedViewports = false;
-
+    
+    /// <summary>
+    /// Camera for rendering stereo left eye
+    /// </summary>
     [NonSerialized]
     public Camera leftCam;
+
+    /// <summary>
+    /// Camera for rendering non-stereo eye or passive-stereo left and right
+    /// </summary>
     [NonSerialized]
     public Camera centerCam;
+
+    /// <summary>
+    /// Camera for rendering stereo right eye
+    /// </summary>
     [NonSerialized]
     public Camera rightCam;
 
+    /// <summary>
+    /// If post processing is used, the texture rendered to stereo left
+    /// </summary>
     [NonSerialized]
     public RenderTexture leftTex;
+
+    /// <summary>
+    /// If post processing is used, the texture rendered to non-stereo
+    /// </summary>
     [NonSerialized]
     public RenderTexture centerTex;
+
+    /// <summary>
+    /// If post processing is used, the texture rendered to stereo right
+    /// </summary>
     [NonSerialized]
     public RenderTexture rightTex;
 
+    /// <summary>
+    /// Whether all setup operations are complete
+    /// </summary>
     [NonSerialized]
     bool initialized = false;
+
+    /// <summary>
+    /// Whether all setup operations are complete
+    /// </summary>
+    /// <returns>initialized</returns>
     public bool Initialized() {
         return initialized;
     }
 
+    /// <summary>
+    /// Whether or not this display is enabled for this machine.
+    /// If has manager, cedes decision to the manager
+    /// When in editor, always true.
+    /// </summary>
+    /// <returns>Whether to enable this display</returns>
     public bool ShouldBeActive() {
 #if UNITY_EDITOR
         return true;
@@ -106,6 +142,11 @@ public class PhysicalDisplay : MonoBehaviour {
 #endif
     }
 
+    /// <summary>
+    /// A list of every camera associated with this display
+    /// </summary>
+    /// <returns>A list of every camera associated with this display
+    /// </summary></returns>
     public List<Camera> GetAllCameras() {
         List<Camera> res = new List<Camera>();
         if (centerCam != null) res.Add(centerCam);
@@ -114,30 +155,56 @@ public class PhysicalDisplay : MonoBehaviour {
         return res;
     }
 
+    /// <summary>
+    /// Convert a coordinate in screenspace of this display to worldspace
+    /// </summary>
+    /// <param name="ss">Screenspace coordinate in range {[-1,1], [-1,1]} </param>
+    /// <returns>The world space position of ss</returns>
     public Vector3 ScreenspaceToWorld(Vector2 ss) {
         return transform.localToWorldMatrix * new Vector4(ss.x * halfWidth(), ss.y * halfHeight(), 0.0f, 1.0f);
     }
+
+    /// <summary>
+    /// Upper right (quadrant 1) corner world space coordinate
+    /// </summary>
     public Vector3 UpperRight {
         get {
             return transform.localToWorldMatrix * new Vector4(halfWidth(), halfHeight(), 0.0f, 1.0f);
         }
     }
+
+    /// <summary>
+    /// Upper left (quadrant 2) corner world space coordinate
+    /// </summary>
     public Vector3 UpperLeft {
         get {
             return transform.localToWorldMatrix * new Vector4(-halfWidth(), halfHeight(), 0.0f, 1.0f);
         }
     }
+
+    /// <summary>
+    /// Lower left (quadrant 3) corner world space coordinate
+    /// </summary>
     public Vector3 LowerLeft {
         get {
             return transform.localToWorldMatrix * new Vector4(-halfWidth(), -halfHeight(), 0.0f, 1.0f);
         }
     }
+
+    /// <summary>
+    /// Lower right (quadrant 4) corner world space coordinate
+    /// </summary>
     public Vector3 LowerRight {
         get {
             return transform.localToWorldMatrix * new Vector4(halfWidth(), -halfHeight(), 0.0f, 1.0f);
         }
     }
 
+    /// <summary>
+    /// Generate a list of potential errors associated with this display, printed to console during runtime and shown in the script editor
+    /// May include false positives and false negatives, this is just used to bring attention to common issues
+    /// </summary>
+    /// <returns>A list of potential script configuration errors</returns>
     public List<string> GetSettingsErrors() {
         List<string> errors = new List<string>();
         if (head == null) {
@@ -184,16 +251,10 @@ public class PhysicalDisplay : MonoBehaviour {
         return errors;
     }
 
-    //public List<string> CleanSettings() {
-    //    List<string> changedSettings = new List<string>();
-    //    //clear all viewport stuff if using a certain display
-    //    //or if using render textures for post processing
-    //    if (exclusiveFullscreen) {
-
-    //    }
-    //    return changedSettings;
-    //}
-
+    /// <summary>
+    /// Copies the values of a Settings object into this script instance
+    /// </summary>
+    /// <param name="settings">Settings to load in</param>
     void SetSettings(Settings settings) {
         manager = settings.manager;
         head = settings.head;
@@ -214,6 +275,11 @@ public class PhysicalDisplay : MonoBehaviour {
         leftViewport = settings.leftViewport;
         rightViewport = settings.rightViewport;
     }
+
+    /// <summary>
+    /// Get a Settings object associated with the settings of this script instance
+    /// </summary>
+    /// <returns>Script settings</returns>
     Settings GetSettings() {
         Settings settings = new Settings();
         settings.manager = manager;
@@ -237,6 +303,10 @@ public class PhysicalDisplay : MonoBehaviour {
         return settings;
     }
 
+    /// <summary>
+    /// Disable this object if it shouldn't be active
+    /// Otherwise, create and assign cameras, reposition window, etc
+    /// </summary>
     void Start() {
 
         centerCam = null;
@@ -382,6 +452,9 @@ public class PhysicalDisplay : MonoBehaviour {
 #endif
     }
 
+    /// <summary>
+    /// Assign camera matrices for all associated cameras
+    /// </summary>
     private void LateUpdate() {
         if (leftCam != null) {
             Matrix4x4 leftMat = Util.getAsymProjMatrix(LowerLeft, LowerRight, UpperLeft, leftCam.transform.position, head.nearClippingPlane, head.farClippingPlane);
@@ -403,6 +476,9 @@ public class PhysicalDisplay : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Reposition window (takes multiple frames to complete)
+    /// </summary>
     void Update() {
         if(!updatedViewports && WindowsUtils.CompletedOperation()) {
             //we must also defer setting the camera viewports until the screen has the correct resolution
@@ -414,6 +490,10 @@ public class PhysicalDisplay : MonoBehaviour {
         }
     }
 
+#if UNITY_EDITOR
+    /// <summary>
+    /// Draw debug view in editor
+    /// </summary>
     void EditorDraw() {
         var mat = transform.localToWorldMatrix;
         Gizmos.color = Color.white;
@@ -422,9 +502,17 @@ public class PhysicalDisplay : MonoBehaviour {
         Gizmos.DrawLine(LowerLeft, LowerRight);
         Gizmos.DrawLine(LowerRight, UpperRight);
     }
+
+    /// <summary>
+    /// Draw debug view in editor
+    /// </summary>
     void OnDrawGizmos() {
         EditorDraw();
     }
+
+    /// <summary>
+    /// Draw advanced debug view in editor when selected
+    /// </summary>
     private void OnDrawGizmosSelected() {
         var mat = transform.localToWorldMatrix;
         Vector3 right = mat * new Vector4(halfWidth() * 0.75f, 0.0f, 0.0f, 1.0f);
@@ -434,12 +522,26 @@ public class PhysicalDisplay : MonoBehaviour {
         Gizmos.color = new Color(0.25f, 0.75f, 0.25f);
         Gizmos.DrawLine((transform.position * 2.0f + up) / 3.0f, up);
     }
+#endif
 
+    /// <summary>
+    /// Where to load and save serialized Settings from
+    /// </summary>
     public string serializedLocation = "settings.json";
+
+    /// <summary>
+    /// Try to save Settings object0 to path
+    /// </summary>
+    /// <param name="path">path to save to</param>
     public void TryToSerialize(string path) {
         System.IO.File.WriteAllText(path, JsonUtility.ToJson(GetSettings()));
         Debug.Log("Serialized settings to " + new System.IO.FileInfo(path).FullName);
     }
+
+    /// <summary>
+    /// Try to load Settings object from path
+    /// </summary>
+    /// <param name="path">path to load from</param>
     public void TryToDeSerialize(string path) {
         SetSettings(JsonUtility.FromJson<Settings>(System.IO.File.ReadAllText(path)));
         Debug.Log("Deserialized settings from " + new System.IO.FileInfo(path).FullName);
@@ -447,8 +549,15 @@ public class PhysicalDisplay : MonoBehaviour {
 }
 
 #if UNITY_EDITOR
+/// <summary>
+/// Editor for this display; some options are not always valid so they are disabled in some settings configurations
+/// </summary>
 [CustomEditor(typeof(PhysicalDisplay))]
 public class PhysicalDisplayDitor : Editor {
+
+    /// <summary>
+    /// Render script GUI in editor
+    /// </summary>
     public override void OnInspectorGUI() {
         PhysicalDisplay display = target as PhysicalDisplay;
 

@@ -149,6 +149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bbb13f3601696f429cf6980abfdb409, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  camPrefab: {fileID: 0}
   leftEyeOffset: {x: 0, y: 0, z: 0}
   rightEyeOffset: {x: 0, y: 0, z: 0}
   nearClippingPlane: 0.01
@@ -293,10 +294,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   head: {fileID: 99686989}
-  launchScript: "# Windows Powershell Launch Script\n# Script Generated On Friday,
-    November 8, 2019, 12:46:17 PM\n# Setup contains 1 displays and 0 display managers\n\n#
-    Display: Disp\nIf ($env:ComputerName -eq 'LEL-07') {\n\t& '.\\UniCAVE2018.exe'
-    -screen-fullscreen 0 -popupwindow -vrmode stereo\n}"
   settingsToLoad: 
 --- !u!114 &742728795
 MonoBehaviour:
@@ -360,6 +357,7 @@ MonoBehaviour:
   lastSelectedIndex: 0
   vertexIndex: 0
   infoDisplay: {fileID: 0}
+  configsFolder: configs
 --- !u!222 &742728799
 CanvasRenderer:
   m_ObjectHideFlags: 2
@@ -613,6 +611,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e42b538a357baba49bd944adbc615de7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  postProcessLayer: 0
   postProcessMaterial: {fileID: 2100000, guid: 50322d79cedfa044e87d4de3b4f98b05, type: 2}
   rightBlend: 0.01
   topBlend: 0.01
@@ -621,7 +620,6 @@ MonoBehaviour:
   resolution: {x: 1280, y: 720}
   camChild: {fileID: 0}
   postCams: []
-  postProcessLayer: 0
   dewarpMeshPositions:
     verts: []
     generatedVerts: []

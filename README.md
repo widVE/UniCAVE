@@ -1,3 +1,4 @@
+
 # UniCAVE Plugin version 2.0
 Ross Tredinnick, Brady Boettcher, Sam Solovy, Simon Smith, Benny Wysong-Grass, Kevin Ponto
 2/4/2019
@@ -20,8 +21,14 @@ For Unity 2018.X and Unity 2019.X, the UniCAVE 2018 and UniCAVE 2019 projects re
 
 We are currently taking requests for developing custom prefabs meant to work with your immersive projection setup, or feel free to try yourself by taking a look at the documentation on the website.
 
+**Important: UniCAVE uses the Unity Multiplayer HLAPI for local networking. If your project does not use this, it needs to be added to your Unity project in the Unity Package Manager (Window -> Package Manager)**
+
+1/28/2020 - Minor changes listed below:
+* HeadConfiguration can now instantiate prefabs with camera script, instead of just plain cameras
+* Source commented
+
 1/13/2020 - Changes listed below:
-* Thanks to Christoffer A Træen (github freshfish70) for major contributions to the changes below:
+* Thanks to Christoffer A Tr?en (github freshfish70) for major contributions to the changes below:
 * Improved warp calibration functionality from 2x2 quad to 8x8 mesh:
   * Warp can be loaded at runtime or be baked into the prefab
   * Post process layer can be assigned per display (default = 1 << 10)

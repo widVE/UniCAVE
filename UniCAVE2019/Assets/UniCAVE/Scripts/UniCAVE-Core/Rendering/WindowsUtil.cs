@@ -57,7 +57,18 @@ public class WindowsUtils {
         Screen.SetResolution(setWidth, setHeight, false);
     }
 
+    /// <summary>
+    /// Map from ID -> Dimensions, of all windows existing
+    /// We must search this map for the dimensions assigned earlier, to find the ID associated with those dimensions
+    /// This ID is the ID of the unity window
+    /// (If other windows have the same dimensions, this will not work. Fortunately this situation is rare)
+    /// </summary>
     private static Dictionary<long, Vector2Int> _resolutions = null;
+
+    /// <summary>
+    /// Use Windows calls to generate map of ID -> Dimensions
+    /// </summary>
+    /// <returns></returns>
     private static Dictionary<long, Vector2Int> loadAllWindowSizes() {
         Dictionary<long, Vector2Int> res = new Dictionary<long, Vector2Int>();
 
@@ -77,9 +88,10 @@ public class WindowsUtils {
     }
 
     /// <summary>
-    /// Return true if there are no pending operations
+    /// Returns true if there are no pending operations, or all operations have completed
+    /// Otherwise returns false
     /// </summary>
-    /// <returns></returns>
+    /// <returns>Whether all operations have completed (or there are none)</returns>
     public static bool CompletedOperation() {
         //it seems that Windows doe not immediately set the window properties so
         //we try over and over until it does
