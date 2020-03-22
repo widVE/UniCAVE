@@ -67,10 +67,10 @@ public class RealtimeCalibrator : NetworkBehaviour
     private InfoDisplay infoDisplayInstance;
 
     /// <summary>
-    /// Verteces selection size. A size of 1 will select only one
+    /// Verteces selection size. A size of 0 will select only one
     /// vertex. A size of two wil select all vetices around the selected vertex.
     /// </summary>
-    private int gridSelectSize = 1;
+    private int gridSelectSize = 0;
 
     /// <summary>
     /// Folder in which configs are located
