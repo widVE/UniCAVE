@@ -111,10 +111,10 @@ public class PhysicalDisplayManager : MonoBehaviour {
                         }
                     } else {
                         //special case for PhysicalDisplayCalibration
-                        Debug.Log("Display:");
+                        //Debug.Log("Display:");
                         foreach (Camera cam in cali.postCams) {
                             Rect r = new Rect(display.windowBounds.x, display.windowBounds.y, display.windowBounds.width, display.windowBounds.height);
-                            Debug.Log("Set cam " + cam.name + " to " + r);
+                            //Debug.Log("Set cam " + cam.name + " to " + r);
                             cam.pixelRect = r;
                         }
                     }

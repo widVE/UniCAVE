@@ -20,8 +20,14 @@ public class StereoBlit : MonoBehaviour {
         cam = GetComponent<Camera>();
         cam.depth = 100;
 
-        lcam.targetTexture = new RenderTexture(lcam.pixelWidth, lcam.pixelHeight, 1);
-        rcam.targetTexture = new RenderTexture(rcam.pixelWidth, rcam.pixelHeight, 1);
+        if (lcam.targetTexture == null) {
+            lcam.targetTexture = new RenderTexture(lcam.pixelWidth, lcam.pixelHeight, 1);
+            lcam.targetTexture.name = Util.ObjectFullName(gameObject) + "_LeftTexture";
+        }
+        if(rcam.targetTexture == null) {
+            rcam.targetTexture = new RenderTexture(rcam.pixelWidth, rcam.pixelHeight, 1);
+            rcam.targetTexture.name = Util.ObjectFullName(gameObject) + "_RightTexture";
+        }
     }
 
     /// <summary>

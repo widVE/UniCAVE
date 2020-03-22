@@ -424,14 +424,17 @@ public class PhysicalDisplay : MonoBehaviour {
             if (leftCam != null) {
                 leftTex = new RenderTexture(renderTextureSize.x, renderTextureSize.y, 0);
                 leftCam.targetTexture = leftTex;
+                leftTex.name = Util.ObjectFullName(leftCam.gameObject) + " Target Tex";
             }
             if (centerCam != null) {
                 centerTex = new RenderTexture(renderTextureSize.x, renderTextureSize.y, 0);
                 centerCam.targetTexture = centerTex;
+                centerTex.name = Util.ObjectFullName(centerCam.gameObject) + " Target Tex";
             }
             if (rightCam != null) {
                 rightTex = new RenderTexture(renderTextureSize.x, renderTextureSize.y, 0);
                 rightCam.targetTexture = rightTex;
+                rightTex.name = Util.ObjectFullName(rightCam.gameObject) + " Target Tex";
             }
         }
 

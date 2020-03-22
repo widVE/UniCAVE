@@ -147,7 +147,7 @@ public class PhysicalDisplayCalibration : MonoBehaviour
                 if (parts.Length > 1)
                 {
                     vecs.Add(new Vector3(float.Parse(parts[0].Replace(',', '.')), float.Parse(parts[1].Replace(',', '.')), float.Parse(parts[2].Replace(',', '.'))));
-                    Debug.Log(new Vector2(float.Parse(parts[0]), float.Parse(parts[1])));
+                    //Debug.Log(new Vector2(float.Parse(parts[0]), float.Parse(parts[1])));
                 }
             }
             this.dewarpMeshPositions.verts = new Vector3[vecs.Count];
