@@ -5,7 +5,7 @@ Ross Tredinnick, Brady Boettcher, Sam Solovy, Simon Smith, Benny Wysong-Grass, K
 
 A Unity3D Plugin for Non-Head Mounted Virtual Reality Display Systems
 
-The Uni-CAVE Plugin is a solution for running Unity within immersive projection VR display systems.
+The UniCAVE Plugin is a solution for running Unity within immersive projection VR display systems.
 
 # Setup and Documentation
 
