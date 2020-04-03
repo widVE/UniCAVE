@@ -6,12 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/UniCAVE/Scenes/UWPowerwall Calibration.unity
-    guid: dfee0748c449a684ba106e457a371071
-  - enabled: 0
-    path: Assets/UniCAVE/Scenes/UWPowerwall.unity
-    guid: a889274b5ba73d346a4bb7f60420cb8b
-  - enabled: 0
-    path: Assets/UniCAVE/Scenes/C6DualPipe.unity
-    guid: bbbba7c1fd6f8e745bbdb9a429393239
+    path: Assets/UniCAVE/Scenes/Basic/WindowMoveTest.unity
+    guid: 75dec2c2ac4967b4692ec982ef80679e
   m_configObjects: {}
