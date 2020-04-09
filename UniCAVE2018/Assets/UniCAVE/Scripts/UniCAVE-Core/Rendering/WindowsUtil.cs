@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Used to resize, rename, and relocate the unity window
+/// </summary>
 public class WindowsUtils {
     #if UNITY_STANDALONE_WIN
 
@@ -32,11 +35,16 @@ public class WindowsUtils {
     private static int _desiredWidth = -1, _desiredHeight = -1;
     private static int _desiredX = -1, _desiredY = -1;
     private static string _desiredName;
-    //setWidth and setHeight are used to uniquely identify the window
-    //so if there are multiple instances of this application running at once,
-    //make setWidth and setHeight unique values so the wrong window is not selected
-    //this solution is terrible but this is the only way to uniquely find which window
-    //this instance of unity is related to
+    /// <summary>
+    /// Set the unity window's position, title, and size
+    /// </summary>
+    /// <param name="text">new window title</param>
+    /// <param name="posX">new window position x</param>
+    /// <param name="posY">new window position y</param>
+    /// <param name="width">new window width</param>
+    /// <param name="height">new window height</param>
+    /// <param name="setWidth">unique parameter to identify this window; do not use the same value for multiple instances of unity</param>
+    /// <param name="setHeight">unique parameter to identify this window; do not use the same value for multiple instances of unity</param>
     public static void SetMyWindowInfo(string text, int posX, int posY, int width, int height, int setWidth, int setHeight) {
         _setWidth = setWidth;
         _setHeight = setHeight;
@@ -49,7 +57,18 @@ public class WindowsUtils {
         Screen.SetResolution(setWidth, setHeight, false);
     }
 
+    /// <summary>
+    /// Map from ID -> Dimensions, of all windows existing
+    /// We must search this map for the dimensions assigned earlier, to find the ID associated with those dimensions
+    /// This ID is the ID of the unity window
+    /// (If other windows have the same dimensions, this will not work. Fortunately this situation is rare)
+    /// </summary>
     private static Dictionary<long, Vector2Int> _resolutions = null;
+
+    /// <summary>
+    /// Use Windows calls to generate map of ID -> Dimensions
+    /// </summary>
+    /// <returns></returns>
     private static Dictionary<long, Vector2Int> loadAllWindowSizes() {
         Dictionary<long, Vector2Int> res = new Dictionary<long, Vector2Int>();
 
@@ -68,6 +87,11 @@ public class WindowsUtils {
         return res;
     }
 
+    /// <summary>
+    /// Returns true if there are no pending operations, or all operations have completed
+    /// Otherwise returns false
+    /// </summary>
+    /// <returns>Whether all operations have completed (or there are none)</returns>
     public static bool CompletedOperation() {
         //it seems that Windows doe not immediately set the window properties so
         //we try over and over until it does

@@ -206,9 +206,7 @@ public class UCNetwork : NetworkBehaviour {
         List<PhysicalDisplay> displays = new List<PhysicalDisplay>();
         List<PhysicalDisplayManager> managers = new List<PhysicalDisplayManager>();
         IterateAllRelevantChildren(gameObject, displays, managers);
-
-        bool headStarted = false;
-
+		
         string res = "# Windows Powershell Launch Script\n";
         res += "# Script Generated On " + System.DateTime.Now.ToLongDateString() + ", " + System.DateTime.Now.ToLongTimeString() + "\n";
         res += "# Setup contains " + displays.Count + " displays and " + managers.Count + " display managers";

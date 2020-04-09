@@ -23,10 +23,20 @@ using UnityEditor.SceneManagement;
 using UnityEditor;
 #endif
 
+/// <summary>
+/// Class responsible for creating the cameras necessary to render for this machine's displays
+/// Cameras are created as children of this object, so movement and rotation correctly positions cameras
+/// Head and eyes should correspond to the viewer's real head and eyes
+/// </summary>
 [Serializable]
 public class HeadConfiguration : MonoBehaviour {
 
-    public static HeadConfiguration globalHead = null;
+
+    /// <summary>
+    /// Prefab to create, must contain a Camera component
+    /// </summary>
+    [Tooltip("Prefab object with camera component")]
+    public GameObject camPrefab = null;
 
     public Vector3 leftEyeOffset;
     public Vector3 centerEyeOffset { get { return (leftEyeOffset + rightEyeOffset) * 0.5f; } }
@@ -34,38 +44,80 @@ public class HeadConfiguration : MonoBehaviour {
 
     public float nearClippingPlane = 0.01f, farClippingPlane = 100.0f;
     
-    //creates an eye as a child and sets its properties
+    /// <summary>
+    /// Create left eye if it doesn't already exist
+    /// </summary>
+    /// <param name="name">name of display that the camera is for</param>
+    /// <returns>The left eye camera</returns>
     public Camera CreateLeftEye(string name) {
-        GameObject obj = new GameObject("Left Eye For: " + name);
-        Camera res = obj.AddComponent<Camera>();
+        GameObject obj;
+        Camera res;
+        if (camPrefab != null) {
+            obj = Instantiate(camPrefab);
+            res = obj.GetComponent<Camera>();
+        } else {
+            obj = new GameObject();
+            res = obj.AddComponent<Camera>();
+        }
+        obj.name = "Left Eye For: " + name;
         res.nearClipPlane = nearClippingPlane;
+        res.farClipPlane = farClippingPlane;
         res.transform.parent = transform;
         res.transform.localPosition = leftEyeOffset;
         return res;
     }
+
+    /// <summary>
+    /// Create center eye if it doesn't already exist
+    /// </summary>
+    /// <param name="name">name of display that the camera is for</param>
+    /// <returns>The center eye camera</returns>
     public Camera CreateCenterEye(string name) {
-        GameObject obj = new GameObject("Center Eye For: " + name);
-        Camera res = obj.AddComponent<Camera>();
+        GameObject obj;
+        Camera res;
+        if (camPrefab != null) {
+            obj = Instantiate(camPrefab);
+            res = obj.GetComponent<Camera>();
+        } else {
+            obj = new GameObject();
+            res = obj.AddComponent<Camera>();
+        }
+        obj.name = "Center Eye For: " + name;
         res.nearClipPlane = nearClippingPlane;
+        res.farClipPlane = farClippingPlane;
         res.transform.parent = transform;
         res.transform.localPosition = centerEyeOffset;
         return res;
     }
+
+    /// <summary>
+    /// Create right eye if it doesn't already exist
+    /// </summary>
+    /// <param name="name">name of display that the camera is for</param>
+    /// <returns>The right eye camera</returns>
     public Camera CreateRightEye(string name) {
-        GameObject obj = new GameObject("Right Eye For: " + name);
-        Camera res = obj.AddComponent<Camera>();
+        GameObject obj;
+        Camera res;
+        if (camPrefab != null) {
+            obj = Instantiate(camPrefab);
+            res = obj.GetComponent<Camera>();
+        } else {
+            obj = new GameObject();
+            res = obj.AddComponent<Camera>();
+        }
+        obj.name = "Right Eye For: " + name;
         res.nearClipPlane = nearClippingPlane;
+        res.farClipPlane = farClippingPlane;
         res.transform.parent = transform;
         res.transform.localPosition = rightEyeOffset;
         return res;
     }
 
-    public void Start() {
-        globalHead = this;
-    }
-
-#if UNITY_EDITOR
-
+    #if UNITY_EDITOR
+    
+    /// <summary>
+    /// Draw a sphere at the position of the head, and smaller spheres for each eye (including center eye)
+    /// </summary>
     private void OnDrawGizmos() {
         Gizmos.DrawWireSphere(transform.localToWorldMatrix * new Vector4(leftEyeOffset.x, leftEyeOffset.y, leftEyeOffset.z, 1.0f), 0.01f);
         Gizmos.DrawWireSphere(transform.localToWorldMatrix * new Vector4(centerEyeOffset.x, centerEyeOffset.y, centerEyeOffset.z, 1.0f), 0.01f);

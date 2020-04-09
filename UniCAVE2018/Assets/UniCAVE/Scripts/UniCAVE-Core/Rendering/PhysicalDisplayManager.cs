@@ -26,14 +26,22 @@ using UnityEditor;
 public class PhysicalDisplayManager : MonoBehaviour {
 
     public string machineName;
+    public bool fullscreen = true;
     public int displayNumber = 0;
     public Vector2Int displayResolution;
     public List<PhysicalDisplay> displays = new List<PhysicalDisplay>();
 
+    /// <summary>
+    /// Whether or not this display should be active, in this case if the machine name matches actual machine name
+    /// </summary>
+    /// <returns>Should be active or not</returns>
     public bool ShouldBeActive() {
         return machineName == Util.GetMachineName();
     }
 
+    /// <summary>
+    /// Deactivate if needed
+    /// </summary>
     void Start() {
         if (!ShouldBeActive()) {
             Debug.Log("Deactivating Display Manager: " + gameObject.name);
@@ -43,12 +51,21 @@ public class PhysicalDisplayManager : MonoBehaviour {
         Debug.Log("Display Manager Active: " + gameObject.name);
     }
 
+    /// <summary>
+    /// Whether all initialization operations have completed
+    /// </summary>
     bool _initialized = false;
+
+    /// <summary>
+    /// Waits for all displays to be initialized, then repositions camera viewports and/or sets up post processing
+    /// </summary>
     void Update() {
         if (!_initialized) {
             bool displaysInitialized = true;
             for (int i = 0; i < displays.Count; i++) {
-                if (displays[i].gameObject.activeSelf && displays[i].enabled && !displays[i].Initialized()) {
+                if (!displays[i].gameObject.activeSelf) continue;
+
+                if (displays[i].enabled && !displays[i].Initialized()) {
                     displaysInitialized = false;
                     break;
                 }
@@ -80,34 +97,46 @@ public class PhysicalDisplayManager : MonoBehaviour {
                                     display.rightViewport.width,
                                     display.rightViewport.height);
                             } else {
-                                foreach (Camera cam in display.GetAllCameras()) {
-                                    Debug.Log("Manager [" + name + "] set Camera [" + cam.name + "] viewport to <"
-                                        + display.windowBounds.x + ", " + display.windowBounds.y + ", " + display.windowBounds.width + ", " + display.windowBounds.height + ">");
-                                    cam.pixelRect = new Rect(display.windowBounds.x, display.windowBounds.y, display.windowBounds.width, display.windowBounds.height);
+                                //if stereo blit is enabled, only update the viewport of the center cam (in the future perhaps consolidate this logic with useRenderTextures)
+                                if(display.centerCam != null && display.centerCam.GetComponent<StereoBlit>() != null) {
+                                    display.centerCam.pixelRect = new Rect(display.windowBounds.x, display.windowBounds.y, display.windowBounds.width, display.windowBounds.height);
+                                } else {
+                                    foreach (Camera cam in display.GetAllCameras()) {
+                                        Debug.Log("Manager [" + name + "] set Camera [" + cam.name + "] viewport to <"
+                                            + display.windowBounds.x + ", " + display.windowBounds.y + ", " + display.windowBounds.width + ", " + display.windowBounds.height + ">");
+                                        cam.pixelRect = new Rect(display.windowBounds.x, display.windowBounds.y, display.windowBounds.width, display.windowBounds.height);
+                                    }
                                 }
                             }
                         }
                     } else {
                         //special case for PhysicalDisplayCalibration
-                        Debug.Log("Display:");
+                        //Debug.Log("Display:");
                         foreach (Camera cam in cali.postCams) {
-                            cam.pixelRect = new Rect(display.windowBounds.x, display.windowBounds.y, display.windowBounds.width, display.windowBounds.height);
+                            Rect r = new Rect(display.windowBounds.x, display.windowBounds.y, display.windowBounds.width, display.windowBounds.height);
+                            //Debug.Log("Set cam " + cam.name + " to " + r);
+                            cam.pixelRect = r;
                         }
                     }
                 }
-
-
 
                 _initialized = true;
             }
         }
     }
 
+    /// <summary>
+    /// Search entire child tree for PhysicalDisplays and assign their manager to be this
+    /// </summary>
     [ContextMenu("Assign This Manager to Children")]
     void AssignManagerChildren() {
         AssignManagerChildren_h(null);
     }
 
+    /// <summary>
+    /// helper function to assign this manager to all its children
+    /// </summary>
+    /// <param name="it">initial object to recursively iterate through</param>
     void AssignManagerChildren_h(GameObject it = null) {
         if (it == null) it = gameObject;
 
@@ -134,7 +163,9 @@ public class PhysicalDisplayManagerEditor : Editor {
         PhysicalDisplayManager manager = target as PhysicalDisplayManager;
 
         manager.machineName = EditorGUILayout.TextField("Machine Name", manager.machineName);
-        manager.displayNumber = EditorGUILayout.IntField("Display Number", manager.displayNumber);
+        if(manager.fullscreen = EditorGUILayout.Toggle("Fullscreen", manager.fullscreen)) {
+            manager.displayNumber = EditorGUILayout.IntField("Display Number", manager.displayNumber);
+        }
         manager.displayResolution = EditorGUILayout.Vector2IntField("Resolution", manager.displayResolution);
         if (GUILayout.Button("Assign children to this manager")) {
             foreach (Transform child in manager.transform) {
