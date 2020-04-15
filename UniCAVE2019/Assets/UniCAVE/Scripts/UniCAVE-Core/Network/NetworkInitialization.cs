@@ -17,38 +17,44 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-/// <summary>
-/// Starts the program as either client or server depending on machine
-/// </summary>
-public class NetworkInitialization : MonoBehaviour {
-
-    public NetworkManager networkManager;
-
-    public string headMachine = "C6_V1_HEAD";
-
-    [Tooltip("This can be overriden at runtime with parameter serverAddress, for example \"serverAddress 192.168.0.100\"")]
-    public string serverAddress = "192.168.4.140";
-
-    [Tooltip("This can be overriden at runtime with parameter serverPort, for example \"serverPort 8421\"")]
-    public int serverPort = 7568;
-
+namespace UniCAVE
+{
     /// <summary>
-    /// Starts as client or server
+    /// Starts the program as either client or server depending on machine
     /// </summary>
-    void Start () {
-        var serverArg = Util.GetArg("serverAddress");
-        if(serverArg != null) {
-            serverAddress = serverArg;
-        }
-        var portArg = Util.GetArg("serverPort");
-        if(portArg != null) {
-            int.TryParse(portArg, out serverPort);
-        }
+    public class NetworkInitialization : MonoBehaviour
+    {
 
-        Debug.Log("serverAddress = " + serverAddress + ", serverPort = " + serverPort + ", headMachine = " + headMachine + ", running machine = " + Util.GetMachineName());
+        public NetworkManager networkManager;
 
-        networkManager.networkAddress = serverAddress;
-        networkManager.networkPort = serverPort;
+        public string headMachine = "C6_V1_HEAD";
+
+        [Tooltip("This can be overriden at runtime with parameter serverAddress, for example \"serverAddress 192.168.0.100\"")]
+        public string serverAddress = "192.168.4.140";
+
+        [Tooltip("This can be overriden at runtime with parameter serverPort, for example \"serverPort 8421\"")]
+        public int serverPort = 7568;
+
+        /// <summary>
+        /// Starts as client or server
+        /// </summary>
+        void Start()
+        {
+            var serverArg = Util.GetArg("serverAddress");
+            if(serverArg != null)
+            {
+                serverAddress = serverArg;
+            }
+            var portArg = Util.GetArg("serverPort");
+            if(portArg != null)
+            {
+                int.TryParse(portArg, out serverPort);
+            }
+
+            Debug.Log("serverAddress = " + serverAddress + ", serverPort = " + serverPort + ", headMachine = " + headMachine + ", running machine = " + Util.GetMachineName());
+
+            networkManager.networkAddress = serverAddress;
+            networkManager.networkPort = serverPort;
 #if !UNITY_EDITOR
         if ((Util.GetArg("forceClient") == "1") || (Util.GetMachineName() != headMachine)) {
             networkManager.StartClient();
@@ -56,20 +62,24 @@ public class NetworkInitialization : MonoBehaviour {
             networkManager.StartServer();
         }
 #else
-        networkManager.StartServer();
+            networkManager.StartServer();
 #endif
-    }
+        }
 
-    /// <summary>
-    /// Quit after 20 seconds if no connection is made to server
-    /// </summary>
-    void Update() {
-        if (Util.GetMachineName() != headMachine) {
-            if(networkManager.client == null)
-                networkManager.StartClient();
+        /// <summary>
+        /// Quit after 20 seconds if no connection is made to server
+        /// </summary>
+        void Update()
+        {
+            if(Util.GetMachineName() != headMachine)
+            {
+                if(networkManager.client == null)
+                    networkManager.StartClient();
 
-            if (Time.time > 20 && !networkManager.IsClientConnected()) {
-                Application.Quit(); //kill it after 20 seconds if the client isn't connected, for convenience
+                if(Time.time > 20 && !networkManager.IsClientConnected())
+                {
+                    Application.Quit(); //kill it after 20 seconds if the client isn't connected, for convenience
+                }
             }
         }
     }

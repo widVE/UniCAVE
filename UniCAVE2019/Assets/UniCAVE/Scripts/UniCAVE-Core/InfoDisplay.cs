@@ -1,18 +1,21 @@
 ﻿using TMPro;
 using UnityEngine;
 
-public class InfoDisplay : MonoBehaviour
+namespace UniCAVE
 {
-
-	[SerializeField]
-	private TMP_Text text;
-
-	/// <summary>
-	/// Sets the text of textmesh pro text field
-	/// </summary>
-	/// <param name="text">the text to set</param>
-	public void SetText(string text)
+	public class InfoDisplay : MonoBehaviour
 	{
-		this.text?.SetText(text);
+
+		[SerializeField]
+		private TMP_Text text;
+
+		/// <summary>
+		/// Sets the text of textmesh pro text field
+		/// </summary>
+		/// <param name="text">the text to set</param>
+		public void SetText(string text)
+		{
+			if(this.text) this.text.SetText(text);
+		}
 	}
 }
