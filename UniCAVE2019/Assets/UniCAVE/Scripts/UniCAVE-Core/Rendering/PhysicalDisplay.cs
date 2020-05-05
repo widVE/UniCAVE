@@ -28,11 +28,16 @@ namespace UniCAVE
     struct Settings
     {
         public PhysicalDisplayManager manager;
-        public string machineName;
+
+        [UnityEngine.Serialization.FormerlySerializedAs("machineName")]
+        public string oldMachineName;
+        public MachineName machineNameAsset;
+        public string machineName => MachineName.GetMachineName(oldMachineName, machineNameAsset);
+
         public float width;
         public float height;
-        public float halfWidth() { return width * 0.5f; }
-        public float halfHeight() { return height * 0.5f; }
+        public float halfWidth() => width * 0.5f;
+        public float halfHeight() => height * 0.5f;
         public HeadConfiguration head;
 
         public bool useXRCameras;
@@ -52,14 +57,17 @@ namespace UniCAVE
     [Serializable]
     public class PhysicalDisplay : MonoBehaviour
     {
-
-
         public PhysicalDisplayManager manager;
-        public string machineName;
+
+        [UnityEngine.Serialization.FormerlySerializedAs("machineName")]
+        public string oldMachineName;
+        public MachineName machineNameAsset;
+        public string machineName => MachineName.GetMachineName(oldMachineName, machineNameAsset);
+
         public float width;
         public float height;
-        public float halfWidth() { return width * 0.5f; }
-        public float halfHeight() { return height * 0.5f; }
+        public float halfWidth() => width * 0.5f;
+        public float halfHeight() => height * 0.5f;
         public HeadConfiguration head;
 
         public bool useXRCameras;
@@ -69,8 +77,11 @@ namespace UniCAVE
         public bool is3D;
         public bool exclusiveFullscreen;
         public int display;
+        [Tooltip("Does the display use a dual pipe setup?")]
         public bool dualPipe;
+        [Tooltip("Use one instance of Unity for each eye?")]
         public bool dualInstance;
+        [Tooltip("Where the window will be positioned on the screen")]
         public RectInt windowBounds;
         public RectInt leftViewport;
         public RectInt rightViewport;
@@ -141,9 +152,9 @@ namespace UniCAVE
 #if UNITY_EDITOR
             return true;
 #else
-        //machine name doesn't matter if it has a manager
-        //in that case we defer to manager's machine name
-        return (manager == null ? (Util.GetMachineName() == machineName) : manager.ShouldBeActive());
+            //machine name doesn't matter if it has a manager
+            //in that case we defer to manager's machine name
+            return (manager == null ? (Util.GetMachineName() == machineName) : manager.ShouldBeActive());
 #endif
         }
 
@@ -227,7 +238,7 @@ namespace UniCAVE
             {
                 errors.Add("Physical Display must have a reference to a GameObject with Head Configuration script!");
             }
-            if((machineName == null || machineName.Length == 0) && manager == null)
+            if(string.IsNullOrEmpty(machineName) && manager == null)
             {
                 errors.Add("Physical Display should probably have a non-empty machine name");
             }
@@ -287,7 +298,7 @@ namespace UniCAVE
         {
             manager = settings.manager;
             head = settings.head;
-            machineName = settings.machineName;
+            machineNameAsset = settings.machineNameAsset;
             width = settings.width;
             height = settings.height;
 
@@ -314,7 +325,7 @@ namespace UniCAVE
             Settings settings = new Settings();
             settings.manager = manager;
             settings.head = head;
-            settings.machineName = machineName;
+            settings.machineNameAsset = machineNameAsset;
             settings.width = width;
             settings.height = height;
 
@@ -383,17 +394,16 @@ namespace UniCAVE
                 }
             }
 
-
             if(!exclusiveFullscreen)
             {
                 Debug.Log("Setting Display: " + gameObject.name + " to Windowed Mode...");
                 if(!is3D || useXRCameras)
                 {
-                    centerCam = head.CreateCenterEye(gameObject.name);
+                    centerCam = head.CreateEye(HeadConfiguration.Eyes.Center, gameObject.name);
                     if(useXRCameras)
                     {
-                        leftCam = head.CreateLeftEye(gameObject.name);
-                        rightCam = head.CreateRightEye(gameObject.name);
+                        leftCam = head.CreateEye(HeadConfiguration.Eyes.Left, gameObject.name);
+                        rightCam = head.CreateEye(HeadConfiguration.Eyes.Right, gameObject.name);
                         StereoBlit blit = centerCam.gameObject.AddComponent<StereoBlit>();
                         blit.lcam = leftCam;
                         blit.rcam = rightCam;
@@ -408,8 +418,8 @@ namespace UniCAVE
                 {
                     if(!dualPipe && !dualInstance)
                     {
-                        leftCam = head.CreateLeftEye(gameObject.name);
-                        rightCam = head.CreateRightEye(gameObject.name);
+                        leftCam = head.CreateEye(HeadConfiguration.Eyes.Left, gameObject.name);
+                        rightCam = head.CreateEye(HeadConfiguration.Eyes.Right, gameObject.name);
                         Debug.Log("Setting Display: " + gameObject.name + " to Quad Buffer 3D Windowed");
 #if UNITY_STANDALONE_WIN
                         if(manager == null) WindowsUtils.SetMyWindowInfo("Quad Buffer 3D Windowed", windowBounds.x, windowBounds.y, windowBounds.width, windowBounds.height, 421, 420);
@@ -417,8 +427,8 @@ namespace UniCAVE
                     }
                     else if(dualPipe && !dualInstance)
                     {
-                        leftCam = head.CreateLeftEye(gameObject.name);
-                        rightCam = head.CreateRightEye(gameObject.name);
+                        leftCam = head.CreateEye(HeadConfiguration.Eyes.Left, gameObject.name);
+                        rightCam = head.CreateEye(HeadConfiguration.Eyes.Right, gameObject.name);
                         Debug.Log("Setting Display: " + gameObject.name + " to Dual-Eye Dual-Pipe-3D Windowed");
 #if UNITY_STANDALONE_WIN
                         if(manager == null) WindowsUtils.SetMyWindowInfo("Dual-Eye Dual-Pipe-3D Windowed", windowBounds.x, windowBounds.y, windowBounds.width, windowBounds.height, 422, 398);
@@ -428,7 +438,7 @@ namespace UniCAVE
                     {
                         if(Util.GetArg("eye") == "left")
                         {
-                            leftCam = head.CreateLeftEye(gameObject.name);
+                            leftCam = head.CreateEye(HeadConfiguration.Eyes.Left, gameObject.name);
                             Debug.Log("Setting Display: " + gameObject.name + " to Left-Eye Dual-Pipe-3D Windowed");
 #if UNITY_STANDALONE_WIN
                             if(manager == null) WindowsUtils.SetMyWindowInfo("Left-Eye Dual-Pipe-3D Windowed", leftViewport.x, leftViewport.y, leftViewport.width, leftViewport.height, 300, 367);
@@ -436,7 +446,7 @@ namespace UniCAVE
                         }
                         else if(Util.GetArg("eye") == "right")
                         {
-                            rightCam = head.CreateRightEye(gameObject.name);
+                            rightCam = head.CreateEye(HeadConfiguration.Eyes.Right, gameObject.name);
                             Debug.Log("Setting Display: " + gameObject.name + " to Right-Eye Dual-Pipe-3D Windowed");
 #if UNITY_STANDALONE_WIN
                             if(manager == null) WindowsUtils.SetMyWindowInfo("Right-Eye Dual-Pipe-3D Windowed", rightViewport.x, rightViewport.y, rightViewport.width, rightViewport.height, 342, 498);
@@ -449,11 +459,11 @@ namespace UniCAVE
             {
                 if(!is3D || useXRCameras)
                 {
-                    centerCam = head.CreateCenterEye(gameObject.name);
+                    centerCam = head.CreateEye(HeadConfiguration.Eyes.Center, gameObject.name);
                     if(useXRCameras)
                     {
-                        leftCam = head.CreateLeftEye(gameObject.name);
-                        rightCam = head.CreateRightEye(gameObject.name);
+                        leftCam = head.CreateEye(HeadConfiguration.Eyes.Left, gameObject.name);
+                        rightCam = head.CreateEye(HeadConfiguration.Eyes.Right, gameObject.name);
                         StereoBlit blit = centerCam.gameObject.AddComponent<StereoBlit>();
                         blit.lcam = leftCam;
                         blit.rcam = rightCam;
@@ -464,23 +474,23 @@ namespace UniCAVE
                 {
                     if(!dualPipe && !dualInstance)
                     {
-                        leftCam = head.CreateLeftEye(gameObject.name);
-                        rightCam = head.CreateRightEye(gameObject.name);
+                        leftCam = head.CreateEye(HeadConfiguration.Eyes.Left, gameObject.name);
+                        rightCam = head.CreateEye(HeadConfiguration.Eyes.Right, gameObject.name);
                     }
                     else if(dualPipe && !dualInstance)
                     {
-                        leftCam = head.CreateLeftEye(gameObject.name);
-                        rightCam = head.CreateRightEye(gameObject.name);
+                        leftCam = head.CreateEye(HeadConfiguration.Eyes.Left, gameObject.name);
+                        rightCam = head.CreateEye(HeadConfiguration.Eyes.Right, gameObject.name);
                     }
                     else if(dualPipe && dualInstance)
                     {
                         if(Util.GetArg("eye") == "left")
                         {
-                            leftCam = head.CreateLeftEye(gameObject.name);
+                            leftCam = head.CreateEye(HeadConfiguration.Eyes.Left, gameObject.name);
                         }
                         else if(Util.GetArg("eye") == "right")
                         {
-                            rightCam = head.CreateRightEye(gameObject.name);
+                            rightCam = head.CreateEye(HeadConfiguration.Eyes.Right, gameObject.name);
                         }
                     }
                 }
@@ -519,12 +529,12 @@ namespace UniCAVE
             {
                 if(!is3D || useXRCameras)
                 {
-                    centerCam = head.CreateCenterEye(gameObject.name);
+                    centerCam = head.CreateEye(HeadConfiguration.Eyes.Center, gameObject.name);
                 }
                 else
                 {
-                    leftCam = head.CreateLeftEye(gameObject.name);
-                    rightCam = head.CreateRightEye(gameObject.name);
+                    leftCam = head.CreateEye(HeadConfiguration.Eyes.Left, gameObject.name);
+                    rightCam = head.CreateEye(HeadConfiguration.Eyes.Right, gameObject.name);
                 }
             }
 #endif
@@ -637,132 +647,198 @@ namespace UniCAVE
             SetSettings(JsonUtility.FromJson<Settings>(System.IO.File.ReadAllText(path)));
             Debug.Log("Deserialized settings from " + new System.IO.FileInfo(path).FullName);
         }
-    }
 
 #if UNITY_EDITOR
-    /// <summary>
-    /// Editor for this display; some options are not always valid so they are disabled in some settings configurations
-    /// </summary>
-    [CustomEditor(typeof(PhysicalDisplay))]
-    public class PhysicalDisplayDitor : Editor
-    {
-
         /// <summary>
-        /// Render script GUI in editor
+        /// Editor for this display; some options are not always valid so they are disabled in some settings configurations
         /// </summary>
-        public override void OnInspectorGUI()
+        [CustomEditor(typeof(PhysicalDisplay))]
+        public class Editor : UnityEditor.Editor
         {
-            PhysicalDisplay display = target as PhysicalDisplay;
-
-            PhysicalDisplayManager newMan = (PhysicalDisplayManager)EditorGUILayout.ObjectField("Manager", display.manager, typeof(PhysicalDisplayManager), true);
-            if(newMan != display.manager)
+            public override void OnInspectorGUI()
             {
-                if(newMan != null)
+                serializedObject.Update();
+
+                //draw manager               
+                SerializedProperty manager = serializedObject.FindProperty(nameof(PhysicalDisplay.manager));
+
+                //cache original manager in case it changes
+                PhysicalDisplayManager oldManager = manager.objectReferenceValue as PhysicalDisplayManager;
+
+                EditorGUI.BeginChangeCheck();
+                EditorGUILayout.PropertyField(manager);
+                bool managerChanged = EditorGUI.EndChangeCheck();
+
+                PhysicalDisplayManager newManager = manager.objectReferenceValue as PhysicalDisplayManager;
+
+
+                //draw machine name (only if there is no manager)
+                SerializedProperty oldMachineName = serializedObject.FindProperty(nameof(PhysicalDisplay.oldMachineName));
+                SerializedProperty machineNameAsset = serializedObject.FindProperty(nameof(PhysicalDisplay.machineNameAsset));
+                if(!newManager)
                 {
-                    newMan.displays.Add(display);
+                    MachineName.DrawDeprecatedMachineName(oldMachineName, machineNameAsset, "Machine Name");
                 }
-                if(display.manager != null)
+
+
+                //draw display width, height
+                SerializedProperty width = serializedObject.FindProperty(nameof(PhysicalDisplay.width));
+                SerializedProperty height = serializedObject.FindProperty(nameof(PhysicalDisplay.height));
+                EditorGUILayout.PropertyField(width);
+                EditorGUILayout.PropertyField(height);
+
+
+                //draw head configuration
+                SerializedProperty head = serializedObject.FindProperty(nameof(PhysicalDisplay.head));
+                EditorGUILayout.PropertyField(head);
+
+
+                //draw XR camera settings toggle
+                SerializedProperty useXRCameras = serializedObject.FindProperty(nameof(PhysicalDisplay.useXRCameras));
+                GUIContent useXRCameras_content = new GUIContent(text: "Use XR Cameras (Quad Buffer)",
+                                                                 tooltip: "Whether the cameras associated with this display should output to an XR device (such as headset or quad-buffered stereo 3D display).\n" +
+                                                                          "If you do post processing on the cameras (such as a PhysicalDisplayCalibration) set this to false.\n" +
+                                                                          "This is probably also unnecessary if using a Dual-Pipe 3D display.");
+                EditorGUILayout.PropertyField(useXRCameras, useXRCameras_content);
+
+
+                //draw render texture settings toggle
+                SerializedProperty useRenderTextures = serializedObject.FindProperty(nameof(PhysicalDisplay.useRenderTextures));
+                GUIContent useRenderTextures_content = new GUIContent(text: "Use Render Textures",
+                                                                      tooltip: "Render to render textures instead of screen, for post processing");
+                EditorGUILayout.PropertyField(useRenderTextures, useRenderTextures_content);
+
+
+                //draw render texture settings if render textures are enabled
+                SerializedProperty renderTextureSize = serializedObject.FindProperty(nameof(PhysicalDisplay.renderTextureSize));
+                if(useRenderTextures.boolValue)
                 {
-                    display.manager.displays.Remove(display);
+                    EditorGUILayout.PropertyField(renderTextureSize);
                 }
-            }
-            display.manager = newMan;
 
-            if(newMan == null) display.machineName = EditorGUILayout.TextField("Machine Name", display.machineName);
-            display.width = EditorGUILayout.FloatField("Physical Width", display.width);
-            display.height = EditorGUILayout.FloatField("Physical Height", display.height);
-            display.head = (HeadConfiguration)EditorGUILayout.ObjectField("Head", display.head, typeof(HeadConfiguration), true);
 
-            display.useXRCameras = EditorGUILayout.Toggle(new GUIContent(
-                "Use XR Cameras (Quad Buffer)",
-                @"Whether the cameras associated with this display should output to an XR device (such as headset or quad-buffered stereo 3D display)
-            If you do post processing on the cameras (such as a PhysicalDisplayCalibration) set this to false
-            This is probably also unnecessary if using a Dual-Pipe 3D display"
-                ), display.useXRCameras
-            );
-            display.useRenderTextures = EditorGUILayout.Toggle(new GUIContent("Use Render Textures", "Render to render textures instead of screen, for post processing"), display.useRenderTextures);
-            if(display.useRenderTextures)
-            {
-                display.renderTextureSize = EditorGUILayout.Vector2IntField("Render Texture Size", display.renderTextureSize);
-            }
-
-            if(!display.useRenderTextures && display.manager == null)
-            {
-                if(display.exclusiveFullscreen = EditorGUILayout.Toggle("Use Specific Display", display.exclusiveFullscreen))
+                //draw exclusive fullscreen toggle if render textures are disabled and there is no manager
+                SerializedProperty exclusiveFullscreen = serializedObject.FindProperty(nameof(PhysicalDisplay.exclusiveFullscreen));
+                SerializedProperty display = serializedObject.FindProperty(nameof(PhysicalDisplay.display));
+                if(!useRenderTextures.boolValue && !newManager)
                 {
-                    display.display = EditorGUILayout.IntField("Display", display.display);
-                }
-            }
-            if(display.manager != null) display.exclusiveFullscreen = false;
+                    GUIContent exclusiveFullscreen_content = new GUIContent(text: "Use Specific Display");
+                    EditorGUILayout.PropertyField(exclusiveFullscreen, exclusiveFullscreen_content);
 
-            if(display.is3D = EditorGUILayout.Toggle("Is 3D", display.is3D))
-            {
-                if(display.dualPipe = EditorGUILayout.Toggle(new GUIContent("Dual Pipe", "Does the display use a dual pipe setup?"), display.dualPipe))
-                {
-                    if(!display.exclusiveFullscreen && !(display.dualInstance = EditorGUILayout.Toggle(new GUIContent("Dual Instance", "Use one instance of Unity for each eye?"), display.dualInstance)))
+                    //draw display if exclusive fullscreen is enabled
+                    if(exclusiveFullscreen.boolValue)
                     {
-                        //3d, dual pipe, single instance
-                        display.windowBounds = EditorGUILayout.RectIntField(new GUIContent("Viewport Rect", "Where the window will be positioned on the screen"), display.windowBounds);
+                        EditorGUILayout.PropertyField(display);
                     }
-                    display.leftViewport = EditorGUILayout.RectIntField("Left Viewport", display.leftViewport);
-                    display.rightViewport = EditorGUILayout.RectIntField("Right Viewport", display.rightViewport);
+                }
+
+                //force exclusive fullscreen mode off if there is a manager
+                if(newManager && exclusiveFullscreen.boolValue)
+                {
+                    exclusiveFullscreen.boolValue = false;
+                }
+
+
+                //draw 3D settings
+                SerializedProperty is3D = serializedObject.FindProperty(nameof(PhysicalDisplay.is3D));
+                SerializedProperty dualPipe = serializedObject.FindProperty(nameof(PhysicalDisplay.dualPipe));
+                SerializedProperty dualInstance = serializedObject.FindProperty(nameof(PhysicalDisplay.dualInstance));
+                SerializedProperty windowBounds = serializedObject.FindProperty(nameof(PhysicalDisplay.windowBounds));
+
+                EditorGUILayout.PropertyField(is3D);
+
+                if(is3D.boolValue)
+                {
+                    //draw dual pipe toggle
+                    EditorGUILayout.PropertyField(dualPipe);
+
+                    if(dualPipe.boolValue)
+                    {
+                        //draw dual pipe settings
+                        SerializedProperty leftViewport = serializedObject.FindProperty(nameof(PhysicalDisplay.leftViewport));
+                        SerializedProperty rightViewport = serializedObject.FindProperty(nameof(PhysicalDisplay.rightViewport));
+
+                        EditorGUILayout.PropertyField(dualInstance);
+
+                        if(!exclusiveFullscreen.boolValue && !dualInstance.boolValue)
+                        {
+                            //3D, dual pipe, and single instance
+                            EditorGUILayout.PropertyField(windowBounds);
+                        }
+
+                        EditorGUILayout.PropertyField(leftViewport);
+                        EditorGUILayout.PropertyField(rightViewport);
+                    }
+                    else
+                    {
+                        //draw window settings
+                        EditorGUILayout.PropertyField(windowBounds);
+
+                        if(dualInstance.boolValue) dualInstance.boolValue = false;
+                    }
                 }
                 else
                 {
-                    display.windowBounds = EditorGUILayout.RectIntField(new GUIContent("Viewport Rect", "Where the window will be positioned on the screen"), display.windowBounds);
-                    display.dualInstance = false;
+                    //draw window settings
+                    EditorGUILayout.PropertyField(windowBounds);
+
+                    if(dualPipe.boolValue) dualPipe.boolValue = false;
+                    if(dualInstance.boolValue) dualInstance.boolValue = false;
                 }
-            }
-            else
-            {
-                display.windowBounds = EditorGUILayout.RectIntField(new GUIContent("Viewport Rect", "Where the window will be positioned on the screen"), display.windowBounds);
-                display.dualPipe = false;
-                display.dualInstance = false;
-            }
-
-            List<string> errors = display.GetSettingsErrors();
-            if(errors.Count != 0)
-            {
-                GUIStyle style = new GUIStyle();
-                style.richText = true;
-                EditorGUILayout.LabelField("<color=red>This PhysicalDisplay has some incompatible or invalid settings, behavior may be undefined!</color>", style);
-            }
-            foreach(string error in errors)
-            {
-                GUIStyle style = new GUIStyle();
-                style.richText = true;
-                EditorGUILayout.LabelField("<color=red>" + error + "</color>", style);
-            }
 
 
-            if(display.loadSettingsAtRuntime = EditorGUILayout.Toggle("Load Settings At Runtime", display.loadSettingsAtRuntime))
-            {
-                display.serializedLocation = EditorGUILayout.TextField(display.serializedLocation);
-            }
-            if(GUILayout.Button("Export Display Settings to JSON"))
-            {
-                string path = EditorUtility.SaveFilePanel("Export Settings", "./", "settings.json", "json");
-                if(path != null)
+                //draw settings toggle
+                SerializedProperty loadSettingsAtRuntime = serializedObject.FindProperty(nameof(PhysicalDisplay.loadSettingsAtRuntime));
+                SerializedProperty serializedLocation = serializedObject.FindProperty(nameof(PhysicalDisplay.serializedLocation));
+
+                EditorGUILayout.PropertyField(loadSettingsAtRuntime);
+                if(loadSettingsAtRuntime.boolValue)
                 {
-                    display.TryToSerialize(path);
+                    EditorGUILayout.PropertyField(serializedLocation);
                 }
-            }
-            if(GUILayout.Button("Import Display Settings from JSON"))
-            {
-                string path = EditorUtility.SaveFilePanel("Import Settings", "./", "settings.json", "json");
-                if(path != null)
+
+                //done with properties
+                serializedObject.ApplyModifiedProperties();
+
+                //update manager if it changed
+                PhysicalDisplay physicalDisplay = target as PhysicalDisplay;
+                if(managerChanged)
                 {
-                    display.TryToDeSerialize(path);
+                    //remove from old manager
+                    if(oldManager)
+                    {
+                        oldManager.displays.Remove(physicalDisplay);
+                        EditorUtility.SetDirty(oldManager);
+                    }
+
+                    //add to new manager
+                    if(newManager)
+                    {
+                        newManager.displays.Add(physicalDisplay);
+                        EditorUtility.SetDirty(newManager);
+                    }
                 }
 
-            }
+                //JSON buttons
+                if(GUILayout.Button("Export Display Settings to JSON"))
+                {
+                    string path = EditorUtility.SaveFilePanel("Export Settings", "./", "settings.json", "json");
+                    if(!string.IsNullOrEmpty(path))
+                    {
+                        physicalDisplay.TryToSerialize(path);
+                    }
+                }
 
-            if(GUI.changed)
-            {
-                EditorUtility.SetDirty(display);
-                EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
+                if(GUILayout.Button("Import Display Settings from JSON"))
+                {
+                    string path = EditorUtility.SaveFilePanel("Import Settings", "./", "settings.json", "json");
+                    if(!string.IsNullOrEmpty(path))
+                    {
+                        physicalDisplay.TryToDeSerialize(path);
+                    }
+                }
             }
         }
-    }
 #endif
+    }
 }

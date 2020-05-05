@@ -43,12 +43,12 @@ namespace UniCAVE
         }
 
         /// <summary>
-        /// Used to increate performance of GetArg(...)
+        /// Used to increase performance of GetArg(...)
         /// </summary>
         private static Dictionary<string, string> cachedArgs = new Dictionary<string, string>();
 
         /// <summary>
-        /// Return the string following a certain string in the invokation, null if it doesn't exist
+        /// Return the string following a certain string in the invocation, null if it doesn't exist
         /// </summary>
         /// <param name="name">parameter name to retrieve</param>
         public static string GetArg(string name)

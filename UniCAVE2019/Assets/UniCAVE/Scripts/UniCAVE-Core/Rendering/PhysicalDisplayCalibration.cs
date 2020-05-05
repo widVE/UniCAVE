@@ -60,7 +60,8 @@ namespace UniCAVE
         {
             get
             {
-                return GetComponent<PhysicalDisplay>().windowBounds.width / (float)GetComponent<PhysicalDisplay>().windowBounds.height;
+                PhysicalDisplay pd = GetComponent<PhysicalDisplay>();
+                return pd.windowBounds.width / (float)pd.windowBounds.height;
             }
         }
 
@@ -137,7 +138,7 @@ namespace UniCAVE
         public void LoadCalibrations()
         {
             string path = getConfigFolder();
-            string fullPath = Path.Combine(path, "WARP - " + Util.ObjectFullName(this.gameObject) + ".conf");
+            string fullPath = Path.Combine(path, "WARP - " + Util.ObjectFullName(gameObject) + ".conf");
 
             // LOADS THE WARP VERTICES CALIBRATIONS
             if(File.Exists(fullPath))
@@ -205,7 +206,6 @@ namespace UniCAVE
 #if UNITY_EDITOR
             if(!EditorApplication.isPlaying) EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
 #endif
-
         }
 
         /// <summary>

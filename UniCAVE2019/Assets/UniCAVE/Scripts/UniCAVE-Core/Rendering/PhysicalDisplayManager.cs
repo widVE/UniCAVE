@@ -28,7 +28,11 @@ namespace UniCAVE
     public class PhysicalDisplayManager : MonoBehaviour
     {
 
-        public string machineName;
+
+        [UnityEngine.Serialization.FormerlySerializedAs("machineName")]
+        public string oldMachineName;
+        public MachineName machineNameAsset;
+        public string machineName => MachineName.GetMachineName(oldMachineName, machineNameAsset);
         public bool fullscreen = true;
         public int displayNumber = 0;
         public Vector2Int displayResolution;
@@ -184,69 +188,102 @@ namespace UniCAVE
                 AssignManagerChildren_h(child);
             }
         }
-    }
 
 #if UNITY_EDITOR
-    [CustomEditor(typeof(PhysicalDisplayManager))]
-    public class PhysicalDisplayManagerEditor : Editor
-    {
-        public override void OnInspectorGUI()
+        [CustomEditor(typeof(PhysicalDisplayManager))]
+        public class Editor : UnityEditor.Editor
         {
-            PhysicalDisplayManager manager = target as PhysicalDisplayManager;
+            public override void OnInspectorGUI()
+            {
+                serializedObject.Update();
 
-            manager.machineName = EditorGUILayout.TextField("Machine Name", manager.machineName);
-            if(manager.fullscreen = EditorGUILayout.Toggle("Fullscreen", manager.fullscreen))
-            {
-                manager.displayNumber = EditorGUILayout.IntField("Display Number", manager.displayNumber);
-            }
-            manager.displayResolution = EditorGUILayout.Vector2IntField("Resolution", manager.displayResolution);
-            if(GUILayout.Button("Assign children to this manager"))
-            {
-                foreach(Transform child in manager.transform)
+                //draw machine name
+                SerializedProperty oldMachineName = serializedObject.FindProperty(nameof(PhysicalDisplayManager.oldMachineName));
+                SerializedProperty machineNameAsset = serializedObject.FindProperty(nameof(PhysicalDisplayManager.machineNameAsset));
+                MachineName.DrawDeprecatedMachineName(oldMachineName, machineNameAsset, "Machine Name");
+
+                //draw display settings
+                SerializedProperty fullscreen = serializedObject.FindProperty(nameof(PhysicalDisplayManager.fullscreen));
+                EditorGUILayout.PropertyField(fullscreen);
+
+                if(fullscreen.boolValue)
                 {
-                    PhysicalDisplay disp = child.GetComponent<PhysicalDisplay>();
-                    if(disp != null)
+                    SerializedProperty displayNumber = serializedObject.FindProperty(nameof(PhysicalDisplayManager.displayNumber));
+                    EditorGUILayout.PropertyField(displayNumber);
+                }
+
+                SerializedProperty displayResolution = serializedObject.FindProperty(nameof(PhysicalDisplayManager.displayResolution));
+                EditorGUILayout.PropertyField(displayResolution);
+
+                serializedObject.ApplyModifiedProperties();
+
+                //draw buttons
+                PhysicalDisplayManager physicalDisplayManager = target as PhysicalDisplayManager;
+
+                if(GUILayout.Button("Assign Children To This Manager"))
+                {
+                    foreach(Transform child in physicalDisplayManager.transform)
                     {
-                        if(disp.manager != null)
+                        PhysicalDisplay childPD = child.GetComponent<PhysicalDisplay>();
+                        if(childPD)
                         {
-                            disp.manager.displays.Remove(disp);
-                        }
-                        disp.manager = manager;
-                        EditorUtility.SetDirty(disp);
-                        if(!manager.displays.Contains(disp))
-                        {
-                            manager.displays.Add(disp);
+                            if(childPD.manager)
+                            {
+                                childPD.manager.displays.Remove(childPD);
+                                EditorUtility.SetDirty(childPD.manager);
+                            }
+
+                            childPD.manager = physicalDisplayManager;
+                            EditorUtility.SetDirty(childPD);
+
+                            if(!physicalDisplayManager.displays.Contains(childPD))
+                            {
+                                physicalDisplayManager.displays.Add(childPD);
+                                EditorUtility.SetDirty(physicalDisplayManager);
+                            }
                         }
                     }
                 }
-            }
-            GUILayout.Label("Associated displays:");
-            for(int i = 0; i < manager.displays.Count; i++)
-            {
-                if(EditorGUILayout.ObjectField(manager.displays[i], typeof(PhysicalDisplay)) == null)
-                {
-                    manager.displays.RemoveAt(i);
-                    i--;
-                }
-            }
 
-            PhysicalDisplay addedDisp = (PhysicalDisplay)EditorGUILayout.ObjectField("Add Display", null, typeof(PhysicalDisplay));
-            if(addedDisp != null)
-            {
-                if(addedDisp.manager != null)
-                {
-                    addedDisp.manager.displays.Remove(addedDisp);
-                }
-                addedDisp.manager = manager;
-                if(!manager.displays.Contains(addedDisp)) manager.displays.Add(addedDisp);
-            }
+                //draw displays
+                GUILayout.Label("Associated Displays:");
 
-            if(GUI.changed)
-            {
-                EditorUtility.SetDirty(manager);
-                EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
+                for(int i = 0; i < physicalDisplayManager.displays.Count; i++)
+                {
+                    PhysicalDisplay pd = physicalDisplayManager.displays[i];
+
+                    pd = EditorGUILayout.ObjectField(pd, typeof(PhysicalDisplay), true) as  PhysicalDisplay;
+
+                    //remove any displays that are null
+                    if(!pd)
+                    {
+                        physicalDisplayManager.displays.RemoveAt(i);
+                        EditorUtility.SetDirty(physicalDisplayManager);
+                        i--;
+                    }
+                }
+
+                //draw field to add displays
+                PhysicalDisplay addedPD = EditorGUILayout.ObjectField("Add Display", null, typeof(PhysicalDisplay), true) as PhysicalDisplay;
+                if(addedPD)
+                {
+                    if(addedPD.manager)
+                    {
+                        addedPD.manager.displays.Remove(addedPD);
+                        EditorUtility.SetDirty(addedPD.manager);
+                    }
+
+                    addedPD.manager = physicalDisplayManager;
+                    EditorUtility.SetDirty(addedPD);
+
+                    if(!physicalDisplayManager.displays.Contains(addedPD))
+                    {
+                        physicalDisplayManager.displays.Add(addedPD);
+                        EditorUtility.SetDirty(physicalDisplayManager);
+                    }
+                }
             }
         }
-    }
 #endif
+    }
 }

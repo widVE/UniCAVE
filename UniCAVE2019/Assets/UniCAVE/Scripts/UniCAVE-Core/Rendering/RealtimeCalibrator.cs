@@ -90,7 +90,7 @@ namespace UniCAVE
                 if(cali != null)
                 {
                     CalibrationSelection selection;
-                    selection.machineName = (disp.manager == null) ? disp.machineName : disp.manager.machineName;
+                    selection.machineName = (disp.manager == null) ? disp.oldMachineName : disp.manager.oldMachineName;
                     selection.calibration = cali;
                     allOptions.Add(selection);
                 }
