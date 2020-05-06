@@ -797,26 +797,15 @@ namespace UniCAVE
                     EditorGUILayout.PropertyField(serializedLocation);
                 }
 
-                //done with properties
+                //done with serialized properties
                 serializedObject.ApplyModifiedProperties();
 
                 //update manager if it changed
                 PhysicalDisplay physicalDisplay = target as PhysicalDisplay;
+
                 if(managerChanged)
                 {
-                    //remove from old manager
-                    if(oldManager)
-                    {
-                        oldManager.displays.Remove(physicalDisplay);
-                        EditorUtility.SetDirty(oldManager);
-                    }
-
-                    //add to new manager
-                    if(newManager)
-                    {
-                        newManager.displays.Add(physicalDisplay);
-                        EditorUtility.SetDirty(newManager);
-                    }
+                    PhysicalDisplayManager.SetManager(physicalDisplay, oldManager, newManager);
                 }
 
                 //JSON buttons

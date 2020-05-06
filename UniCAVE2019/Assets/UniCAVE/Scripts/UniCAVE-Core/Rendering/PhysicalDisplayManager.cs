@@ -181,15 +181,62 @@ namespace UniCAVE
                     {
                         disp.manager.displays.Remove(disp);
                     }
-                    displays.Remove(disp);
+                    RemoveDisplay(disp);
                     disp.manager = this;
-                    displays.Add(disp);
+                    AddDisplay(disp);
                 }
                 AssignManagerChildren_h(child);
             }
         }
 
+        public bool AddDisplay(PhysicalDisplay physicalDisplay)
+        {
+            if(!displays.Contains(physicalDisplay))
+            {
+                displays.Add(physicalDisplay);
+                return true;
+            }
+            else return false;
+        }
+
+        public bool RemoveDisplay(PhysicalDisplay physicalDisplay)
+        {
+            return displays.Remove(physicalDisplay);
+        }
+
 #if UNITY_EDITOR
+        public static void SetManager(PhysicalDisplay physicalDisplay, PhysicalDisplayManager oldManager, PhysicalDisplayManager newManager, string undoName = "Set Manager")
+        {
+            //the SetDirty calls might not be necessary...
+            Undo.SetCurrentGroupName(undoName);
+
+            //remove from old manager
+            if(oldManager)
+            {
+                Undo.RecordObject(oldManager, "Remove Display");
+
+                oldManager.RemoveDisplay(physicalDisplay);
+                EditorUtility.SetDirty(oldManager);
+            }
+
+            //set manager on display
+            Undo.RecordObject(physicalDisplay, "Set New Manager");
+
+            physicalDisplay.manager = newManager;
+            EditorUtility.SetDirty(physicalDisplay);
+
+            //add to new manager
+            if(newManager)
+            {
+                Undo.RecordObject(newManager, "Add Display");
+
+                newManager.AddDisplay(physicalDisplay);
+                EditorUtility.SetDirty(newManager);
+            }
+
+            Undo.CollapseUndoOperations(Undo.GetCurrentGroup());
+        }
+
         [CustomEditor(typeof(PhysicalDisplayManager))]
         public class Editor : UnityEditor.Editor
         {
@@ -225,23 +272,8 @@ namespace UniCAVE
                     foreach(Transform child in physicalDisplayManager.transform)
                     {
                         PhysicalDisplay childPD = child.GetComponent<PhysicalDisplay>();
-                        if(childPD)
-                        {
-                            if(childPD.manager)
-                            {
-                                childPD.manager.displays.Remove(childPD);
-                                EditorUtility.SetDirty(childPD.manager);
-                            }
 
-                            childPD.manager = physicalDisplayManager;
-                            EditorUtility.SetDirty(childPD);
-
-                            if(!physicalDisplayManager.displays.Contains(childPD))
-                            {
-                                physicalDisplayManager.displays.Add(childPD);
-                                EditorUtility.SetDirty(physicalDisplayManager);
-                            }
-                        }
+                        if(childPD) SetManager(childPD, childPD.manager, physicalDisplayManager, undoName: "Assign Children to Manager");
                     }
                 }
 
@@ -252,36 +284,35 @@ namespace UniCAVE
                 {
                     PhysicalDisplay pd = physicalDisplayManager.displays[i];
 
-                    pd = EditorGUILayout.ObjectField(pd, typeof(PhysicalDisplay), true) as  PhysicalDisplay;
+                    pd = EditorGUILayout.ObjectField(pd, typeof(PhysicalDisplay), true) as PhysicalDisplay;
 
                     //remove any displays that are null
                     if(!pd)
                     {
+                        Undo.SetCurrentGroupName("Remove Display");
+
+                        PhysicalDisplay physicalDisplay = physicalDisplayManager.displays[i];
+                        Undo.RecordObject(physicalDisplay, string.Empty);
+                        if(physicalDisplay.manager == physicalDisplayManager)
+                        {
+                            physicalDisplay.manager = null;
+                            EditorUtility.SetDirty(physicalDisplay);
+                        }
+
+                        Undo.RecordObject(physicalDisplayManager, string.Empty);
                         physicalDisplayManager.displays.RemoveAt(i);
                         EditorUtility.SetDirty(physicalDisplayManager);
+
+                        Undo.CollapseUndoOperations(Undo.GetCurrentGroup());
+
                         i--;
                     }
                 }
 
                 //draw field to add displays
                 PhysicalDisplay addedPD = EditorGUILayout.ObjectField("Add Display", null, typeof(PhysicalDisplay), true) as PhysicalDisplay;
-                if(addedPD)
-                {
-                    if(addedPD.manager)
-                    {
-                        addedPD.manager.displays.Remove(addedPD);
-                        EditorUtility.SetDirty(addedPD.manager);
-                    }
 
-                    addedPD.manager = physicalDisplayManager;
-                    EditorUtility.SetDirty(addedPD);
-
-                    if(!physicalDisplayManager.displays.Contains(addedPD))
-                    {
-                        physicalDisplayManager.displays.Add(addedPD);
-                        EditorUtility.SetDirty(physicalDisplayManager);
-                    }
-                }
+                if(addedPD) SetManager(addedPD, addedPD.manager, physicalDisplayManager, undoName: "Add Display");
             }
         }
 #endif
