@@ -1,6 +1,6 @@
 ## Description
 
-The UniCAVE project aims to build a plugin for [Unity3D](https://unity3d.com) that provides support for CAVE environments utilizing features built into the engine.  This approach enables a user to configure their system entirely in the Unity3D editor providing a simplified method for supporting adapting existing Unity projects for distributed visualization platforms.
+The UniCAVE project aims to build a plugin for [Unity3D](https://unity3d.com) that provides support for CAVE environments utilizing features built into the engine. This approach enables a user to configure their system entirely in the Unity3D editor providing a simplified method for supporting adapting existing Unity projects for distributed visualization platforms.
 
 The concept for the plugin is to have a three step approach for integration:
 
@@ -15,10 +15,10 @@ This project is currently **_under development and is a work in progress_**.  Pl
 
 ### Current Features
 
-* Native Unity3D time synchronization via Unity’s timeScale feature to distributed synchronization
+- Native Unity3D time synchronization via Unity’s timeScale feature to distributed synchronization
 
-* NetworkView RPC calls for synchronizing random seeds and dynamic objects
+- NetworkView RPC calls for synchronizing random seeds and dynamic objects
 
-* VRPN Unity plugin to handle tracking systems
+- VRPN Unity plugin to handle tracking systems
 
-* In-editor preview of asymmetric view frustums
+- In-editor preview of asymmetric view frustums
