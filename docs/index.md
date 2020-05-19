@@ -4,13 +4,13 @@ The UniCAVE project aims to build a plugin for [Unity3D](https://unity3d.com) th
 
 The concept for the plugin is to have a three step approach for integration:
 
-![Step 1](images\step1-768x133.png "Step 1")
+![Step 1](images/step1-768x133.png "Step 1")
 
-![Step 2](images\step2-768x130.png "Step 2")
+![Step 2](images/step2-768x130.png "Step 2")
 
-![Step 3](images\step3-768x131.png "Step 3")
+![Step 3](images/step3-768x131.png "Step 3")
 
-This project is currently **_under development and is a work in progress_**.  Please feel free to _contribute to this project_ or read over the _[documentation]_(https://github.com/widVE/UniCAVE/wiki) to learn if the plugin is right for you.
+This project is currently **_under development and is a work in progress_**.  Please feel free to _contribute to this project_ or read over the [documentation](https://github.com/widVE/UniCAVE/wiki) to learn if the plugin is right for you.
 
 
 ### Current Features
@@ -21,4 +21,4 @@ This project is currently **_under development and is a work in progress_**.  Pl
 
 - VRPN Unity plugin to handle tracking systems
 
-- In-editor preview of asymmetric view frustums
+* In-editor preview of asymmetric view frustums
