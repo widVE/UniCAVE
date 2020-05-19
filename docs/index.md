@@ -4,6 +4,8 @@ The UniCAVE project aims to build a plugin for [Unity3D](https://unity3d.com) th
 
 The concept for the plugin is to have a three step approach for integration:
 
-![Step 1](docs\images\step1-768x133.png)
-![Step 2](docs\images\step2-768x130.png)
-![Step 3](docs\images\step3-768x131.png)
+![Step 1](images\step1-768x133.png)
+
+![Step 2](images\step2-768x130.png)
+
+![Step 3](images\step3-768x131.png)
