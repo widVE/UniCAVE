@@ -242,7 +242,7 @@ namespace UniCAVE
                 if(displays[i].manager != null) continue;
 
                 res += "\n\n# Display: " + displays[i].name;
-                res += "\nIf ($env:ComputerName -eq '" + displays[i].oldMachineName + "') {";
+                res += "\nIf ($env:ComputerName -eq '" + displays[i].machineName + "') {";
                 if(displays[i].dualPipe && displays[i].dualInstance)
                 {
                     for(int j = 0; j < 2; j++)
@@ -266,7 +266,7 @@ namespace UniCAVE
             for(int i = 0; i < managers.Count; i++)
             {
                 res += "\n\n# Display Group: " + managers[i].name;
-                res += "\nIf ($env:ComputerName -eq '" + managers[i].oldMachineName + "') {";
+                res += "\nIf ($env:ComputerName -eq '" + managers[i].machineName + "') {";
 
                 res += "\n\t& '.\\" + Application.productName + ".exe'";
                 res += " " + (managers[i].fullscreen ? ("-screen-fullscreen 1 -adapter " + managers[i].displayNumber) : ("-screen-fullscreen 0 -popupwindow"));
@@ -375,28 +375,28 @@ namespace UniCAVE
                 List<string> machines = new List<string>();
                 for(int i = 0; i < managers.Count; i++)
                 {
-                    if(!havingName.ContainsKey(managers[i].oldMachineName))
+                    if(!havingName.ContainsKey(managers[i].machineName))
                     {
-                        havingName[managers[i].oldMachineName] = new List<object> { managers[i] };
-                        machines.Add(managers[i].oldMachineName);
+                        havingName[managers[i].machineName] = new List<object> { managers[i] };
+                        machines.Add(managers[i].machineName);
                     }
                     else
                     {
-                        havingName[managers[i].oldMachineName].Add(managers[i].gameObject);
+                        havingName[managers[i].machineName].Add(managers[i].gameObject);
                     }
                 }
                 for(int i = 0; i < displays.Count; i++)
                 {
                     if(displays[i].manager == null)
                     {
-                        if(displays[i].oldMachineName == null || !havingName.ContainsKey(displays[i].oldMachineName))
+                        if(displays[i].machineName == null || !havingName.ContainsKey(displays[i].machineName))
                         {
-                            havingName[displays[i].oldMachineName] = new List<object> { displays[i] };
-                            machines.Add(displays[i].oldMachineName);
+                            havingName[displays[i].machineName] = new List<object> { displays[i] };
+                            machines.Add(displays[i].machineName);
                         }
                         else
                         {
-                            havingName[displays[i].oldMachineName].Add(displays[i].gameObject);
+                            havingName[displays[i].machineName].Add(displays[i].gameObject);
                         }
                     }
                 }
