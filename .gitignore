@@ -65,6 +65,7 @@ ExportedObj/
 *.opendb
 *.VC.db
 .vs/
+.jekyll-cache/
 
 # Unity3D generated meta files
 *.pidb.meta
