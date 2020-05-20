@@ -242,6 +242,7 @@ PLATFORMS
 
 DEPENDENCIES
   github-pages
+  minima
 
 BUNDLED WITH
    2.1.4
