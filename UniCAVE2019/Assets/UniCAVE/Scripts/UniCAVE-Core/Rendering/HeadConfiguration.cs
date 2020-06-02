@@ -90,7 +90,9 @@ namespace UniCAVE
 
             if(camPrefab != null) obj = Instantiate(camPrefab);
             else obj = new GameObject();
-            res = obj.AddComponent<Camera>();
+
+            res = obj.GetComponent<Camera>();
+            if(!res) res = obj.AddComponent<Camera>();
 
             obj.name = $"{System.Enum.GetName(typeof(Eyes), eye)} Eye for: {name}";
 

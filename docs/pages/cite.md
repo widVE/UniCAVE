@@ -5,7 +5,7 @@ title: Cite UniCAVE
 
 ### Cite the UniCAVE Project
 
-This project was first presented at IEEEVR 2017 in a poster, entitled Uni-CAVE: A Unity3D Plugin for Non-head Mounted VR Display Systems.
+This project was first presented at IEEEVR 2017 in a poster, entitled *Uni-CAVE: A Unity3D Plugin for Non-head Mounted VR Display Systems*.
 
 
 #### APA
