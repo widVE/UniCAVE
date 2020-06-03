@@ -1,0 +1,17 @@
+.site-header {
+	
+	background-color: red;
+	background-image:   linear-gradient(to bottom, #B70101,#720000);
+	
+	.greedy-nav{
+		background-color:rgba(0,0,0,0);
+	}
+	.site-title{
+		color:white;
+		text-shadow:        1px 1px 0 rgba(0,0,0,.5);
+		&:hover {
+			color:white;
+			text-shadow:        2px 2px 0 rgba(0,0,0,.5);
+		}
+	}
+}
