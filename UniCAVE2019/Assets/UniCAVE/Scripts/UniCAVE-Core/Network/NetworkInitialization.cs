@@ -32,12 +32,13 @@ namespace UniCAVE
         public NetworkManager networkManager;
 
         [SerializeField]
-        string headMachine = "C6_V1_HEAD";
+        [UnityEngine.Serialization.FormerlySerializedAs("headMachine")]
+        string oldHeadMachine = "C6_V1_HEAD";
 
         [SerializeField]
         MachineName headMachineAsset;
 
-        public string headMachineName => MachineName.GetMachineName(headMachine, headMachineAsset);
+        public string headMachine => MachineName.GetMachineName(oldHeadMachine, headMachineAsset);
 
         [Tooltip("This can be overriden at runtime with parameter serverAddress, for example \"serverAddress 192.168.0.100\"")]
         public string serverAddress = "192.168.4.140";
@@ -63,7 +64,7 @@ namespace UniCAVE
             }
 
             string runningMachineName = Util.GetMachineName();
-            Debug.Log($"serverAddress = {serverAddress}, serverPort = {serverPort}, headMachine = {headMachineName}, runningMachine = {runningMachineName}");
+            Debug.Log($"serverAddress = {serverAddress}, serverPort = {serverPort}, headMachine = {headMachine}, runningMachine = {runningMachineName}");
 
             networkManager.networkAddress = serverAddress;
             networkManager.networkPort = serverPort;
@@ -87,7 +88,7 @@ namespace UniCAVE
         /// </summary>
         void Update()
         {
-            if(Util.GetMachineName() != headMachine)
+            if(Util.GetMachineName() != oldHeadMachine)
             {
                 if(networkManager.client == null)
                 {
@@ -113,7 +114,7 @@ namespace UniCAVE
                 EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(networkManager)));
 
                 //special handling for old machine names:
-                SerializedProperty oldMachineName = serializedObject.FindProperty(nameof(headMachine));
+                SerializedProperty oldMachineName = serializedObject.FindProperty(nameof(oldHeadMachine));
                 SerializedProperty machineName = serializedObject.FindProperty(nameof(headMachineAsset));
                 MachineName.DrawDeprecatedMachineName(oldMachineName, machineName, "HeadMachine");
 

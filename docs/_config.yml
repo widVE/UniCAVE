@@ -1,5 +1,7 @@
-title: UniCAVE - A Unity3D Plugin for Non-Head Mounted Virtual Reality Display Systems
+title: UniCAVE
+description: A Unity3D Plugin for Non-Head Mounted Virtual Reality Display Systems
+author: WID Virtual Environments
 locale: en_US
 theme: minima
-url: https://widve.github.io/UniCAVE
-baseurl: https://widve.github.io/UniCAVE/docs
+baseurl: /UniCAVE
+url: https://widve.github.io
