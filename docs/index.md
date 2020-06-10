@@ -30,7 +30,7 @@ This project is currently **_under development and is a work in progress_**.  Pl
 
 **Works with:**
 
-![Operating Systems](images/operating-systems.png "Operating systems")
+![Operating Systems]({{'images/operating-systems.png' | absolute_url}} "Operating systems")
 
 
 ## Features in Development
