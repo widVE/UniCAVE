@@ -17,72 +17,85 @@ using System.Collections;
 using System.Threading;
 using UnityEngine.Networking;
 
-[NetworkSettings(sendInterval=0.016f)]
-public class VRPNTrack : NetworkBehaviour {
-    [SerializeField]
-    private string trackerAddress = "Isense900@C6_V1_HEAD";
-    [SerializeField]
-    private int channel = 0;
-    [SerializeField]
-    private bool trackPosition = true;
-    [SerializeField]
-    private bool trackRotation = true;
+namespace UniCAVE
+{
+    [NetworkSettings(sendInterval = 0.016f)]
+    public class VRPNTrack : NetworkBehaviour
+    {
+        [SerializeField]
+        private string trackerAddress = "Isense900@C6_V1_HEAD";
+        [SerializeField]
+        private int channel = 0;
+        [SerializeField]
+        private bool trackPosition = true;
+        [SerializeField]
+        private bool trackRotation = true;
 
-    public Vector3 trackerPositionOffset;
-    public Vector3 trackerRotationOffset;
+        public Vector3 trackerPositionOffset;
+        public Vector3 trackerRotationOffset;
 
-    public bool debugOutput = false;
+        public bool debugOutput = false;
 
-    //handles left coordinate system from right based tracking system such as ART.
-    public bool convertToLeft = false;
+        //handles left coordinate system from right based tracking system such as ART.
+        public bool convertToLeft = false;
 
-    public int Channel {
-        get { return channel; }
-        set {
-            channel = value;
-        }
-    }
-
-    public bool TrackPosition {
-        get { return trackPosition; }
-        set {
-            trackPosition = value;
-            StopCoroutine("Position");
-            if (trackPosition && Application.isPlaying) {
-                StartCoroutine("Position");
+        public int Channel
+        {
+            get { return channel; }
+            set
+            {
+                channel = value;
             }
         }
-    }
 
-    public bool TrackRotation {
-        get { return trackRotation; }
-        set {
-            trackRotation = value;
-            StopCoroutine("Rotation");
-            if (trackRotation && Application.isPlaying) {
-                StartCoroutine("Rotation");
+        public bool TrackPosition
+        {
+            get { return trackPosition; }
+            set
+            {
+                trackPosition = value;
+                StopCoroutine("Position");
+                if(trackPosition && Application.isPlaying)
+                {
+                    StartCoroutine("Position");
+                }
             }
         }
-    }
 
-    private void Start() {
-        //this gets rid of this object from non-head nodes...we only want this running on the machine that connects to VRPN...
-        //this assumes a distributed type setup, where one machine connects to the tracking system and distributes information
-        //to other machines...
-        //some setups may try to connect each machine to vrpn...
-        //in that case, we wouldn't want to destroy this object..
-
-        //Debug.Log(Util.GetMachineName() + " " + master.masterMachineName);
-        //if (Util.GetMachineName() != master.masterMachineName) {
-        //    Debug.Log("Removing tracker settings from " + gameObject.name + " on " + Util.GetMachineName());
-        //    Destroy(this);
-        //    return;
-        //}
-
-        if (!isServer) {
-            Destroy(this);
-            return;
+        public bool TrackRotation
+        {
+            get { return trackRotation; }
+            set
+            {
+                trackRotation = value;
+                StopCoroutine("Rotation");
+                if(trackRotation && Application.isPlaying)
+                {
+                    StartCoroutine("Rotation");
+                }
+            }
         }
+
+        private void Start()
+        {
+            //this gets rid of this object from non-head nodes...we only want this running on the machine that connects to VRPN...
+            //this assumes a distributed type setup, where one machine connects to the tracking system and distributes information
+            //to other machines...
+            //some setups may try to connect each machine to vrpn...
+            //in that case, we wouldn't want to destroy this object..
+
+            //Debug.Log(Util.GetMachineName() + " " + master.masterMachineName);
+            //if (Util.GetMachineName() != master.masterMachineName) {
+            //    Debug.Log("Removing tracker settings from " + gameObject.name + " on " + Util.GetMachineName());
+            //    Destroy(this);
+            //    return;
+            //}
+
+            if(!isServer)
+            {
+                Destroy(this);
+                return;
+            }
 #if !UNITY_EDITOR
         if (trackPosition) {
             StartCoroutine("Position");
@@ -92,42 +105,53 @@ public class VRPNTrack : NetworkBehaviour {
             StartCoroutine("Rotation");
         }
 #endif
-    }
-
-    private IEnumerator Position() {
-        while (true) {
-            Vector3 pos = VRPN.vrpnTrackerPos(trackerAddress, channel) + trackerPositionOffset;
-
-            if (convertToLeft) {
-                pos.x = Interlocked.Exchange(ref pos.z, pos.x);
-                pos.y *= -1;
-                transform.localPosition = pos;
-            } else {
-                transform.localPosition = pos;
-            }
-            //float temp = pos.z;
-            //pos.z = pos.x;
-            //pos.x = temp;
-            // pos.y = -pos.y;
-
-            yield return null;
         }
-    }
 
-    private IEnumerator Rotation() {
-        while (true) {
-            Quaternion rotation = VRPN.vrpnTrackerQuat(trackerAddress, channel);
+        private IEnumerator Position()
+        {
+            while(true)
+            {
+                Vector3 pos = VRPN.vrpnTrackerPos(trackerAddress, channel) + trackerPositionOffset;
 
-            if (convertToLeft) {
-                rotation.x = Interlocked.Exchange(ref rotation.z, rotation.x);
-                rotation.y *= -1;
+                if(convertToLeft)
+                {
+                    pos.x = Interlocked.Exchange(ref pos.z, pos.x);
+                    pos.y *= -1;
+                    transform.localPosition = pos;
+                }
+                else
+                {
+                    transform.localPosition = pos;
+                }
+                //float temp = pos.z;
+                //pos.z = pos.x;
+                //pos.x = temp;
+                // pos.y = -pos.y;
 
-                transform.localRotation = rotation * Quaternion.Euler(trackerRotationOffset);
-            } else {
-                transform.localRotation = rotation * Quaternion.Euler(trackerRotationOffset);
+                yield return null;
             }
+        }
 
-            yield return null;
+        private IEnumerator Rotation()
+        {
+            while(true)
+            {
+                Quaternion rotation = VRPN.vrpnTrackerQuat(trackerAddress, channel);
+
+                if(convertToLeft)
+                {
+                    rotation.x = Interlocked.Exchange(ref rotation.z, rotation.x);
+                    rotation.y *= -1;
+
+                    transform.localRotation = rotation * Quaternion.Euler(trackerRotationOffset);
+                }
+                else
+                {
+                    transform.localRotation = rotation * Quaternion.Euler(trackerRotationOffset);
+                }
+
+                yield return null;
+            }
         }
     }
 }

@@ -17,118 +17,142 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-/// <summary>
-/// Handles the Warp tool for the user to move quickly in the scene.
-/// </summary>
-public class WarpTool : MonoBehaviour, ITool {
-    public GameObject holder;
-    public GameObject wandObject;
-    private RaycastHit hit;
-    public int rayLength;
-    public Stack<Vector3> previousWarps;
-
+namespace UniCAVE
+{
     /// <summary>
-    /// Basically a constructor
+    /// Handles the Warp tool for the user to move quickly in the scene.
     /// </summary>
-    private void Start() {
-        //Get all necessary game objects
-        if (wandObject == null) {
-            Debug.LogError("Need to set wand object!");
+    public class WarpTool : MonoBehaviour, ITool
+    {
+        public GameObject holder;
+        public GameObject wandObject;
+        private RaycastHit hit;
+        public int rayLength;
+        public Stack<Vector3> previousWarps;
+
+        /// <summary>
+        /// Basically a constructor
+        /// </summary>
+        private void Start()
+        {
+            //Get all necessary game objects
+            if(wandObject == null)
+            {
+                Debug.LogError("Need to set wand object!");
+            }
+
+            if(holder == null)
+            {
+                Debug.LogError("Need to set top level UniCAVE object!");
+            }
+
+            //StartCoroutine("Raycaster");
+            rayLength = 100;
+            previousWarps = new Stack<Vector3>();
         }
 
-        if (holder == null) {
-            Debug.LogError("Need to set top level UniCAVE object!");
+
+
+        /// <summary>
+        /// Teleports the IQstation the length of the raycast or to an object 
+        /// </summary>
+        public void Warp(Vector3 origin, Vector3 direction)
+        {
+            //Add the location to the stack of warps
+            previousWarps.Push(holder.transform.position);
+
+            //returns true if an object is hit and fills the raycasthit struct with data
+            if(Physics.Raycast(origin, direction * rayLength, out hit))
+            {
+                //Transport the IQstation to the object
+                holder.transform.position = Vector3.Lerp(holder.transform.position, hit.point, .75f);
+            }
+            else
+            {
+                //Transport the IQstation to the end of the rayCast
+                holder.transform.position = Vector3.Lerp(holder.transform.position, holder.transform.position + direction * rayLength, .75f);
+            }
         }
 
-        //StartCoroutine("Raycaster");
-        rayLength = 100;
-        previousWarps = new Stack<Vector3>();
-    }
-
-
-
-    /// <summary>
-    /// Teleports the IQstation the length of the raycast or to an object 
-    /// </summary>
-    public void Warp(Vector3 origin, Vector3 direction) {
-        //Add the location to the stack of warps
-        previousWarps.Push(holder.transform.position);
-
-        //returns true if an object is hit and fills the raycasthit struct with data
-        if (Physics.Raycast(origin, direction * rayLength, out hit)) {
-            //Transport the IQstation to the object
-            holder.transform.position = Vector3.Lerp(holder.transform.position, hit.point, .75f);
-        } else {
-            //Transport the IQstation to the end of the rayCast
-            holder.transform.position = Vector3.Lerp(holder.transform.position, holder.transform.position + direction * rayLength, .75f);
+        /// <summary>
+        /// Keeps a record of all teleportations that the user does and reverts them back if desired
+        /// </summary>
+        public void undoWarp()
+        {
+            //If the stack isnt empty pop off the top object
+            if(previousWarps.Count != 0)
+            {
+                holder.transform.position = previousWarps.Pop();
+            }
         }
-    }
 
-    /// <summary>
-    /// Keeps a record of all teleportations that the user does and reverts them back if desired
-    /// </summary>
-    public void undoWarp() {
-        //If the stack isnt empty pop off the top object
-        if (previousWarps.Count != 0) {
-            holder.transform.position = previousWarps.Pop();
+        /// <summary>
+        /// Handles the button input for the warp tool
+        /// </summary>
+        public void ButtonClick(TrackerButton button, Vector3 origin_, Vector3 direction_)
+        {
+
+            if(button == TrackerButton.Trigger)
+            {
+                Warp(origin_, direction_);
+            }
+            if(button == TrackerButton.Button1)
+            {
+                undoWarp();
+            }
         }
-    }
 
-    /// <summary>
-    /// Handles the button input for the warp tool
-    /// </summary>
-    public void ButtonClick(TrackerButton button, Vector3 origin_, Vector3 direction_) {
 
-        if (button == TrackerButton.Trigger) {
-            Warp(origin_, direction_);
+        ///////////Unimplemented Functions /////////////////// 
+        public void Analog(double x, double y)
+        {
+            throw new NotImplementedException();
         }
-        if (button == TrackerButton.Button1) {
-            undoWarp();
+
+        public IEnumerator ButtonDrag()
+        {
+            throw new NotImplementedException();
         }
-    }
 
+        public void init()
+        {
+        }
 
-    ///////////Unimplemented Functions /////////////////// 
-    public void Analog(double x, double y) {
-        throw new NotImplementedException();
-    }
+        public void shutDown()
+        {
+        }
 
-    public IEnumerator ButtonDrag() {
-        throw new NotImplementedException();
-    }
+        public void ButtonDrag(RaycastHit hit, Vector3 offset)
+        {
+            //Do nothing
+        }
 
-    public void init() {
-    }
+        /// <summary>
+        /// Handles button down event - does nothing right now.
+        /// </summary>
+        /// <param name="buttonNum">The button pressed</param>
+        /// <param name="origin">The position of the tracker</param>
+        /// <param name="direction">The forward direction of the tracker</param>
+        /// <param name="hit">The object hit with raycast.</param>
+        public void ButtonDown(TrackerButton buttonNum, Vector3 origin, Vector3 direction, RaycastHit hit)
+        {
 
-    public void shutDown() {
-    }
+        }
 
-    public void ButtonDrag(RaycastHit hit, Vector3 offset) {
-        //Do nothing
-    }
+        public void ButtonDrag(RaycastHit hit, Vector3 offset, Vector3 origin, Vector3 direction)
+        {
+            //throw new NotImplementedException();
+        }
 
-    /// <summary>
-    /// Handles button down event - does nothing right now.
-    /// </summary>
-    /// <param name="buttonNum">The button pressed</param>
-    /// <param name="origin">The position of the tracker</param>
-    /// <param name="direction">The forward direction of the tracker</param>
-    /// <param name="hit">The object hit with raycast.</param>
-    public void ButtonDown(TrackerButton buttonNum, Vector3 origin, Vector3 direction, RaycastHit hit) {
-
-    }
-
-    public void ButtonDrag(RaycastHit hit, Vector3 offset, Vector3 origin, Vector3 direction) {
-        //throw new NotImplementedException();
-    }
-
-    /// <summary>
-    /// Gets the tool name - warp tool.
-    /// </summary>
-    public string ToolName {
-        get {
-            return "Warp";
+        /// <summary>
+        /// Gets the tool name - warp tool.
+        /// </summary>
+        public string ToolName
+        {
+            get
+            {
+                return "Warp";
+            }
         }
     }
 }
