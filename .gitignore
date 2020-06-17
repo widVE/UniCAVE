@@ -19,6 +19,7 @@ obj/
 Library/
 Temp/
 *.db.meta
+*.code-workspace
 
 # This .gitignore file should be placed at the root of your Unity project directory
 #

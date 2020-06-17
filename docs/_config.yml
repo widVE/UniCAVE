@@ -1,7 +1,37 @@
 title: UniCAVE
+
 description: A Unity3D Plugin for Non-Head Mounted Virtual Reality Display Systems
-author: Virtual Environments group, Wisconsin Institute for Discovery
+
+author: ["Wisconsin Institute for Discovery", "330 N Orchard St", "Madison, WI", "53715"]
 locale: en_US
+
 theme: minima
+
 baseurl: /UniCAVE
+
 url: https://widve.github.io
+
+header_links:
+#  - title: About
+#    path: index.html
+
+  - title: News
+    path: pages/news.html
+
+  - title: Media
+    path: pages/media.html
+
+  - title: FAQs
+    path: pages/faqs.html
+
+  - title: Documentation
+    link: https://github.com/widVE/UniCAVE/wiki
+
+  - title: Publications
+    path: pages/publications.html
+
+  - title: Contact
+    path: pages/contact.html
+
+  - title: Donate
+    path: pages/donate.html

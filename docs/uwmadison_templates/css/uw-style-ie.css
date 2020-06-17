@@ -1,0 +1,40 @@
+/**
+ * UW Style
+ * Version 2.0.5
+ * Maintained by University Marketing, UW–Madison, web@umark.wisc.edu
+ */
+#uw-top-menus.uw-is-visible.uw-hidden {
+  display: block !important;
+  visibility: visible;
+}
+.uw-header-crest {
+  float: left;
+  position: relative;
+  width: 10% !important;
+}
+.uw-header-crest img {
+  float: right;
+}
+.uw-title-tagline {
+  float: left;
+  position: relative;
+  width: 80% !important;
+}
+
+@media (min-width: 1100px) {
+  .uw-footer .uw-footer-content > div {
+    float: left;
+    position: relative;
+    width: 25% !important;
+  }
+  .uw-footer .uw-footer-content > div.uw-logo-vertical:nth-last-child(2):nth-child(1) {
+    width: 50% !important;
+  }
+  .uw-footer .uw-footer-content > div:nth-last-child(1):nth-child(2) {
+    width: 50% !important;
+  }
+}
+
+.uw-footer .uw-copyright {
+  clear: both;
+}
