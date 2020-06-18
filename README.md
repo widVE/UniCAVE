@@ -17,7 +17,7 @@ For a basic example, see the [Web Documentation for 2018 / 2019 Basic Custom Set
 
 # Status and Update History
 
-For Unity 2018.X and Unity 2019.X, the UniCAVE 2018 and UniCAVE 2019 projects represent the up-to-date version 2.0 of UniCAVE. A legacy version of UniCAVE, versions 1.X, is available for Unity 2017.X and 5.X, respectively. Documentation is available for all version of UniCAVE at https://widve.github.io/UniCAVE/wiki.
+For Unity 2018.X and Unity 2019.X, the UniCAVE 2018 and UniCAVE 2019 projects represent the up-to-date version 2.0 of UniCAVE. A legacy version of UniCAVE, versions 1.X, is available for Unity 2017.X and 5.X, respectively. Documentation is available for all version of UniCAVE at https://github.com/widVE/UniCAVE/wiki.
 
 We are currently taking requests for developing custom prefabs meant to work with your immersive projection setup, or feel free to try yourself by taking a look at the documentation on the website.
 
