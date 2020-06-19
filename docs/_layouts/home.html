@@ -4,11 +4,7 @@ layout: default
 
 <div class="home">
     {%- if page.title -%}
-    <h1 class="page-heading">{{ page.title }}</h1>
-    {%- endif -%}
-
-    {%- if page.description -%}
-    <h2 class="div">{{ page.description }}</h2>
+    <h1 class="page-heading">{{ page.title | append: ": " | append: page.description }}</h1>
     {%- endif -%}
 
     {{ content }}

@@ -12,11 +12,11 @@ baseurl: /UniCAVE
 url: https://widve.github.io
 
 header_links:
-#  - title: About
-#    path: index.html
-
   - title: News
     path: pages/news.html
+
+  - title: Download
+    link: https://github.com/widVE/UniCAVE
 
   - title: Media
     path: pages/media.html
@@ -24,7 +24,7 @@ header_links:
   - title: FAQs
     path: pages/faqs.html
 
-  - title: Documentation
+  - title: Wiki
     link: https://github.com/widVE/UniCAVE/wiki
 
   - title: Publications
