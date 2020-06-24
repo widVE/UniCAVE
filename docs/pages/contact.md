@@ -3,7 +3,9 @@ layout: page
 title: Contact Us
 ---
 
-Discuss UniCAVE on the official UniCAVE Google Group:
+Created by the [Wisconsin Institute for Discovery Virtual Environments group](https://wid.wisc.edu/research/labs/virtual-reality-group/).
+
+Questions? Discuss UniCAVE on the official UniCAVE Google Group:
 
 <iframe id="forum_embed"
   src="javascript:void(0)"
