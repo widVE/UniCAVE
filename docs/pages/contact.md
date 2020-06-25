@@ -3,7 +3,7 @@ layout: page
 title: Contact Us
 ---
 
-Created by the [Wisconsin Institute for Discovery Virtual Environments group](https://wid.wisc.edu/research/labs/virtual-reality-group/).
+UniCAVE is made by the [Wisconsin Institute for Discovery Virtual Environments group](https://virtualenvironments.discovery.wisc.edu/).
 
 Questions? Discuss UniCAVE on the official UniCAVE Google Group:
 

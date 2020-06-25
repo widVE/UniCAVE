@@ -3,6 +3,8 @@ layout: page
 title: FAQ's
 ---
 
+Have a question not answered here? Feel free to [contact us](contact.html).
+
 ### Stereo and Windows 7
 
 It’s come to our attention that the Virtual Reality Supported stereoscopic non-head mounted option for a DirectX build doesn’t work in Windows versions prior to 8.1 Users running Windows 7 should turn to an OpenGL build using the glIntercept dll stereo plugin.
@@ -20,7 +22,7 @@ Here are some things to check:
 
 Machine name variables on scripts are case sensitive.  Make sure the names and variable names match up directly.
 The MasterTrackingData’s Multiple Display checkbox should be checked if you are using several displays with a DirectX build.
-If you still have issues feel free to send an email to:  unicave@lists.wisc.edu
+If you still have issues feel free to [contact us](contact.html).
 
 
 ### Do I need a certain version of Unity3D to use this plugin?

@@ -103,11 +103,11 @@ h1, h2, h3, h4, h5, h6 {
  * Links
  */
 a {
-  color: $uw-anchor-color;
+  color: lighten($uw-anchor-color, 10%);
   text-decoration: none;
 
   &:visited {
-    color: darken($uw-anchor-color, 15%);
+    color: $uw-anchor-color;
   }
 
   &:hover {
