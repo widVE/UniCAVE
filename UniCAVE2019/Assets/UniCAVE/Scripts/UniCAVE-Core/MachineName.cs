@@ -86,6 +86,21 @@ namespace UniCAVE
 
                     Undo.CollapseUndoOperations(Undo.GetCurrentGroup());
                 }
+
+                if(GUILayout.Button("Set Name From Filename"))
+				{
+                    Undo.SetCurrentGroupName("Set Machine Name");
+
+                    foreach(MachineName mn in targets)
+					{
+                        Undo.RecordObject(mn, "Set Machine Name");
+
+                        mn.Name = mn.name;
+                        EditorUtility.SetDirty(mn);
+                    }
+
+                    Undo.CollapseUndoOperations(Undo.GetCurrentGroup());
+                }
             }
         }
 #endif

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4831915708224984}
-  - component: {fileID: 114086927701316484}
+  - component: {fileID: 5506456399285465415}
   m_Layer: 0
   m_Name: Head Display
   m_TagString: Untagged
@@ -31,7 +31,7 @@ Transform:
   m_Father: {fileID: 4708349423367838}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114086927701316484
+--- !u!114 &5506456399285465415
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -40,14 +40,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1153734299364826}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f13e67f763fb5bc41ad34dfb8dc3d0ca, type: 3}
+  m_Script: {fileID: 11500000, guid: 06d302fe38494b0458593189ecf4fe40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   manager: {fileID: 0}
-  machineName: C6_V1_HEAD
+  oldMachineName: 
+  machineNameAsset: {fileID: 11400000, guid: 013142c54fa3c454faee2730bb968157, type: 2}
   width: 0.64
   height: 0.48
-  head: {fileID: 114822191924991442}
+  head: {fileID: 6153396498260614855}
   useXRCameras: 0
   useRenderTextures: 0
   renderTextureSize: {x: 0, y: 0}
@@ -72,7 +73,7 @@ MonoBehaviour:
     width: 0
     height: 0
   loadSettingsAtRuntime: 0
-  serializedLocation: serialization path
+  serializedLocation: settings.json
 --- !u!1 &1234113365927972
 GameObject:
   m_ObjectHideFlags: 0
@@ -82,7 +83,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4536238482416386}
-  - component: {fileID: 114594929705933402}
+  - component: {fileID: 5672736814846012769}
   m_Layer: 0
   m_Name: -X
   m_TagString: Untagged
@@ -104,7 +105,7 @@ Transform:
   m_Father: {fileID: 4646579341294612}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 270, z: 0}
---- !u!114 &114594929705933402
+--- !u!114 &5672736814846012769
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -113,14 +114,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1234113365927972}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f13e67f763fb5bc41ad34dfb8dc3d0ca, type: 3}
+  m_Script: {fileID: 11500000, guid: 06d302fe38494b0458593189ecf4fe40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   manager: {fileID: 0}
-  machineName: C6_V2_DOORLEFT
+  oldMachineName: 
+  machineNameAsset: {fileID: 11400000, guid: 6bbb4eba362f3a044b9bdc50d8273fa1, type: 2}
   width: 2.8956
   height: 2.8956
-  head: {fileID: 114822191924991442}
+  head: {fileID: 6153396498260614855}
   useXRCameras: 0
   useRenderTextures: 0
   renderTextureSize: {x: 0, y: 0}
@@ -145,7 +147,7 @@ MonoBehaviour:
     width: 1920
     height: 1920
   loadSettingsAtRuntime: 0
-  serializedLocation: serialization path
+  serializedLocation: settings.json
 --- !u!1 &1292518801803732
 GameObject:
   m_ObjectHideFlags: 0
@@ -156,7 +158,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4597424311227184}
   - component: {fileID: 114735015245432300}
-  - component: {fileID: 114167008675008912}
+  - component: {fileID: 7084916956480407265}
   - component: {fileID: 120754738039255750}
   - component: {fileID: 114454112736020178}
   m_Layer: 0
@@ -213,7 +215,7 @@ MonoBehaviour:
     i15: 0
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
---- !u!114 &114167008675008912
+--- !u!114 &7084916956480407265
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -222,7 +224,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1292518801803732}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6b8c4f7ddc62bb49af7d4bf89c27c8e, type: 3}
+  m_Script: {fileID: 11500000, guid: 4d36101d51cb2b747ae3a94ccc7d37a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   trackerAddress: Isense900@C6_V1_HEAD
@@ -247,6 +249,7 @@ LineRenderer:
   m_MotionVectors: 0
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -258,6 +261,7 @@ LineRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -359,7 +363,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4261227508639270}
-  - component: {fileID: 114837343322118586}
+  - component: {fileID: 11293079778943990}
   m_Layer: 0
   m_Name: -Z
   m_TagString: Untagged
@@ -381,7 +385,7 @@ Transform:
   m_Father: {fileID: 4646579341294612}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!114 &114837343322118586
+--- !u!114 &11293079778943990
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -390,14 +394,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1342268619140130}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f13e67f763fb5bc41ad34dfb8dc3d0ca, type: 3}
+  m_Script: {fileID: 11500000, guid: 06d302fe38494b0458593189ecf4fe40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   manager: {fileID: 0}
-  machineName: C6_V1_DOORLEFT
+  oldMachineName: 
+  machineNameAsset: {fileID: 11400000, guid: 4632b983d17d2304db889ea04083df62, type: 2}
   width: 2.8956
   height: 2.8956
-  head: {fileID: 114822191924991442}
+  head: {fileID: 6153396498260614855}
   useXRCameras: 0
   useRenderTextures: 0
   renderTextureSize: {x: 0, y: 0}
@@ -422,7 +427,7 @@ MonoBehaviour:
     width: 1920
     height: 1920
   loadSettingsAtRuntime: 0
-  serializedLocation: serialization path
+  serializedLocation: settings.json
 --- !u!1 &1373104271855382
 GameObject:
   m_ObjectHideFlags: 0
@@ -432,7 +437,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4674069666646456}
-  - component: {fileID: 114462361291002910}
+  - component: {fileID: 1021406986972369265}
   m_Layer: 0
   m_Name: +Y
   m_TagString: Untagged
@@ -454,7 +459,7 @@ Transform:
   m_Father: {fileID: 4646579341294612}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: -90, y: 90, z: 0}
---- !u!114 &114462361291002910
+--- !u!114 &1021406986972369265
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -463,14 +468,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1373104271855382}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f13e67f763fb5bc41ad34dfb8dc3d0ca, type: 3}
+  m_Script: {fileID: 11500000, guid: 06d302fe38494b0458593189ecf4fe40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   manager: {fileID: 0}
-  machineName: C6_V2_FLOORCEIL
+  oldMachineName: 
+  machineNameAsset: {fileID: 11400000, guid: 84ee881a28703a940ba08d7cbeb66f61, type: 2}
   width: 2.8956
   height: 2.8956
-  head: {fileID: 114822191924991442}
+  head: {fileID: 6153396498260614855}
   useXRCameras: 0
   useRenderTextures: 0
   renderTextureSize: {x: 0, y: 0}
@@ -495,7 +501,7 @@ MonoBehaviour:
     width: 1920
     height: 1920
   loadSettingsAtRuntime: 0
-  serializedLocation: serialization path
+  serializedLocation: settings.json
 --- !u!1 &1491548532285274
 GameObject:
   m_ObjectHideFlags: 0
@@ -542,7 +548,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4847534635969870}
   - component: {fileID: 114865622117728944}
-  - component: {fileID: 114881256820904688}
+  - component: {fileID: 3224306076746783122}
   m_Layer: 0
   m_Name: Input
   m_TagString: Untagged
@@ -597,7 +603,7 @@ MonoBehaviour:
     i15: 0
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
---- !u!114 &114881256820904688
+--- !u!114 &3224306076746783122
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -606,7 +612,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1505384571714756}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ea178046f94b774b941ef42faf80ee8, type: 3}
+  m_Script: {fileID: 11500000, guid: 8011ff8d921dfd44faae40af08a954ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   trackerAddress: Wand0@C6_V1_HEAD
@@ -639,7 +645,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4574539219422464}
   - component: {fileID: 114460058391628086}
-  - component: {fileID: 114037374640367572}
+  - component: {fileID: 1612961168983810790}
   m_Layer: 0
   m_Name: C6_DualPipe_6PC_2GPU
   m_TagString: Untagged
@@ -744,7 +750,7 @@ MonoBehaviour:
   matchSize: 4
   isNetworkActive: 0
   matchMaker: {fileID: 0}
---- !u!114 &114037374640367572
+--- !u!114 &1612961168983810790
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -753,11 +759,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1526182963637040}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7b15655c62d7364a9f2c8650245985a, type: 3}
+  m_Script: {fileID: 11500000, guid: 1caad0495bfcd6043ba1a208fb59a516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   networkManager: {fileID: 114460058391628086}
-  headMachine: C6_V1_HEAD
+  oldHeadMachine: C6_V1_HEAD
+  headMachineAsset: {fileID: 11400000, guid: 013142c54fa3c454faee2730bb968157, type: 2}
   serverAddress: 192.168.4.140
   serverPort: 7568
 --- !u!1 &1589093966013498
@@ -769,7 +776,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4525215389595178}
-  - component: {fileID: 114365799899628650}
+  - component: {fileID: 6012833254190827302}
   m_Layer: 0
   m_Name: +Z
   m_TagString: Untagged
@@ -791,7 +798,7 @@ Transform:
   m_Father: {fileID: 4646579341294612}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114365799899628650
+--- !u!114 &6012833254190827302
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -800,14 +807,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1589093966013498}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f13e67f763fb5bc41ad34dfb8dc3d0ca, type: 3}
+  m_Script: {fileID: 11500000, guid: 06d302fe38494b0458593189ecf4fe40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   manager: {fileID: 0}
-  machineName: C6_V1_FRONTRIGH
+  oldMachineName: 
+  machineNameAsset: {fileID: 11400000, guid: a6458cba6e9bd914496c0453d4033aae, type: 2}
   width: 2.8956
   height: 2.8956
-  head: {fileID: 114822191924991442}
+  head: {fileID: 6153396498260614855}
   useXRCameras: 0
   useRenderTextures: 0
   renderTextureSize: {x: 0, y: 0}
@@ -819,20 +827,20 @@ MonoBehaviour:
   windowBounds:
     x: 0
     y: 0
-    width: 0
-    height: 0
+    width: 1920
+    height: 1920
   leftViewport:
     x: 0
     y: 0
-    width: 1920
-    height: 1920
+    width: 0
+    height: 0
   rightViewport:
     x: 1920
     y: 0
     width: 1920
     height: 1920
   loadSettingsAtRuntime: 0
-  serializedLocation: serialization path
+  serializedLocation: settings.json
 --- !u!1 &1595881864927760
 GameObject:
   m_ObjectHideFlags: 0
@@ -842,9 +850,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4708349423367838}
-  - component: {fileID: 114822191924991442}
   - component: {fileID: 114691575594650914}
-  - component: {fileID: 114958159085972034}
+  - component: {fileID: 6153396498260614855}
+  - component: {fileID: 953538160694721102}
   m_Layer: 0
   m_Name: Head
   m_TagString: Untagged
@@ -867,23 +875,6 @@ Transform:
   m_Father: {fileID: 4805412535959206}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114822191924991442
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1595881864927760}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6bbb13f3601696f429cf6980abfdb409, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  camPrefab: {fileID: 0}
-  leftEyeOffset: {x: -0.031, y: 0.0266, z: 0.041}
-  rightEyeOffset: {x: 0.031, y: 0.0266, z: 0.041}
-  nearClippingPlane: 0.01
-  farClippingPlane: 100
 --- !u!114 &114691575594650914
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -917,7 +908,7 @@ MonoBehaviour:
     i15: 0
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
---- !u!114 &114958159085972034
+--- !u!114 &6153396498260614855
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -926,7 +917,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 1595881864927760}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6b8c4f7ddc62bb49af7d4bf89c27c8e, type: 3}
+  m_Script: {fileID: 11500000, guid: d2480a01dcd559f4c9192fc3c50eeed9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  camPrefab: {fileID: 0}
+  leftEyeOffset: {x: -0.031, y: 0.0266, z: 0.041}
+  rightEyeOffset: {x: 0.031, y: 0.0266, z: 0.041}
+  nearClippingPlane: 0.01
+  farClippingPlane: 100
+--- !u!114 &953538160694721102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1595881864927760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d36101d51cb2b747ae3a94ccc7d37a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   trackerAddress: Isense900@C6_V1_HEAD
@@ -947,7 +955,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4805412535959206}
   - component: {fileID: 114487716749855786}
-  - component: {fileID: 114893801077469082}
+  - component: {fileID: 5188493618700861925}
   m_Layer: 0
   m_Name: CAVE
   m_TagString: Untagged
@@ -1006,7 +1014,7 @@ MonoBehaviour:
     i15: 0
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
---- !u!114 &114893801077469082
+--- !u!114 &5188493618700861925
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1015,10 +1023,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1609654477884330}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61224126889e1ea479b0daa9f7a157e1, type: 3}
+  m_Script: {fileID: 11500000, guid: 73411c8d62ce8b44d93837ed36c78500, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  head: {fileID: 114822191924991442}
+  head: {fileID: 0}
   settingsToLoad: 
 --- !u!1 &1659831128677400
 GameObject:
@@ -1029,7 +1037,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4009552924472464}
-  - component: {fileID: 114024849197504606}
+  - component: {fileID: 6158482416897271006}
   m_Layer: 0
   m_Name: +X
   m_TagString: Untagged
@@ -1051,7 +1059,7 @@ Transform:
   m_Father: {fileID: 4646579341294612}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!114 &114024849197504606
+--- !u!114 &6158482416897271006
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1060,14 +1068,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1659831128677400}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f13e67f763fb5bc41ad34dfb8dc3d0ca, type: 3}
+  m_Script: {fileID: 11500000, guid: 06d302fe38494b0458593189ecf4fe40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   manager: {fileID: 0}
-  machineName: C6_V2_FRONTRIGH
+  oldMachineName: 
+  machineNameAsset: {fileID: 11400000, guid: 38bd35e4e3e3e224ea0e4cccd725090a, type: 2}
   width: 2.8956
   height: 2.8956
-  head: {fileID: 114822191924991442}
+  head: {fileID: 6153396498260614855}
   useXRCameras: 0
   useRenderTextures: 0
   renderTextureSize: {x: 0, y: 0}
@@ -1092,7 +1101,7 @@ MonoBehaviour:
     width: 1920
     height: 1920
   loadSettingsAtRuntime: 0
-  serializedLocation: serialization path
+  serializedLocation: settings.json
 --- !u!1 &1888628406892544
 GameObject:
   m_ObjectHideFlags: 0
@@ -1102,7 +1111,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4499489285000904}
-  - component: {fileID: 114780674665084654}
+  - component: {fileID: 4020670844899454761}
   m_Layer: 0
   m_Name: -Y
   m_TagString: Untagged
@@ -1124,7 +1133,7 @@ Transform:
   m_Father: {fileID: 4646579341294612}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 90, y: 270, z: 0}
---- !u!114 &114780674665084654
+--- !u!114 &4020670844899454761
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1133,14 +1142,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1888628406892544}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f13e67f763fb5bc41ad34dfb8dc3d0ca, type: 3}
+  m_Script: {fileID: 11500000, guid: 06d302fe38494b0458593189ecf4fe40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   manager: {fileID: 0}
-  machineName: C6_V1_FLOORCEIL
+  oldMachineName: 
+  machineNameAsset: {fileID: 11400000, guid: b957b79f2e1be5c469b98b9d5766bb7e, type: 2}
   width: 2.8956
   height: 2.8956
-  head: {fileID: 114822191924991442}
+  head: {fileID: 6153396498260614855}
   useXRCameras: 0
   useRenderTextures: 0
   renderTextureSize: {x: 0, y: 0}
@@ -1165,4 +1175,4 @@ MonoBehaviour:
     width: 1920
     height: 1920
   loadSettingsAtRuntime: 0
-  serializedLocation: serialization path
+  serializedLocation: settings.json

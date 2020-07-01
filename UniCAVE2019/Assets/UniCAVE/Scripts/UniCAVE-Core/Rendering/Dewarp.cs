@@ -18,7 +18,7 @@ namespace UniCAVE
         public class DewarpMeshPosition
         {
 
-            [Header("Mesh calibarted vertecies(Do not add extra verts)")]
+            [Header("Mesh calibrated vertices (do not add extra verts):")]
             public Vector3[] verts;
 
             /// <summary>
