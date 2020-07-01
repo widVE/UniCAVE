@@ -9,11 +9,13 @@ The UniCAVE Plugin is a solution for running Unity within immersive projection V
 
 # Setup and Documentation
 
-For installation info, see the [Web Documentation for 2018 / 2019 Installation](https://unicave.discovery.wisc.edu/2018-documentation/).
+For installation info, see the [Documentation for 2018 Installation](https://github.com/widVE/UniCAVE/wiki/UniCAVE-2018-Installation/).
 
-For detailed script info, see the [Web Documentation for 2018 / 2019 Scripts](https://unicave.discovery.wisc.edu/unicave-2018-scripts-documentation/).
+For detailed script info, see the [Documentation for 2018 Scripts](https://github.com/widVE/UniCAVE/wiki/UniCAVE-2018-Scripts-Documentation/).
 
-For a basic example, see the [Web Documentation for 2018 / 2019 Basic Custom Setup](https://unicave.discovery.wisc.edu/unicave-2018-scripts-documentation/#BasicCustomSetup), or look at the sample prefabs in each Unity project (UniCAVE2017, UniCAVE2018, UniCAVE2019).
+For a basic example, see the [Documentation for 2018 Basic Custom Setup](https://github.com/widVE/UniCAVE/wiki/UniCAVE-2018-Installation#2-creating-a-basic-cave-setup), or look at the sample prefabs in each Unity project (UniCAVE2017, UniCAVE2018, UniCAVE2019).
+
+Updated documentation for the latest version of UniCAVE is in the process of being written!
 
 # Status and Update History
 
