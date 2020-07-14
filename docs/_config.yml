@@ -15,14 +15,11 @@ header_links:
   - title: News
     path: pages/news.html
 
-  - title: Download
-    link: https://github.com/widVE/UniCAVE
+  - title: Downloads
+    path: pages/downloads.html
 
   - title: Media
     path: pages/media.html
-
-  - title: FAQs
-    path: pages/faqs.html
 
   - title: Wiki
     link: https://github.com/widVE/UniCAVE/wiki
