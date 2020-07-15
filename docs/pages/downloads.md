@@ -17,13 +17,17 @@ Several example scenes are available to test your UniCAVE setup. These scenes re
 ### Tuscany
 
 ![Tuscany scene]({{'images/tuscany.jpg' | absolute_url}})
-<https://github.com/widVE/UniCAVE-Example-Tuscany>
+
+The classic Tuscany demo scene, ready for your custom UniCAVE prefab setup.  
+[Download the Tuscany scene here!](https://github.com/widVE/UniCAVE-Example-Tuscany)
 
 
 ### Operating Room
 
 ![Operating room scene]({{'images/operating_room.jpg' | absolute_url}})
-<https://github.com/widVE/UniCAVE-Example-Operating-Room>
+
+An operating room scene with various objects to manipulate.  
+[Download the operating room scene here!](https://github.com/widVE/UniCAVE-Example-Operating-Room)
 
 
 ### Jungle

@@ -70,7 +70,7 @@ namespace UniCAVE
             networkManager.networkPort = serverPort;
 
 #if !UNITY_EDITOR
-            if ((Util.GetArg("forceClient") == "1") || (Util.GetMachineName() != headMachineName))
+            if ((Util.GetArg("forceClient") == "1") || (Util.GetMachineName() != headMachine))
             {
                 networkManager.StartClient();
             }
