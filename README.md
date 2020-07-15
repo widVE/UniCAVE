@@ -1,4 +1,4 @@
-[![Donate](https://img.shields.io/badge/Donate-UW--Madison-c5050c.svg)](https://secure.supportuw.org/give/?id=ac987d37-46b8-46f5-b2ae-71bba33ead5f)
+[![Donate](https://img.shields.io/badge/Donate-UW--Madison-green.svg)](https://secure.supportuw.org/give/?id=ac987d37-46b8-46f5-b2ae-71bba33ead5f)
 
 # UniCAVE Plugin version 2.0
 Ross Tredinnick, Brady Boettcher, Sam Solovy, Simon Smith, Benny Wysong-Grass, Kevin Ponto
