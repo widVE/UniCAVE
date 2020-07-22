@@ -21,7 +21,7 @@ header_links:
   - title: Media
     path: pages/media.html
 
-  - title: Wiki
+  - title: Documentation
     link: https://github.com/widVE/UniCAVE/wiki
 
   - title: Publications

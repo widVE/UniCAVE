@@ -32,6 +32,15 @@ As the project does not receive any financial support from the campus, federal a
 
 ![Operating Systems]({{'images/operating-systems.png' | absolute_url}} "Operating systems")
 
+## Getting Started
+
+Check out these pages for useful documentation on creating your own UniCAVE setup:
+
+- [Installation](https://github.com/widVE/UniCAVE/wiki/UniCAVE-2019:-Package-Installation)
+
+- [Basic setup guide](https://github.com/widVE/UniCAVE/wiki/Setup-Guide)
+
+- [Scripts documentation](https://github.com/widVE/UniCAVE/wiki/Scripts-Documentation)
 
 ## Features in Development
 
