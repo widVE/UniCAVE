@@ -33,4 +33,4 @@ header_links:
     path: pages/contact.html
 
   - title: Donate
-    path: pages/donate.html
+    button: pages/donate.html
