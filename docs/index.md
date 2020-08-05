@@ -42,10 +42,6 @@ Check out these pages for useful documentation on creating your own UniCAVE setu
 
 - [Scripts documentation](https://github.com/widVE/UniCAVE/wiki/Scripts-Documentation)
 
-## Features in Development
+## UniCAVE Users
 
-- Improved clustered input device support
-
-- Support for additional input devices (Kinect, Leap, Oculus Touch, etc.)
-
-- Improved “plug & play” features for clusters (reducing amount of code editing needed to adapt a scene)
+![UniCAVE users collage]({{'images/UniCAVE Users (transparent).png' | absolute_url}})
