@@ -50,14 +50,16 @@
   }
 
   .button-link {
-    color: $uw-text;
+    color: $uw-red;
+    font-weight: bold;
+    background-color: $uw-text;
     line-height: $base-line-height;
-
     padding: 10px;
     border-color: $uw-text;
     border-width: thick;
     border-radius: 20px;
     border-style: solid;
+    
 
     // Gaps between nav items, but not on the last one
     &:not(:last-child) {
