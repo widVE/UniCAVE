@@ -89,7 +89,7 @@ namespace UniCAVE
             Camera res;
 
             if(camPrefab != null) obj = Instantiate(camPrefab);
-            else obj = new GameObject();
+            else obj = new GameObject("EyeCam");
 
             res = obj.GetComponent<Camera>();
             if(!res) res = obj.AddComponent<Camera>();
