@@ -36,7 +36,7 @@ As the project does not receive any financial support from the campus, federal a
 
 Check out these pages for useful documentation on creating your own UniCAVE setup:
 
-- [Installation](https://github.com/widVE/UniCAVE/wiki/UniCAVE-2019:-Package-Installation)
+- [Installation](https://github.com/widVE/UniCAVE/wiki/UniCAVE-2019-Package-Installation)
 
 - [Basic setup guide](https://github.com/widVE/UniCAVE/wiki/Setup-Guide)
 
