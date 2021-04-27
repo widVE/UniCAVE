@@ -1,0 +1,11 @@
+build-path: full path to build exe
+
+head-node: DESKTOP
+
+child-nodes:
+  - DESKTOP_TL
+  - DESKTOP_TR
+  - DEKSTOP_BL
+  - DESKTOP_BR
+
+sleep-time: 1
