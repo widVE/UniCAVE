@@ -27,6 +27,11 @@ We are currently taking requests for developing custom prefabs meant to work wit
 
 **Important: UniCAVE uses the Unity Multiplayer HLAPI for local networking. If your project does not use this, it needs to be added to your Unity project in the Unity Package Manager (Window -> Package Manager)**
 
+4/27/2021 - Cluster launcher script added
+* Added a Python cluster launcher script to launch multiple UniCAVE windows on the same machine
+* Located in the Python-Cluster-Launcher folder
+* Network support is not yet implemented
+
 1/28/2020 - Minor changes listed below:
 * HeadConfiguration can now instantiate prefabs with camera script, instead of just plain cameras
 * Source commented
