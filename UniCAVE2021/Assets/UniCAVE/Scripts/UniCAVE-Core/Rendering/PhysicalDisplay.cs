@@ -582,7 +582,7 @@ namespace UniCAVE
         /// </summary>
         void Update()
         {
-            if(!updatedViewports && WindowsUtils.CompletedOperation())
+            if(!updatedViewports)// && WindowsUtils.CompletedOperation())
             {
                 //we must also defer setting the camera viewports until the screen has the correct resolution
                 if(dualPipe && !dualInstance)
