@@ -1,0 +1,193 @@
+fileFormatVersion: 2
+guid: c9d88767b84d0124797b958308198f83
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: collision_house
+    100002: collision_wallAround
+    100004: //RootNode
+    100006: collision_01
+    100008: collision_02
+    100010: collision_03
+    100012: collision_04
+    100014: collision_05
+    100016: collision_06
+    100018: collision_07
+    100020: collision_08
+    100022: collision_09
+    100024: collision_10
+    100026: collision_11
+    100028: collision_12
+    100030: collision_13
+    100032: collision_15
+    100034: collision_16
+    100036: collision_ground
+    400000: collision_house
+    400002: collision_wallAround
+    400004: //RootNode
+    400006: collision_01
+    400008: collision_02
+    400010: collision_03
+    400012: collision_04
+    400014: collision_05
+    400016: collision_06
+    400018: collision_07
+    400020: collision_08
+    400022: collision_09
+    400024: collision_10
+    400026: collision_11
+    400028: collision_12
+    400030: collision_13
+    400032: collision_15
+    400034: collision_16
+    400036: collision_ground
+    2300000: collision_house
+    2300002: collision_wallAround
+    2300004: collision_01
+    2300006: collision_02
+    2300008: collision_03
+    2300010: collision_04
+    2300012: collision_05
+    2300014: collision_06
+    2300016: collision_07
+    2300018: collision_08
+    2300020: collision_09
+    2300022: collision_10
+    2300024: collision_11
+    2300026: collision_12
+    2300028: collision_13
+    2300030: collision_15
+    2300032: collision_16
+    2300034: collision_ground
+    2300036: //RootNode
+    3300000: collision_house
+    3300002: collision_wallAround
+    3300004: collision_01
+    3300006: collision_02
+    3300008: collision_03
+    3300010: collision_04
+    3300012: collision_05
+    3300014: collision_06
+    3300016: collision_07
+    3300018: collision_08
+    3300020: collision_09
+    3300022: collision_10
+    3300024: collision_11
+    3300026: collision_12
+    3300028: collision_13
+    3300030: collision_15
+    3300032: collision_16
+    3300034: collision_ground
+    3300036: //RootNode
+    4300000: collision_house
+    4300002: collision_wallAround
+    4300004: collision_01
+    4300006: collision_ground
+    4300008: collision_05
+    4300010: collision_04
+    4300012: collision_11
+    4300014: collision_12
+    4300016: collision_13
+    4300018: collision_16
+    4300020: collision_15
+    4300022: collision_02
+    4300024: collision_06
+    4300026: collision_09
+    4300028: collision_08
+    4300030: collision_07
+    4300032: collision_10
+    4300034: collision_03
+    4300036: Collision
+    9500000: //RootNode
+    2186277476908879412: ImportLogs
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Collision
+    second: {fileID: 2100000, guid: b8e34f2bf2564a14fb57f971b3be6d80, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.01
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 0
+    importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 0
+    previousCalculatedGlobalScale: 0.01
+    hasPreviousCalculatedGlobalScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 4
+    normalCalculationMode: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

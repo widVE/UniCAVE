@@ -1,0 +1,19 @@
+{
+    "name": "UniCAVE",
+    "references": [
+        "Unity.TextMeshPro",
+        "Unity.Netcode.Components",
+        "Unity.Netcode.Editor",
+        "Unity.Netcode.Runtime",
+        "com.unity.multiplayer-hlapi.Runtime"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,206 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &176819024903684851
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3199215181739756255}
+  - component: {fileID: 5803460741587875315}
+  - component: {fileID: 7028301626647118219}
+  m_Layer: 0
+  m_Name: New3DCamFab
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3199215181739756255
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 176819024903684851}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!20 &5803460741587875315
+Camera:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 176819024903684851}
+  m_Enabled: 0
+  serializedVersion: 2
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_projectionMatrixMode: 1
+  m_GateFitMode: 2
+  m_FOVAxisMode: 0
+  m_Iso: 200
+  m_ShutterSpeed: 0.005
+  m_Aperture: 16
+  m_FocusDistance: 10
+  m_FocalLength: 50
+  m_BladeCount: 5
+  m_Curvature: {x: 2, y: 11}
+  m_BarrelClipping: 0.25
+  m_Anamorphism: 0
+  m_SensorSize: {x: 36, y: 24}
+  m_LensShift: {x: 0, y: 0}
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 0.3
+  far clip plane: 1000
+  field of view: 60
+  orthographic: 0
+  orthographic size: 5
+  m_Depth: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingPath: -1
+  m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
+--- !u!114 &7028301626647118219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 176819024903684851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9876cfb3adbd1164ea775505b5aebf1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Stereo3D
+  S3DEnabled: 1
+  eyePriority: 1
+  swapLR: 0
+  optimize: 0
+  vSync: 1
+  method: 12
+  PPI: 96
+  userIPD: 66
+  virtualIPD: 66
+  virtualIPDMax: 1000
+  matchUserIPD: 0
+  FOVControl: 0
+  FOV: 90
+  FOVMinMax: {x: 10, y: 170}
+  tracking: 0
+  trackingViewport:
+    center: {fileID: 0}
+    upDirection: 2
+    forwardDirection: 4
+    upAxis: {x: 0, y: 0, z: 0}
+    forwardAxis: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: 0, w: 0}
+  panelDepth: 0
+  panelDepthMinMax: {x: 0, y: 1}
+  GUIAsOverlay: 0
+  GUIOpened: 0
+  inputFieldAutofocus: 0
+  GUIAutoshowTime: 3
+  toolTipShowDelay: 3
+  hide2DCursor: 0
+  timeBasedSequential: 0
+  cloneCamera: 0
+  cameraPrefab: {fileID: 0}
+  RTFormat: 0
+  slotName: User1
+  loadSettingsFromFile: 0
+  detectCameraSettingChange: 0
+  debugLog: 0
+  GUIAction:
+    m_Name: GUI
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: aa338a9e-4f38-49bf-bad0-b127c05dcee5
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  S3DAction:
+    m_Name: S3D
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 56361bc5-1bb3-45a6-843b-7c8f37728f2e
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  FOVAction:
+    m_Name: FOV
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: eaf1b8a2-eaf7-4c9b-bbed-cde4ce96f2a4
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  modifier1Action:
+    m_Name: Modifier 1
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 12cc4bc5-b6d9-4323-b201-a69c6acbe947
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  modifier2Action:
+    m_Name: Modifier 2
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 39c3c83e-50e6-4654-90d8-17ae366775ce
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  modifier3Action:
+    m_Name: Modifier 3
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: df2ba759-6b32-4b95-854b-de8d7206c7d9
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  additionalS3DCameras: []
+  additionalS3DCamerasStruct: []
+  S3DCanvases: []
+  blitToScreen: 1
+  blitTime: 1
+  renderTextureSetTargetBuffers: 0
+  disableCullingMask: 0
+  nearClipHack: 0
+  matrixKillHack: 0
+  disableMainCam: 1
+  S3DMaterial: {fileID: 0}
+  S3DPanelMaterial: {fileID: 0}
+  renderTexture: {fileID: 0}
+  renderTexture_left: {fileID: 0}
+  renderTexture_right: {fileID: 0}
+  canvasRenderTexture: {fileID: 0}

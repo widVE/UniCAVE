@@ -1,0 +1,107 @@
+fileFormatVersion: 2
+guid: 07a4cab24fad4b9409b7f7ac8fc9686e
+ModelImporter:
+  serializedVersion: 16
+  fileIDToRecycleName:
+    100000: DistantMatte_01
+    100002: DistantMatte_02
+    100004: DistantMatte_03
+    100006: DistantMatte_04
+    100008: DistantMatte_05
+    100010: DistantMatte_06
+    100012: DistantMatte_07
+    100014: DistantMatte_08
+    100016: Ocean
+    100018: //RootNode
+    400000: DistantMatte_01
+    400002: DistantMatte_02
+    400004: DistantMatte_03
+    400006: DistantMatte_04
+    400008: DistantMatte_05
+    400010: DistantMatte_06
+    400012: DistantMatte_07
+    400014: DistantMatte_08
+    400016: //RootNode
+    400018: Ocean
+    2300000: DistantMatte_01
+    2300002: DistantMatte_02
+    2300004: DistantMatte_03
+    2300006: DistantMatte_04
+    2300008: DistantMatte_05
+    2300010: DistantMatte_06
+    2300012: DistantMatte_07
+    2300014: DistantMatte_08
+    2300016: Ocean
+    3300000: DistantMatte_01
+    3300002: DistantMatte_02
+    3300004: DistantMatte_03
+    3300006: DistantMatte_04
+    3300008: DistantMatte_05
+    3300010: DistantMatte_06
+    3300012: DistantMatte_07
+    3300014: DistantMatte_08
+    3300016: Ocean
+    4300000: Ocean
+    4300002: DistantMatte_01
+    4300004: DistantMatte_02
+    4300006: DistantMatte_03
+    4300008: DistantMatte_04
+    4300010: DistantMatte_05
+    4300012: DistantMatte_06
+    4300014: DistantMatte_07
+    4300016: DistantMatte_08
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: .00999999978
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  additionalBone: 1
+  userData: 
